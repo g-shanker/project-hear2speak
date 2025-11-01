@@ -7,11 +7,15 @@ import { Appointment } from '../interfaces/appointment-interface';
   providedIn: 'root'
 })
 export class AppointmentService {
-  private apiUrl = 'http://localhost:3000/api/appointments'; // Adjust URL as needed
+  private apiUrl = '/api/appointments';
 
   constructor(private http: HttpClient) {}
 
   createAppointment(appointment: Appointment): Observable<Appointment> {
     return this.http.post<Appointment>(this.apiUrl, appointment);
+  }
+
+  getAppointments(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(this.apiUrl);
   }
 }
