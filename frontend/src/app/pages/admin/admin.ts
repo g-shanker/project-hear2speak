@@ -1,27 +1,35 @@
 import { Component } from '@angular/core';
+import { Banner } from '../../components/banner/banner';
 import { Slicer } from '../../components/slicer/slicer';
 import { SlicerItem } from '../../components/slicer/slicer-item.interface';
-import { Overview } from '../../components/overview/overview';
-import { Calendar } from '../../components/calendar/calendar';
+import { CreateAppointment } from '../../components/create-appointment/create-appointment';
+import { FindAppointment } from '../../components/find-appointment/find-appointment';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [Slicer],
+  imports: [Banner, Slicer],
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
 })
 export class AdminPage {
+
+  bannerText: string = 'Top Banner';
+  bannerStyles: { [key: string]: string } = {
+    'background-color': '#1976d2',
+    'color': 'white',
+  };
+
   slicerItems: SlicerItem[] = [
     {
-      title: 'Overview',
-      icon: 'dashboard',
-      component: Overview,
+      title: 'Create Appointment',
+      icon: 'add_circle',
+      component: CreateAppointment,
     },
     {
-      title: 'Calendar',
-      icon: 'calendar_month',
-      component: Calendar,
+      title: 'Find Appointment',
+      icon: 'search',
+      component: FindAppointment,
     }
   ]
 }
