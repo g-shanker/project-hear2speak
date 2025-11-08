@@ -22,14 +22,14 @@ export class AdminPage {
 
   slicerItems: SlicerItem[] = [
     {
-      title: 'Create Appointment',
-      icon: 'add_circle',
-      component: CreateAppointment,
-    },
-    {
       title: 'Find Appointment',
       icon: 'search',
       component: FindAppointment,
+    },
+    {
+      title: 'Create Appointment',
+      icon: 'add',
+      component: CreateAppointment,
     }
   ]
 }
