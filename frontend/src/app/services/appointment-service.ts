@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Appointment } from '../interfaces/appointment-interface';
+import { PatientAppointmentRequest } from '../interfaces/patient-appointment-request';
+import { AppointmentResponse } from '../interfaces/appointment-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,11 @@ export class AppointmentService {
 
   constructor(private http: HttpClient) {}
 
-  createAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.http.post<Appointment>(this.apiUrl, appointment);
+  createAppointment(appointment: PatientAppointmentRequest): Observable<PatientAppointmentRequest> {
+    return this.http.post<PatientAppointmentRequest>(this.apiUrl, appointment);
   }
 
-  getAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(this.apiUrl);
+  getAllAppointments(): Observable<AppointmentResponse[]> {
+    return this.http.get<AppointmentResponse[]>(this.apiUrl);
   }
 }
