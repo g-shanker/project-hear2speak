@@ -1,1 +1,66 @@
-<p>find-appointment works!</p>
+<div class="find-appointment-container">
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <span>Loading appointments...</span>
+  </div>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && errorMessage === '' && appointments.length === 0" class="empty">
+    No appointments found.
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Search by patient name, email, or phone number"
+    />
+  </div>
+
+</div>
+
+
+<!-- 
+<div class="appointments-container"> -->
+
+  <!-- <div class="summary-pane">
+    <div
+      *ngFor="let appointment of appointments"
+      class="summary-item"
+      [class.selected]="selectedAppointment === appointment"
+      (click)="selectAppointment(appointment)"
+    >
+      <div class="summary-header">
+        <span class="status">{{ appointment.appointmentStatus }}</span>
+        <span class="created">{{ appointment.createdAt | date: 'short' }}</span>
+      </div>
+      <div class="summary-body">
+        <span class="name">{{ appointment.patientFullName }}</span>
+        <span class="reason" title="{{ appointment.patientReason }}">
+          {{ appointment.patientReason }}
+        </span>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="details-pane" *ngIf="selectedAppointment; else noSelection">
+    <h3>{{ selectedAppointment.patientFullName }}</h3>
+    <p><strong>Status:</strong> {{ selectedAppointment.appointmentStatus }}</p>
+    <p><strong>Email:</strong> {{ selectedAppointment.patientEmail }}</p>
+    <p><strong>Phone:</strong> {{ selectedAppointment.patientPhoneNumber }}</p>
+    <p><strong>Reason:</strong> {{ selectedAppointment.patientReason }}</p>
+    <p><strong>Start:</strong> {{ selectedAppointment.startDateTime | date:'short' }}</p>
+    <p><strong>Duration:</strong> {{ selectedAppointment.durationInSeconds }} seconds</p>
+  </div> -->
+
+  <!-- <ng-template #noSelection>
+    <div class="details-pane placeholder">
+      <p>Select an appointment to view details.</p>
+    </div>
+  </ng-template> -->
+
+  <!-- <div *ngIf="!isLoading && appointments.length === 0" class="empty">
+    No appointments found.
+  </div>
+</div> -->

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppointmentService } from '../../services/appointment-service';
-import { Appointment } from '../../interfaces/appointment-interface';
+import { PatientAppointmentRequest } from '../../interfaces/patient-appointment-request';
 
 @Component({
   selector: 'app-create-appointment',
@@ -21,24 +21,36 @@ export class CreateAppointment {
     this.appointmentForm = this.fb.group({
       date: ['', Validators.required],
       time: ['', Validators.required],
-      patientName: ['', Validators.required],
+      patientFullName: ['', Validators.required],
       patientEmail: ['', Validators.required],
-      patientPhone: ['', Validators.required],
+      patientPhoneNumber: ['', Validators.required],
       reason: ['', Validators.required],
     });
   }
 
   onSubmit(): void {
     if (this.appointmentForm.valid) {
-      const appointmentData: Appointment = this.appointmentForm.value;
-      this.appointmentService.createAppointment(appointmentData)
+
+      const startDate = this.appointmentForm.get('date')?.value;
+      const startTime = this.appointmentForm.get('time')?.value;
+      const startDateTime = `${startDate}T${startTime}:00`;
+
+      const payload: PatientAppointmentRequest = {
+        startDateTime: startDateTime,
+        patientFullName: this.appointmentForm.get('patientFullName')?.value,
+        patientEmail: this.appointmentForm.get('patientEmail')?.value,
+        patientPhoneNumber: this.appointmentForm.get('patientPhoneNumber')?.value,
+        patientReason: this.appointmentForm.get('reason')?.value,
+      }
+
+      this.appointmentService.createAppointment(payload)
           .subscribe({
           next: (response) => {
             console.log('Appointment created successfully:', response);
             this.appointmentForm.reset();
           },
           error: (error) => {
-            console.error('Error creating appointment:', appointmentData);
+            console.error('Error creating appointment:', payload, error);
           }
         });
     }
