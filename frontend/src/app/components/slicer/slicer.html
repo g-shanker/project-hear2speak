@@ -1,17 +1,22 @@
 <div class="slicer-container">
-    <div class="slicer-nav" [style.width.px]="slicerWidth">
+    <div class="slicer-nav">
         <div *ngFor="let item of items" 
             class="slicer-item" [class.active]="selectedItem === item"
             (click)="onSelectItem(item)">
             <i class="material-icons">{{item.icon}}</i>
             <span class="slicer-text" >{{item.title}}</span>
         </div>
-        <div class="resizer" (mousedown)="onMouseDown($event)"></div>
     </div>
 
     <div class="render-container">
-        <ng-container *ngIf="selectedItem">
+        <ng-container *ngIf="selectedItem; else noSelection">
             <ng-container *ngComponentOutlet="selectedItem.component"></ng-container>
         </ng-container>
+
+        <ng-template #noSelection>
+            <div class="render-container placeholder">
+                <p>Select an item to render it.</p>
+            </div>
+        </ng-template>
     </div>
 </div>

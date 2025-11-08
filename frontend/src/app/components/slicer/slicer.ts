@@ -12,8 +12,6 @@ import { SlicerItem } from './slicer-item.interface';
 export class Slicer {
   @Input() items: SlicerItem[] = [];
   selectedItem: SlicerItem | null = null;
-  slicerWidth: number = 250;
-  minimumSlicerWidth: number = 50;
 
   ngOnInit(): void {
     if (this.items.length > 0) {
@@ -23,28 +21,5 @@ export class Slicer {
 
   onSelectItem(item: SlicerItem): void {
     this.selectedItem = item;
-  }
-
-  onMouseDown(event: MouseEvent): void {
-    event.preventDefault();
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
-  }
-
-  onMouseMove = (event: MouseEvent): void => {
-    const newWidth = event.clientX;
-
-    if (newWidth >= this.minimumSlicerWidth) {
-      this.slicerWidth = newWidth;
-    }
-  }
-
-  onMouseUp = (): void => {
-    document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('mouseup', this.onMouseUp);
-  }
-
-  checkTextVisibility(): boolean {
-    return this.slicerWidth > 50;
   }
 }
