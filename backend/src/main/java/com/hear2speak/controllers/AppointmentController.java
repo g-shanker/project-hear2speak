@@ -2,7 +2,8 @@ package com.hear2speak.controllers;
 
 import java.util.List;
 
-import com.hear2speak.entities.AppointmentEntity;
+import com.hear2speak.dtos.ClinicianAppointmentRequest;
+import com.hear2speak.dtos.AppointmentResponse;
 import com.hear2speak.services.AppointmentService;
 
 import jakarta.inject.Inject;
@@ -16,7 +17,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/appointments")
+@Path("/api/appointments")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AppointmentController {
@@ -29,26 +30,28 @@ public class AppointmentController {
     }
 
     @GET
-    public List<AppointmentEntity> listAll() {
-        return appointmentService.getAllAppointmentEntities();
+    public Response listAllAppointments() {
+        List<AppointmentResponse> appointmentResponses = appointmentService.getAllAppointments();
+        return Response.status(Response.Status.OK).entity(appointmentResponses).build();
     }
 
     @GET
     @Path("/{id}")
-    public AppointmentEntity getById(Long id) {
-        return appointmentService.getAppointmentEntityById(id);
+    public Response getAppointmentById(Long id) {
+        AppointmentResponse appointmentResponse = appointmentService.getAppointmentById(id);
+        return Response.status(Response.Status.OK).entity(appointmentResponse).build();
     }
 
     @POST
-    public Response create(@Valid AppointmentEntity appointmentEntity) {
-        AppointmentEntity createdAppointmentEntity = appointmentService.createAppointmentEntity(appointmentEntity);
-        return Response.status(Response.Status.CREATED).entity(createdAppointmentEntity).build();
+    public Response createAppointment(@Valid ClinicianAppointmentRequest appointmentRequest) {
+        AppointmentResponse appointmentResponse = appointmentService.createAppointment(appointmentRequest);
+        return Response.status(Response.Status.CREATED).entity(appointmentResponse).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteById(Long id) {
-        boolean isDeleted = appointmentService.deleteAppointmentEntity(id);
+    public Response deleteAppointment(Long id) {
+        boolean isDeleted = appointmentService.deleteAppointment(id);
         if(isDeleted) {
             return Response.noContent().build();
         }
