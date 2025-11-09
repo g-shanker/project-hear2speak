@@ -3,6 +3,7 @@
     *ngFor="let appointment of appointments"
     class="summary-item"
     [class.selected]="selectedAppointment === appointment"
+    [class.acknowledged]="appointment.isAcknowledged"
     (click)="selectAppointment(appointment)"
   >
     <div class="summary-header">
