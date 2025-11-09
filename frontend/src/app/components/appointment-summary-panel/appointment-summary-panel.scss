@@ -1,0 +1,80 @@
+@use '../../../styles.scss' as *;
+
+:host {
+  height: 100%;
+  min-height: 0;
+}
+
+.summary-panel-container {
+  height: 100%;
+  min-height: 0;
+
+  display: grid;
+  grid-auto-rows: auto;
+
+  overflow-y: auto;
+  // overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.summary-item {
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  padding: $space-sm;
+  box-shadow: $shadow-md;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.summary-item:hover {
+  background-color: #f0f0f0;
+}
+
+.summary-item.selected {
+  background-color: #e3f2fd;
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #666;
+  font-size: $font-size-base;
+  margin-bottom: $space-xs;
+}
+
+.summary-body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xxs;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.name {
+  display: block;
+  width: 100%;
+  min-width: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #666;
+}
+
+.reason {
+  display: block;
+  width: 100%;
+  min-width: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #666;
+}

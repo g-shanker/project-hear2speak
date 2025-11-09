@@ -2,12 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
 import { AppointmentService } from '../../services/appointment-service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AppointmentSearchBar } from '../appointment-search-bar/appointment-search-bar';
+import { AppointmentSummaryPanel } from '../appointment-summary-panel/appointment-summary-panel';
+import { AppointmentViewPanel } from '../appointment-view-panel/appointment-view-panel';
 
 @Component({
   selector: 'app-find-appointment',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    AppointmentSearchBar,
+    AppointmentSummaryPanel,
+    AppointmentViewPanel
+  ],
   templateUrl: './find-appointment.html',
   styleUrl: './find-appointment.scss',
 })
@@ -21,7 +28,10 @@ export class FindAppointment implements OnInit {
   constructor(private appointmentService: AppointmentService) {}
 
   ngOnInit(): void {
-    this.loadAppointments();
+    setTimeout(() => {
+      this.loadAppointments();
+    }, 1000);
+    // this.loadAppointments();
   }
 
   loadAppointments(): void {
@@ -39,9 +49,8 @@ export class FindAppointment implements OnInit {
     })
   }
 
-  selectAppointment(appointment: any) {
+  onAppointmentSelected(appointment: AppointmentResponse): void {
     this.selectedAppointment = appointment;
   }
-
 
 }

@@ -1,45 +1,51 @@
-.slicer-container {
-    display: flex;
+@use '../../../styles.scss' as *;
+
+:host {
     height: 100%;
+    min-height: 0;
+}
+
+.slicer-container {
+    height: 100%;
+    min-height: 0;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr;
+    overflow: hidden;
 }
 
 .slicer-nav {
-    position: relative;
-    width: 250px;
-    border-right: 1px solid #e0e0e0;
-    padding: 1rem;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.resizer {
-    width: 5px;
-    cursor: ew-resize;
-    background-color: #ccc;
-    position: absolute;
-    top: 0;
-    right: 0;
     height: 100%;
+    min-height: 0;
+
+    width: 16rem;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
 }
 
 .slicer-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: $space-sm;
+    padding: $space-sm;
     cursor: pointer;
 
     &:hover {
-        background-color: #f5f5f5;
+        background-color: #939191;
     }
 
     &.active {
-        background-color: #e3f2fd;
-        color: #1976d2;
+        background-color: #9ad0f7;
+        color: #0e58a3;
     }
 }
 
 .slicer-text {
+    display: grid;
+    align-items: center;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -48,15 +54,14 @@
 }
 
 .render-container {
-    flex: 1;
-    padding: 1rem;
+    height: 100%;
+    min-height: 0;
 }
 
-
-.render-container.placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-  font-style: italic;
+.render-container .placeholder {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    color: #888;
+    font-style: italic;
 }

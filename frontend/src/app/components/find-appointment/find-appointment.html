@@ -11,11 +11,13 @@
     No appointments found.
   </div>
 
-  <div class="search-bar">
-    <input
-      type="text"
-      placeholder="Search by patient name, email, or phone number"
-    />
+  <div class="content-container" *ngIf="!isLoading && errorMessage === '' && appointments.length > 0">
+    <app-appointment-search-bar class="fill-row"></app-appointment-search-bar>
+    <app-appointment-summary-panel
+      [appointments]="appointments"
+      (appointmentSelected)="onAppointmentSelected($event)"
+    ></app-appointment-summary-panel>
+    <app-appointment-view-panel [appointment]="selectedAppointment"></app-appointment-view-panel>
   </div>
 
 </div>

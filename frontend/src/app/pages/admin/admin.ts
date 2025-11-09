@@ -14,10 +14,11 @@ import { FindAppointment } from '../../components/find-appointment/find-appointm
 })
 export class AdminPage {
 
-  bannerText: string = 'Top Banner';
+  bannerText: string = 'Project - Hear2Speak';
   bannerStyles: { [key: string]: string } = {
     'background-color': '#1976d2',
     'color': 'white',
+    'font-weight': 'bold',
   };
 
   slicerItems: SlicerItem[] = [

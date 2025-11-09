@@ -1,0 +1,17 @@
+<div class="summary-panel-container">
+  <div
+    *ngFor="let appointment of appointments"
+    class="summary-item"
+    [class.selected]="selectedAppointment === appointment"
+    (click)="selectAppointment(appointment)"
+  >
+    <div class="summary-header">
+      <span class="status">{{ appointment.appointmentStatus }}</span>
+      <span class="created">{{ appointment.createdAt | date: 'short' }}</span>
+    </div>
+    <div class="summary-body">
+      <span class="name">{{ appointment.patientFullName }}</span>
+      <span class="reason">{{ appointment.patientReason }}</span>
+    </div>
+  </div>
+</div>
