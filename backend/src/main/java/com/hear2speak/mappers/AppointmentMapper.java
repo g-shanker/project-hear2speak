@@ -23,8 +23,9 @@ public class AppointmentMapper {
         e.durationInSeconds = r.durationInSeconds != null ? r.durationInSeconds : e.durationInSeconds;
         e.appointmentStatus = r.appointmentStatus != null ? r.appointmentStatus : e.appointmentStatus;
         e.location = r.location != null ? r.location : e.location;
-        e.previousAppointmentId = r.previousAppointmentId; // stays null until explicity set
+        e.previousAppointmentId = r.previousAppointmentId != null ? r.previousAppointmentId : e.previousAppointmentId;
         e.clinicianNotes = r.clinicianNotes != null ? r.clinicianNotes : e.clinicianNotes;
+        e.isAcknowledged = r.isAcknowledged != null ? r.isAcknowledged : e.isAcknowledged;
 
         return e;
     }
@@ -62,6 +63,23 @@ public class AppointmentMapper {
         r.updatedAt = e.updatedAt.toString();
 
         return r;
+    }
+
+    public void updateEntityFromRequest(AppointmentEntity e, ClinicianAppointmentRequest r) {
+
+        e.startDateTime = r.startDateTime != null ? r.startDateTime : e.startDateTime;
+        e.patientFullName = r.patientFullName != null ? r.patientFullName : e.patientFullName;
+        e.patientEmail = r.patientEmail != null ? r.patientEmail : e.patientEmail;
+        e.patientPhoneNumber = r.patientPhoneNumber != null ? r.patientPhoneNumber : e.patientPhoneNumber;
+        e.patientReason = r.patientReason != null ? r.patientReason : e.patientReason;
+
+        e.durationInSeconds = r.durationInSeconds != null ? r.durationInSeconds : e.durationInSeconds;
+        e.appointmentStatus = r.appointmentStatus != null ? r.appointmentStatus : e.appointmentStatus;
+        e.location = r.location != null ? r.location : e.location;
+        e.previousAppointmentId = r.previousAppointmentId != null ? r.previousAppointmentId : e.previousAppointmentId;
+        e.clinicianNotes = r.clinicianNotes != null ? r.clinicianNotes : e.clinicianNotes;
+        e.isAcknowledged = r.isAcknowledged != null ? r.isAcknowledged : e.isAcknowledged;
+
     }
     
 }

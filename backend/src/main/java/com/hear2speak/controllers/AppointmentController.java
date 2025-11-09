@@ -12,7 +12,9 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -46,6 +48,13 @@ public class AppointmentController {
     public Response createAppointment(@Valid ClinicianAppointmentRequest appointmentRequest) {
         AppointmentResponse appointmentResponse = appointmentService.createAppointment(appointmentRequest);
         return Response.status(Response.Status.CREATED).entity(appointmentResponse).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateAppointment(@PathParam("id") Long id, @Valid ClinicianAppointmentRequest appointmentRequest) {
+        AppointmentResponse appointmentResponse = appointmentService.updateAppointment(id, appointmentRequest);
+        return Response.status(Response.Status.OK).entity(appointmentResponse).build();
     }
 
     @DELETE

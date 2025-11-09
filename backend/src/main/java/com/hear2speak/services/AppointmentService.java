@@ -1,5 +1,6 @@
 package com.hear2speak.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,19 @@ public class AppointmentService {
     @Transactional
     public boolean deleteAppointment(Long id) {
         return appointmentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public AppointmentResponse updateAppointment(Long id, ClinicianAppointmentRequest appointmentRequest) {
+        AppointmentEntity appointmentEntity = appointmentRepository.findByIdOptional(id)
+            .orElseThrow(() -> new WebApplicationException("Appointment with id " + id + " not found.", Response.Status.NOT_FOUND.getStatusCode()));
+
+        appointmentMapper.updateEntityFromRequest(appointmentEntity, appointmentRequest);
+        appointmentEntity.updatedAt = LocalDateTime.now();
+
+        AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
+
+        return appointmentResponse;
     }
 
 }

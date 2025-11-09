@@ -16,6 +16,7 @@ public class AppointmentEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "id", updatable = false)
     public Long id;
 
     // Appointment details
@@ -68,6 +69,7 @@ public class AppointmentEntity {
         this.durationInSeconds = 1800;
         this.appointmentStatus = AppointmentStatus.REQUESTED;
         this.location = "";
+        this.previousAppointmentId = null;
         this.clinicianNotes = "";
         this.isAcknowledged = false;
     }

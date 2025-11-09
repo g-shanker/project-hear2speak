@@ -47,4 +47,6 @@ public class ClinicianAppointmentRequest {
     @Size(max = 1000)
     public String clinicianNotes;
 
+    public Boolean isAcknowledged;
+
 }

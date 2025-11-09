@@ -11,4 +11,5 @@ export interface ClinicianAppointmentRequest {
   location: string;
   previousAppointmentId: number | null;
   clinicianNotes: string;
+  isAcknowledged: boolean;
 }
