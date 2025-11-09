@@ -12,6 +12,17 @@ $color-border: #303030;
 $color-error: #e53935;
 $color-success: #43a047;
 
+// Text color
+$color-status-text: #ffffff;
+
+// Status colors
+$color-status-requested:   #f4c430;  // Golden yellow
+$color-status-scheduled:   #1976d2;  // Calmer medium blue
+$color-status-cancelled:   #e53935;  // Vibrant red
+$color-status-completed:   #43a047;  // Balanced green
+$color-status-no-show:     #757575;  // Neutral grey
+$color-status-rescheduled: #fb8c00;  // Amber orange
+
 // ------------------------------
 //  Spacing
 // ------------------------------

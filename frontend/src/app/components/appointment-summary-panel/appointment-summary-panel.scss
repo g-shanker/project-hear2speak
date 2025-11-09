@@ -47,10 +47,27 @@
   justify-content: space-between;
   align-items: center;
 
-  color: #666;
   font-size: $font-size-base;
   margin-bottom: $space-xs;
 }
+
+@mixin status-badge($bg-color) {
+  background-color: $bg-color;
+  color: $color-status-text;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status.requested {@include status-badge($color-status-requested);}
+.status.scheduled {@include status-badge($color-status-scheduled);}
+.status.cancelled {@include status-badge($color-status-cancelled);}
+.status.completed {@include status-badge($color-status-completed);}
+.status.no_show {@include status-badge($color-status-no-show);}
+.status.rescheduled {@include status-badge($color-status-rescheduled);}
 
 .summary-body {
   display: flex;
@@ -69,8 +86,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  color: #666;
 }
 
 .reason {
@@ -81,6 +96,4 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  color: #666;
 }

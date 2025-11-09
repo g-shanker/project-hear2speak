@@ -7,7 +7,9 @@
     (click)="selectAppointment(appointment)"
   >
     <div class="summary-header">
-      <span class="status">{{ appointment.appointmentStatus }}</span>
+      <span [class]="'status ' + appointment.appointmentStatus.toLowerCase()">
+        {{ appointment.appointmentStatus }}
+      </span>
       <span class="created">{{ appointment.createdAt | date: 'short' }}</span>
     </div>
     <div class="summary-body">
