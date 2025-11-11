@@ -1,0 +1,34 @@
+<div class="find-appointment-container">
+    <div
+        class="loading"
+        *ngIf="isLoading"
+    >
+        <span>Loading appointments...</span>
+    </div>
+
+    <div
+        class="error"
+        *ngIf="errorMessage"
+    >
+        {{ errorMessage }}
+    </div>
+
+    <div
+        class="empty"
+        *ngIf="!isLoading && errorMessage === '' && appointments.length === 0"
+        >
+        No appointments found.
+    </div>
+
+    <div
+        class="content-container"
+        *ngIf="!isLoading && errorMessage === '' && appointments.length > 0"
+    >
+        <app-appointment-search-bar class="fill-row"></app-appointment-search-bar>
+        <app-appointment-summary-panel
+            [appointments]="appointments"
+            (appointmentSelected)="onSelectAppointment($event)"
+        ></app-appointment-summary-panel>
+        <app-appointment-view-panel [appointment]="selectedAppointment"></app-appointment-view-panel>
+  </div>
+</div>

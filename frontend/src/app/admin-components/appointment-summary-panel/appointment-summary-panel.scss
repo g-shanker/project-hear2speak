@@ -1,0 +1,50 @@
+@use '../../../styles.scss' as *;
+
+:host {
+    height: 100%;
+    min-height: 0;
+}
+
+.summary-panel-container {
+    height: 100%;
+    min-height: 0;
+
+    display: grid;
+    grid-auto-rows: auto;
+
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.summary-item {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    padding: $space-sm;
+}
+
+.summary-header {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: $space-xs;
+}
+
+.summary-body {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: $space-xxs;
+}
+
+.status, .created, .name, .reason {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

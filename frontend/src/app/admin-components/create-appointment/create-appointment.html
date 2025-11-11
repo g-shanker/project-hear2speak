@@ -1,0 +1,55 @@
+<div class="form-container">
+    <h2>Create New Appointment</h2>
+  
+    <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+        <div class="form-field">
+            <label for="date">Date:</label>
+            <input type="date" id="date" formControlName="date">
+            <div class="error" *ngIf="appointmentForm.get('date')?.touched && appointmentForm.get('date')?.invalid">
+                Date is required
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="time">Time:</label>
+            <input type="time" id="time" formControlName="time">
+            <div class="error" *ngIf="appointmentForm.get('time')?.touched && appointmentForm.get('time')?.invalid">
+                Time is required
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="patientName">Patient Name:</label>
+            <input type="text" id="patientName" formControlName="patientFullName">
+            <div class="error" *ngIf="appointmentForm.get('patientName')?.touched && appointmentForm.get('patientName')?.invalid">
+                Patient name is required
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="patientEmail">Email:</label>
+            <input type="email" id="patientEmail" formControlName="patientEmail">
+            <div class="error" *ngIf="appointmentForm.get('patientEmail')?.touched && appointmentForm.get('patientEmail')?.invalid">
+                Please enter a valid email address
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="patientPhone">Phone:</label>
+            <input type="tel" id="patientPhone" formControlName="patientPhoneNumber">
+            <div class="error" *ngIf="appointmentForm.get('patientPhone')?.touched && appointmentForm.get('patientPhone')?.invalid">
+                Phone number is required
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="reason">Reason for Appointment:</label>
+            <textarea id="reason" formControlName="reason"></textarea>
+            <div class="error" *ngIf="appointmentForm.get('reason')?.touched && appointmentForm.get('reason')?.invalid">
+                Please provide a reason for the appointment
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!appointmentForm.valid">Create Appointment</button>
+    </form>
+</div>

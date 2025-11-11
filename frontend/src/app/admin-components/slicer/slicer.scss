@@ -1,0 +1,53 @@
+@use '../../../styles.scss' as *;
+
+:host {
+    height: 100%;
+    min-height: 0;
+}
+
+.slicer-container {
+    height: 100%;
+    min-height: 0;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr;
+
+    overflow: hidden;
+}
+
+.slicer-nav {
+    height: 100%;
+    min-height: 0;
+
+    width: 8 * $space-xl;
+
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.slicer-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    gap: $space-sm;
+    padding: $space-sm;
+}
+
+.slicer-text {
+    display: grid;
+    align-items: center;
+}
+
+.render-container {
+    height: 100%;
+    min-height: 0;
+}
+
+.render-container .placeholder {
+    height: 100%;
+    
+    display: grid;
+    place-items: center;
+}
