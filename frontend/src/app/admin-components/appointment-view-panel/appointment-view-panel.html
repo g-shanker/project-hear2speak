@@ -1,4 +1,7 @@
-<div class="view-panel-container">
+<div
+    class="view-panel-container"
+    *ngIf="appointment; else noSelection"
+>
     <div class="view-panel-toolbar">
         <div
             class="edit-button"
@@ -8,6 +11,12 @@
         </div>
     </div>
 </div>
+
+<ng-template #noSelection>
+    <div class="placeholder">
+        <p>Select an appointment to view details.</p>
+    </div>
+</ng-template>
 
 <!-- <div class="view-panel-container" *ngIf="appointment; else noSelection">
 

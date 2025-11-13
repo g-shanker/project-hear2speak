@@ -11,6 +11,7 @@ import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointm
     templateUrl: './appointment-summary-panel.html',
     styleUrl: './appointment-summary-panel.scss',
 })
+
 export class AppointmentSummaryPanel {
     @Input() appointments: AppointmentResponse[] = [];
     @Output() appointmentSelected = new EventEmitter<AppointmentResponse>();
