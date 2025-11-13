@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../services/appointment-service';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
-import { AppointmentSearchBar } from '../appointment-search-bar/appointment-search-bar';
-import { AppointmentViewPanel } from '../appointment-view-panel/appointment-view-panel';
-import { AppointmentSummaryPanel } from '../appointment-summary-panel/appointment-summary-panel';
+import { AppointmentSearchBar } from './appointment-search-bar/appointment-search-bar';
+import { AppointmentViewPanel } from './appointment-view-panel/appointment-view-panel';
+import { AppointmentSummaryPanel } from './appointment-summary-panel/appointment-summary-panel';
 
 @Component({
     selector: 'app-find-appointment',

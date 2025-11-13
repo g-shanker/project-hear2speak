@@ -10,6 +10,20 @@
             {{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}
         </div>
     </div>
+
+    <div
+        class="detailed-view"
+        *ngIf="!editMode"
+    >
+        <app-appointment-details-view></app-appointment-details-view>
+    </div>
+
+    <div
+        class="edit-view"
+        *ngIf="editMode"
+    >
+        <app-appointment-edit-view></app-appointment-edit-view>
+    </div>
 </div>
 
 <ng-template #noSelection>

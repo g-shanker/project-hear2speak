@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppointmentService } from '../../services/appointment-service';
-import { AppointmentResponse } from '../../interfaces/appointment-response';
-import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
+import { AppointmentService } from '../../../services/appointment-service';
+import { AppointmentResponse } from '../../../interfaces/appointment-response';
+import { ClinicianAppointmentRequest } from '../../../interfaces/clinician-appointment-request';
 
 @Component({
     selector: 'app-appointment-summary-panel',

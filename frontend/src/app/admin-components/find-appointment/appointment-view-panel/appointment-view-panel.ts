@@ -1,11 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { AppointmentResponse } from '../../interfaces/appointment-response';
+import { AppointmentResponse } from '../../../interfaces/appointment-response';
+import { AppointmentEditView } from './appointment-edit-view/appointment-edit-view';
+import { AppointmentDetailsView } from './appointment-details-view/appointment-details-view';
 
 @Component({
     selector: 'app-appointment-view-panel',
     standalone: true,
-    imports: [CommonModule],
+    imports: [
+        CommonModule,
+        AppointmentEditView,
+        AppointmentDetailsView
+    ],
     templateUrl: './appointment-view-panel.html',
     styleUrl: './appointment-view-panel.scss',
 })
