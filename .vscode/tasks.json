@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "angular-frontend",
+      "type": "shell",
+      "command": "ng serve --proxy-config proxy.conf.json",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "quarkus-backend",
+      "type": "shell",
+      "command": "mvn quarkus:dev",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Start Full Dev Environment",
+      "dependsOn": [
+        "angular-frontend",
+        "quarkus-backend",
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}
