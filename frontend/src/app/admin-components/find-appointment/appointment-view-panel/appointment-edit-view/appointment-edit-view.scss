@@ -10,8 +10,10 @@
     min-height: 0;
 
     padding: $space-md;
+    padding-bottom: calc($space-md * 5);
 
     overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
 .form-item {
