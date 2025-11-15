@@ -4,26 +4,27 @@
 >
     <div class="view-panel-toolbar">
         <div
-            class="edit-button"
+            class="toolbar-button"
             (click)="toggleEditMode()"
         >
-            {{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}
+            <i class="material-icons">
+                {{ editMode ? 'edit_off' : 'edit' }}
+            </i>
+            <div class="toolbar-button-text">
+                {{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}
+            </div>
         </div>
     </div>
 
-    <div
-        class="detailed-view"
+    <app-appointment-details-view
         *ngIf="!editMode"
-    >
-        <app-appointment-details-view></app-appointment-details-view>
-    </div>
+        [appointment]="appointment"
+    ></app-appointment-details-view>
 
-    <div
-        class="edit-view"
+    <app-appointment-edit-view
         *ngIf="editMode"
-    >
-        <app-appointment-edit-view></app-appointment-edit-view>
-    </div>
+        [appointment]="appointment"
+    ></app-appointment-edit-view>
 </div>
 
 <ng-template #noSelection>

@@ -5,12 +5,28 @@
   min-height: 0;
 }
 
+.view-panel-container {
+    height: 100%;
+    min-height: 0;
+}
+
 .placeholder {
     height: 100%;
     min-height: 0;
 
     display: grid;
     place-items: center;
+}
+
+.view-panel-toolbar {
+    padding: $space-sm;
+}
+
+.toolbar-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $space-xxs;
 }
 
 // .view-panel-container {

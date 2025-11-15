@@ -1,0 +1,23 @@
+@use '../../../../../styles.scss' as *;
+
+:host {
+  height: 100%;
+  min-height: 0;
+}
+
+.details-view-container {
+    height: 100%;
+    min-height: 0;
+
+    padding: $space-md;
+
+    overflow-y: auto;
+}
+
+.details-item {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    
+    padding: $space-md;
+    gap: $space-md;
+}
