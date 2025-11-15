@@ -1,7 +1,9 @@
+@import 'tailwindcss';
+
 // ------------------------------
 //  Color Palette
 // ------------------------------
-$color-primary: #3f51b5;  // Indigo 500
+$color-primary: #3f51b5; // Indigo 500
 $color-primary-dark: #303f9f;
 $color-accent: #ff4081;
 $color-background: #f1f2f3;
@@ -16,12 +18,12 @@ $color-success: #43a047;
 $color-status-text: #ffffff;
 
 // Status colors
-$color-status-requested:   #f4c430;  // Golden yellow
-$color-status-scheduled:   #1976d2;  // Calmer medium blue
-$color-status-cancelled:   #e53935;  // Vibrant red
-$color-status-completed:   #43a047;  // Balanced green
-$color-status-no-show:     #757575;  // Neutral grey
-$color-status-rescheduled: #fb8c00;  // Amber orange
+$color-status-requested: #f4c430; // Golden yellow
+$color-status-scheduled: #1976d2; // Calmer medium blue
+$color-status-cancelled: #e53935; // Vibrant red
+$color-status-completed: #43a047; // Balanced green
+$color-status-no-show: #757575; // Neutral grey
+$color-status-rescheduled: #fb8c00; // Amber orange
 
 // ------------------------------
 //  Spacing
@@ -74,7 +76,8 @@ app-root {
     min-height: 0;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     min-height: 0;
     font-family: $font-family-base;

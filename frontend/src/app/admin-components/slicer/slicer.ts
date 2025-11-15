@@ -9,7 +9,6 @@ import { Component, Input, OnInit } from '@angular/core';
     templateUrl: './slicer.html',
     styleUrl: './slicer.scss',
 })
-
 export class Slicer implements OnInit {
     @Input() items: SlicerItem[] = [];
     selectedItem: SlicerItem | null = null;

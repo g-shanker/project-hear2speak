@@ -1,11 +1,13 @@
 <div class="slicer-container">
     <div class="slicer-nav">
         <div
-            *ngFor="let item of items" 
-            class="slicer-item" [class.active]="selectedItem === item"
-            (click)="onSelectItem(item)">
-            <i class="material-icons">{{item.icon}}</i>
-            <span class="slicer-text" >{{item.title}}</span>
+            *ngFor="let item of items"
+            class="slicer-item"
+            [class.active]="selectedItem === item"
+            (click)="onSelectItem(item)"
+        >
+            <i class="material-icons">{{ item.icon }}</i>
+            <span class="slicer-text">{{ item.title }}</span>
         </div>
     </div>
 
