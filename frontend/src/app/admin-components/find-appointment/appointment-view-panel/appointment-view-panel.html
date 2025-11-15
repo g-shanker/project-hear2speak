@@ -5,17 +5,6 @@
     <div class="view-panel-toolbar">
         <div
             class="toolbar-button"
-            (click)="toggleEditMode()"
-        >
-            <i class="material-icons">
-                {{ editMode ? 'edit_off' : 'edit' }}
-            </i>
-            <div class="toolbar-button-text">
-                {{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}
-            </div>
-        </div>
-        <div
-            class="toolbar-button"
             (click)="updateAppointment()"
             *ngIf="editMode"
         >
@@ -24,6 +13,17 @@
             </i>
             <div class="toolbar-button-text">
                 Save Changes
+            </div>
+        </div>
+        <div
+            class="toolbar-button"
+            (click)="toggleEditMode()"
+        >
+            <i class="material-icons">
+                {{ editMode ? 'edit_off' : 'edit' }}
+            </i>
+            <div class="toolbar-button-text">
+                {{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}
             </div>
         </div>
     </div>

@@ -22,6 +22,12 @@
     padding: $space-sm;
 }
 
+.view-panel-toolbar {
+    display: flex;
+    flex-direction: row;
+    gap: $space-sm
+}
+
 .toolbar-button {
     display: flex;
     flex-direction: row;
