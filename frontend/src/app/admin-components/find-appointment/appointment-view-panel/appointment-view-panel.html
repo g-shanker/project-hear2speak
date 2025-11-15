@@ -14,6 +14,18 @@
                 {{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}
             </div>
         </div>
+        <div
+            class="toolbar-button"
+            (click)="updateAppointment()"
+            *ngIf="editMode"
+        >
+            <i class="material-icons">
+                save
+            </i>
+            <div class="toolbar-button-text">
+                Save Changes
+            </div>
+        </div>
     </div>
 
     <app-appointment-details-view
@@ -23,6 +35,7 @@
 
     <app-appointment-edit-view
         *ngIf="editMode"
+        #editView
         [appointment]="appointment"
     ></app-appointment-edit-view>
 </div>
@@ -32,114 +45,3 @@
         <p>Select an appointment to view details.</p>
     </div>
 </ng-template>
-
-<!-- <div class="view-panel-container" *ngIf="appointment; else noSelection">
-
-    <div class="editor-banner">
-        <div class="edit-button" (click)="toggleEditMode()">{{ editMode ? 'Exit Appointment Editor' : 'Edit Appointment' }}</div>
-    </div>
-
-    <form
-        class="details-container"
-        *ngIf="editMode; else readMode"
-        [formGroup]="appointmentForm"
-        (ngSubmit)="onSubmit()"
-    >
-        <div class="form-field">
-            <input
-                class="details-item"
-                type="text"
-                formControlName="patientFullName"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('patientFullName')?.touched && appointmentForm.get('patientFullName')?.invalid"
-            >
-                Patient's name is required
-            </div>
-        </div>
-        <div class="details-item">
-            <span class="key">Appointment Status:</span>
-            <select class="value" [(ngModel)]="appointment.appointmentStatus" name="appointmentStatus">
-                <option value="REQUESTED">REQUESTED</option>
-                <option value="SCHEDULED">SCHEDULED</option>
-                <option value="COMPLETED">COMPLETED</option>
-                <option value="CANCELLED">CANCELLED</option>
-                <option value="NO_SHOW">NO_SHOW</option>
-                <option value="RESCHEDULED">RESCHEDULED</option>
-            </select>
-        </div>
-        <div class="details-item">
-            <span class="key">Patient Email:</span>
-            <input class="value" type="text" [(ngModel)]="appointment.patientEmail" name="patientEmail"/>
-        </div>
-        <div class="details-item">
-            <span class="key">Patient Phone:</span>
-            <input class="value" type="text" [(ngModel)]="appointment.patientPhoneNumber" name="patientPhoneNumber"/>
-        </div>
-        <div class="details-item">
-            <span class="key">Appointment Time:</span>
-            <input class="value" type="datetime-local" [(ngModel)]="appointment.startDateTime" name="startDateTime"/>
-        </div>
-        <div class="details-item">
-            <span class="key">Appointment Duration:</span>
-            <input class="value" type="text" [(ngModel)]="durationInMinutes" name="durationInMinutes"/>
-        </div>
-        <div class="details-item fill-row">
-            <span class="key">Appointment Location:</span>
-            <input class="value" type="text" [(ngModel)]="appointment.location" name="location"/>
-        </div>
-        <div class="details-item fill-row">
-            <span class="key">Patient's Reason:</span>
-            <input class="value" type="text" [(ngModel)]="appointment.patientReason" name="patientReason"/>
-        </div>
-        <div class="details-item fill-row">
-            <span class="key">Clinician Notes:</span>
-            <input class="value" type="text" [(ngModel)]="appointment.clinicianNotes" name="clinicianNotes"/>
-        </div>
-    </form>
-
-    <ng-template #readMode>
-        <div class="details-container">
-            <h1 class="details-item">{{ appointment.patientFullName }}</h1>
-            <div class="details-item">
-                <span class="key">Appointment Status:</span>
-                <span class="value">{{ appointment.appointmentStatus }}</span>
-            </div>
-            <div class="details-item">
-                <span class="key">Patient Email:</span>
-                <span class="value">{{ appointment.patientEmail }}</span>
-            </div>
-            <div class="details-item">
-                <span class="key">Patient Phone:</span>
-                <span class="value">{{ appointment.patientPhoneNumber }}</span>
-            </div>
-            <div class="details-item">
-                <span class="key">Appointment Time:</span>
-                <span class="value">{{ appointment.startDateTime | date:'shortTime' }} -- {{ appointment.startDateTime | date:'mediumDate' }}</span>
-            </div>
-            <div class="details-item">
-                <span class="key">Appointment Duration:</span>
-                <span class="value">{{ appointment.durationInSeconds / 60 }} minutes</span>
-            </div>
-            <div class="details-item fill-row">
-                <span class="key">Appointment Location:</span>
-                <span class="value">{{ appointment.location}}</span>
-            </div>
-            <div class="details-item fill-row">
-                <span class="key">Patient's Reason:</span>
-                <span class="value">{{ appointment.patientReason }}</span>
-            </div>
-            <div class="details-item fill-row">
-                <span class="key">Clinician Notes:</span>
-                <span class="value">{{ appointment.clinicianNotes}}</span>
-            </div>
-        </div>
-    </ng-template>
-</div>
-
-<ng-template #noSelection>
-    <div class="details-container placeholder">
-        <p>Select an appointment to view details.</p>
-    </div>
-</ng-template> -->

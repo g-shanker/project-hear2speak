@@ -25,7 +25,21 @@ export class FindAppointment implements OnInit {
     appointments: AppointmentResponse[] = [];
     selectedAppointment: AppointmentResponse | null = null;
 
-    constructor(private appointmentService: AppointmentService) {}
+    constructor(
+        private appointmentService: AppointmentService
+    ) {
+        this.appointmentService.appointmentSelected$.subscribe(selected => {
+            if(!selected) return;
+            this.selectedAppointment = selected;
+        })
+        this.appointmentService.appointmentUpdated$.subscribe(updated => {
+            if(!updated) return;
+            if(this.selectedAppointment?.id === updated.id) this.selectedAppointment = updated;
+            this.appointments = this.appointments.map(a =>
+                a.id === updated.id ? updated : a
+            );
+        })
+    }
 
     ngOnInit(): void {
         setTimeout(() => {
@@ -45,9 +59,5 @@ export class FindAppointment implements OnInit {
                 this.isLoading = false;
             }
         })
-    }
-
-    onSelectAppointment(appointment: AppointmentResponse): void {
-        this.selectedAppointment = appointment;
     }
 }

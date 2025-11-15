@@ -27,7 +27,6 @@
         <app-appointment-search-bar class="fill-row"></app-appointment-search-bar>
         <app-appointment-summary-panel
             [appointments]="appointments"
-            (appointmentSelected)="onSelectAppointment($event)"
         ></app-appointment-summary-panel>
         <app-appointment-view-panel [appointment]="selectedAppointment"></app-appointment-view-panel>
   </div>

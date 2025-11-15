@@ -17,7 +17,19 @@ export class AppointmentSummaryPanel {
     @Output() appointmentSelected = new EventEmitter<AppointmentResponse>();
     selectedAppointment: AppointmentResponse | null = null;
 
-    constructor(private appointmentService: AppointmentService) {}
+    constructor(
+        private appointmentService: AppointmentService,
+    ) {
+        this.appointmentService.appointmentUpdated$.subscribe(updated => {
+            if(!updated) return;
+            if(this.selectedAppointment?.id === updated.id) this.selectedAppointment = updated;
+            this.appointments = this.appointments.map(a => a.id === updated.id ? updated : a);
+        })
+        this.appointmentService.appointmentSelected$.subscribe(selected => {
+            if(!selected) return;
+            this.selectedAppointment = selected;
+        })
+    }
 
     updateAppointment(appointment: AppointmentResponse): void {
         if (appointment != null) {
@@ -38,10 +50,10 @@ export class AppointmentSummaryPanel {
             this.appointmentService.updateAppointment(appointment.id, payload)
             .subscribe({
                 next: (response) => {
-                    console.log('Appointment updated successfully:', response);
+                    console.log('Appointment acknowledged:', response);
                 },
                 error: (error) => {
-                    console.error('Error updating appointment:', payload, error);
+                    console.error('Error acknowleding appointment:', payload, error);
                 }
             });
         }
@@ -49,8 +61,7 @@ export class AppointmentSummaryPanel {
 
     selectAppointment(appointment: AppointmentResponse): void {
         appointment.isAcknowledged = true;
-        this.selectedAppointment = appointment;
-        this.appointmentSelected.emit(appointment);
+        this.appointmentService.notifySelected(appointment);
         this.updateAppointment(appointment);
     }
 }
