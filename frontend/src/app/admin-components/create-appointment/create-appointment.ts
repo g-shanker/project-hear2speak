@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AppointmentService } from '../../services/appointment-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PatientAppointmentRequest } from '../../interfaces/patient-appointment-request';
+import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
 
 @Component({
     selector: 'app-create-appointment',
@@ -19,34 +20,38 @@ export class CreateAppointment {
     appointmentForm: FormGroup;
 
     constructor(
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private appointmentService: AppointmentService
     ) {
-        this.appointmentForm = this.fb.group({
-            date: ['', Validators.required],
-            time: ['', Validators.required],
+        this.appointmentForm = this.formBuilder.group({
             patientFullName: ['', Validators.required],
+            appointmentStatus: ['', Validators.required],
             patientEmail: ['', Validators.required],
             patientPhoneNumber: ['', Validators.required],
-            reason: ['', Validators.required],
+            startDateTime: ['', Validators.required],
+            durationInMinutes: ['', Validators.required],
+            location: ['', Validators.required],
+            patientReason: ['', Validators.required],
+            clinicianNotes: ['']
         });
     }
 
-    onSubmit(): void {
-        if (this.appointmentForm.valid) {
-
-            const startDate = this.appointmentForm.get('date')?.value;
-            const startTime = this.appointmentForm.get('time')?.value;
-            const startDateTime = `${startDate}T${startTime}:00`;
-            
-            const payload: PatientAppointmentRequest = {
-                startDateTime: startDateTime,
+    onSubmit() {
+        if(this.appointmentForm.valid) {
+            const payload: ClinicianAppointmentRequest = {
+                startDateTime: this.appointmentForm.get('startDateTime')?.value,
                 patientFullName: this.appointmentForm.get('patientFullName')?.value,
                 patientEmail: this.appointmentForm.get('patientEmail')?.value,
                 patientPhoneNumber: this.appointmentForm.get('patientPhoneNumber')?.value,
-                patientReason: this.appointmentForm.get('reason')?.value,
+                patientReason: this.appointmentForm.get('patientReason')?.value,
+                durationInSeconds: this.appointmentForm.get('durationInMinutes')?.value * 60,
+                appointmentStatus: this.appointmentForm.get('appointmentStatus')?.value,
+                location: this.appointmentForm.get('location')?.value,
+                clinicianNotes: this.appointmentForm.get('clinicianNotes')?.value,
+                previousAppointmentId: null,
+                isAcknowledged: false,
             }
-          
+
             this.appointmentService.createAppointment(payload)
             .subscribe({
                 next: (response) => {
@@ -56,7 +61,7 @@ export class CreateAppointment {
                 error: (error) => {
                     console.error('Error creating appointment:', payload, error);
                 }
-            });
+            });    
         }
     }
 }

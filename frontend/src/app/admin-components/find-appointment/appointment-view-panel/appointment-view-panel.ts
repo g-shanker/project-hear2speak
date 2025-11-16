@@ -36,7 +36,9 @@ export class AppointmentViewPanel {
     }
 
     updateAppointment(): void {
-        this.editView.onSubmit();
-        this.editMode = false;
+        const updateSuccessful = this.editView.onSubmit();
+        if(updateSuccessful) {
+            this.editMode = false;
+        }
     }
 }

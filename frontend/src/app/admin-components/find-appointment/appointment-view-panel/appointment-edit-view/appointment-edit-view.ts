@@ -58,7 +58,7 @@ export class AppointmentEditView implements OnChanges {
         }
     }
 
-    onSubmit(): void {
+    onSubmit(): boolean {
         if(this.appointmentForm.valid && this.appointment) {
             const payload: ClinicianAppointmentRequest = {
                 startDateTime: this.appointmentForm.get('startDateTime')?.value,
@@ -84,6 +84,10 @@ export class AppointmentEditView implements OnChanges {
                     console.error('Error updating appointment:', payload, error);
                 }
             });
+
+            return true;
         }
+
+        return false;
     }
 }

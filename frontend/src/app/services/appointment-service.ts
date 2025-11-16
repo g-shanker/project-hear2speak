@@ -2,7 +2,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppointmentResponse } from '../interfaces/appointment-response';
-import { PatientAppointmentRequest } from '../interfaces/patient-appointment-request';
 import { ClinicianAppointmentRequest } from '../interfaces/clinician-appointment-request';
 import { AppointmentSearchRequest } from '../interfaces/appointment-search-request';
 
@@ -33,8 +32,8 @@ export class AppointmentService {
 
     constructor(private http: HttpClient) {}
 
-    createAppointment(appointment: PatientAppointmentRequest): Observable<PatientAppointmentRequest> {
-        return this.http.post<PatientAppointmentRequest>(this.apiUrl, appointment);
+    createAppointment(appointment: ClinicianAppointmentRequest): Observable<ClinicianAppointmentRequest> {
+        return this.http.post<ClinicianAppointmentRequest>(this.apiUrl, appointment);
     }
 
     updateAppointment(appointmentId: number, appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
