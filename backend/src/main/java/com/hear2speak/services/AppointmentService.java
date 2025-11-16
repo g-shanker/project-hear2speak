@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.LoggerFactory;
-
 import com.hear2speak.dtos.ClinicianAppointmentRequest;
 import com.hear2speak.dtos.AppointmentResponse;
 import com.hear2speak.dtos.AppointmentSearchRequest;
@@ -29,8 +27,6 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
     private final AppointmentMapper appointmentMapper;
-
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AppointmentService.class);
 
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
         "startDateTime",

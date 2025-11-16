@@ -1,5 +1,43 @@
 @use '../../../../styles.scss' as *;
 
-p {
-    padding: $space-lg;
+.global-search-container {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: $space-md;
+
+    padding: $space-sm $space-xl;
+}
+
+.search-button-container {
+    display: flex;
+    flex-direction: row;
+    gap: $space-md;
+}
+
+.search-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $space-xxs;
+}
+
+.advanced-search-container {
+    display: flex;
+    flex-direction: row;
+    gap: $space-lg;
+}
+
+.filter-field-container,
+.sort-field-container {
+    padding: $space-md;
+    padding-top: 0;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: row;
+    gap: $space-md;
+    padding: $space-xxs;
 }

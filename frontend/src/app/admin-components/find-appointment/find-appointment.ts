@@ -5,6 +5,7 @@ import { AppointmentResponse } from '../../interfaces/appointment-response';
 import { AppointmentSearchBar } from './appointment-search-bar/appointment-search-bar';
 import { AppointmentViewPanel } from './appointment-view-panel/appointment-view-panel';
 import { AppointmentSummaryPanel } from './appointment-summary-panel/appointment-summary-panel';
+import { AppointmentSearchRequest } from '../../interfaces/appointment-search-request';
 
 @Component({
     selector: 'app-find-appointment',
@@ -39,6 +40,10 @@ export class FindAppointment implements OnInit {
                 a.id === updated.id ? updated : a
             );
         })
+        this.appointmentService.searchResultsUpdated$.subscribe(updated => {
+            if(!updated) return;
+            this.appointments = updated;
+        })
     }
 
     ngOnInit(): void {
@@ -47,9 +52,14 @@ export class FindAppointment implements OnInit {
         }, 1000);
     }
 
+    defaultSearchRequest: AppointmentSearchRequest = {
+        sortField: "createdAt",
+        ascending: false,
+    }
+
     getAppointments(): void {
         this.isLoading = true;
-        this.appointmentService.getAllAppointments().subscribe({
+        this.appointmentService.searchAppointments(this.defaultSearchRequest).subscribe({
             next: (appointments: AppointmentResponse[]) => {
                 this.appointments = appointments;
                 this.isLoading = false;

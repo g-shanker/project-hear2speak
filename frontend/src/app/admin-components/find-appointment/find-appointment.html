@@ -1,4 +1,7 @@
 <div class="find-appointment-container">
+
+    <app-appointment-search-bar class="fill-row"></app-appointment-search-bar>
+
     <div
         class="loading"
         *ngIf="isLoading"
@@ -24,7 +27,6 @@
         class="content-container"
         *ngIf="!isLoading && errorMessage === '' && appointments.length > 0"
     >
-        <app-appointment-search-bar class="fill-row"></app-appointment-search-bar>
         <app-appointment-summary-panel
             [appointments]="appointments"
         ></app-appointment-summary-panel>

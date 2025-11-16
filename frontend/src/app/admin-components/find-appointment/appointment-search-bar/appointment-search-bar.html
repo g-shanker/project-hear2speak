@@ -1,1 +1,93 @@
-<p>appointment-search-bar works!</p>
+<form
+    class="search-bar-container"
+    [formGroup]="searchForm"
+    (ngSubmit)="submitSearch()"
+>
+    <div class="global-search-container">
+        <div class="search-button-container">
+            <div
+                class="search-button"
+                (click)="toggleAdvancedSearch()"
+            >
+                <i class="material-icons">
+                    filter_alt
+                </i>
+            </div>
+
+            <div
+                class="search-button"
+                (click)="submitSearch()"
+            >
+                <i class="material-icons">
+                    search
+                </i>
+            </div>
+        </div>
+
+        <input
+            type="text"
+            placeholder="Search appointments"
+            formControlName="globalText"
+            class="global-search-input"
+        >
+    </div>
+
+    <div
+        class="advanced-search-container"
+        *ngIf="advancedSearch"
+    >
+        <div class="filter-field-container">
+            <div class="form-field">
+                <div class="key">Appointment Status:</div>
+                <select
+                    class="value"
+                    formControlName="appointmentStatus"
+                >
+                    <option value="ALL_STATUSES">ALL_STATUSES</option>
+                    <option value="REQUESTED">REQUESTED</option>
+                    <option value="SCHEDULED">SCHEDULED</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                    <option value="NO_SHOW">NO_SHOW</option>
+                    <option value="RESCHEDULED">RESCHEDULED</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <div class="key">Start Date From:</div>
+                <input
+                    type="datetime-local"
+                    formControlName="startDateFrom"
+                >
+            </div>
+
+            <div class="form-field">
+                <div class="key">Start Date To:</div>
+                <input
+                    type="datetime-local"
+                    formControlName="startDateTo"
+                >
+            </div>
+        </div>
+
+        <div class="sort-field-container">
+            <div class="form-field">
+                <div class="key">Sort by:</div>
+                <select
+                    class="value"
+                    formControlName="sortField"
+                >
+                    <option value="createdAt">Appointment creation time</option>
+                    <option value="startDateTime">Appointment start date and time</option>
+                </select>
+                <select
+                    class="value"
+                    formControlName="ascending"
+                >
+                    <option [value]="false">Descending</option>
+                    <option [value]="true">Ascending</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>

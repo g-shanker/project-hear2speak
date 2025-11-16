@@ -61,7 +61,7 @@ export class AppointmentSummaryPanel {
 
     selectAppointment(appointment: AppointmentResponse): void {
         appointment.isAcknowledged = true;
-        this.appointmentService.notifySelected(appointment);
+        this.appointmentService.notifyAppointmentSelected(appointment);
         this.updateAppointment(appointment);
     }
 }

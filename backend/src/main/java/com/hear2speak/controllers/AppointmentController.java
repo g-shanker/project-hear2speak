@@ -39,17 +39,17 @@ public class AppointmentController {
     }
 
     @GET
-    @Path("/search")
-    public Response searchAppointments(AppointmentSearchRequest appointmentSearchRequest) {
-        List<AppointmentResponse> appointmentResponses = appointmentService.searchAppointments(appointmentSearchRequest);
-        return Response.status(Response.Status.OK).entity(appointmentResponses).build();
-    }
-
-    @GET
     @Path("/{id}")
     public Response getAppointmentById(Long id) {
         AppointmentResponse appointmentResponse = appointmentService.getAppointmentById(id);
         return Response.status(Response.Status.OK).entity(appointmentResponse).build();
+    }
+
+    @POST
+    @Path("/search")
+    public Response searchAppointments(AppointmentSearchRequest appointmentSearchRequest) {
+        List<AppointmentResponse> appointmentResponses = appointmentService.searchAppointments(appointmentSearchRequest);
+        return Response.status(Response.Status.OK).entity(appointmentResponses).build();
     }
 
     @POST

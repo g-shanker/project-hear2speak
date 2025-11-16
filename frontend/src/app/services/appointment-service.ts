@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppointmentResponse } from '../interfaces/appointment-response';
 import { PatientAppointmentRequest } from '../interfaces/patient-appointment-request';
 import { ClinicianAppointmentRequest } from '../interfaces/clinician-appointment-request';
+import { AppointmentSearchRequest } from '../interfaces/appointment-search-request';
 
 @Injectable({
     providedIn: 'root'
@@ -14,14 +15,20 @@ export class AppointmentService {
 
     private appointmentUpdatedSource = new BehaviorSubject<AppointmentResponse | null>(null);
     appointmentUpdated$ = this.appointmentUpdatedSource.asObservable();
-    notifyUpdated(appointment: AppointmentResponse) {
+    notifyAppointmentUpdated(appointment: AppointmentResponse) {
         this.appointmentUpdatedSource.next(appointment);
     }
 
     private appointmentSelectedSource = new BehaviorSubject<AppointmentResponse | null>(null);
     appointmentSelected$ = this.appointmentSelectedSource.asObservable();
-    notifySelected(appointment: AppointmentResponse) {
+    notifyAppointmentSelected(appointment: AppointmentResponse) {
         this.appointmentSelectedSource.next(appointment);
+    }
+
+    private searchResultsUpdatedSource = new BehaviorSubject<AppointmentResponse[] | null>(null);
+    searchResultsUpdated$ = this.searchResultsUpdatedSource.asObservable();
+    notifySearchResultsUpdated(searchResults: AppointmentResponse[]) {
+        this.searchResultsUpdatedSource.next(searchResults);
     }
 
     constructor(private http: HttpClient) {}
@@ -36,5 +43,9 @@ export class AppointmentService {
 
     getAllAppointments(): Observable<AppointmentResponse[]> {
         return this.http.get<AppointmentResponse[]>(this.apiUrl);
+    }
+
+    searchAppointments(searchRequest: AppointmentSearchRequest | null): Observable<AppointmentResponse[]> {
+        return this.http.post<AppointmentResponse[]>(`${this.apiUrl}/search`, searchRequest);
     }
 }

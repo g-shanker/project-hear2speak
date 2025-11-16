@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AppointmentService } from '../../../../services/appointment-service';
 import { AppointmentResponse } from '../../../../interfaces/appointment-response';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ClinicianAppointmentRequest } from '../../../../interfaces/clinician-appointment-request';
 
 @Component({
@@ -21,10 +21,10 @@ export class AppointmentEditView implements OnChanges {
     appointmentForm: FormGroup;
 
     constructor (
-        private formbuilder: FormBuilder,
+        private formBuilder: FormBuilder,
         private appointmentService: AppointmentService,
     ) {
-        this.appointmentForm = this.formbuilder.group({
+        this.appointmentForm = this.formBuilder.group({
             patientFullName: ['', Validators.required],
             appointmentStatus: ['', Validators.required],
             patientEmail: ['', Validators.required],
@@ -78,7 +78,7 @@ export class AppointmentEditView implements OnChanges {
             .subscribe({
                 next: (response) => {
                     console.log('Appointment updated successfully:', response);
-                    this.appointmentService.notifyUpdated(response);
+                    this.appointmentService.notifyAppointmentUpdated(response);
                 },
                 error: (error) => {
                     console.error('Error updating appointment:', payload, error);
