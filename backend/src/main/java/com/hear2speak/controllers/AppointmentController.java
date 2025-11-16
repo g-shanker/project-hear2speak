@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hear2speak.dtos.ClinicianAppointmentRequest;
 import com.hear2speak.dtos.AppointmentResponse;
+import com.hear2speak.dtos.AppointmentSearchRequest;
 import com.hear2speak.services.AppointmentService;
 
 import jakarta.inject.Inject;
@@ -34,6 +35,13 @@ public class AppointmentController {
     @GET
     public Response listAllAppointments() {
         List<AppointmentResponse> appointmentResponses = appointmentService.getAllAppointments();
+        return Response.status(Response.Status.OK).entity(appointmentResponses).build();
+    }
+
+    @GET
+    @Path("/search")
+    public Response searchAppointments(AppointmentSearchRequest appointmentSearchRequest) {
+        List<AppointmentResponse> appointmentResponses = appointmentService.searchAppointments(appointmentSearchRequest);
         return Response.status(Response.Status.OK).entity(appointmentResponses).build();
     }
 

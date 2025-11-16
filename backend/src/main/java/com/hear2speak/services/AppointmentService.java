@@ -1,15 +1,22 @@
 package com.hear2speak.services;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.slf4j.LoggerFactory;
 
 import com.hear2speak.dtos.ClinicianAppointmentRequest;
 import com.hear2speak.dtos.AppointmentResponse;
+import com.hear2speak.dtos.AppointmentSearchRequest;
 import com.hear2speak.entities.AppointmentEntity;
 import com.hear2speak.mappers.AppointmentMapper;
 import com.hear2speak.repositories.AppointmentRepository;
 
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -22,6 +29,14 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
     private final AppointmentMapper appointmentMapper;
+
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AppointmentService.class);
+
+    private static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
+        "startDateTime",
+        "updatedAt",
+        "createdAt"
+    );
 
     @Inject
     public AppointmentService(
@@ -37,6 +52,67 @@ public class AppointmentService {
         List<AppointmentResponse> appointmentResponses = appointmentEntities.stream()
             .map(appointmentMapper::toResponse)
             .collect(Collectors.toList());
+        return appointmentResponses;
+    }
+
+    public List<AppointmentResponse> searchAppointments(AppointmentSearchRequest appointmentSearchRequest) {
+        StringBuilder query = new StringBuilder("1=1");
+        Map<String, Object> parameters = new HashMap<>();
+
+        if(appointmentSearchRequest == null) {
+            appointmentSearchRequest = new AppointmentSearchRequest();
+            appointmentSearchRequest.sortField = "createdAt";
+            appointmentSearchRequest.ascending = false;
+        }
+
+        // filtering
+
+        if(appointmentSearchRequest.globalText != null && !appointmentSearchRequest.globalText.isBlank()) {
+            String globalText = "%" + appointmentSearchRequest.globalText.trim().toLowerCase() + "%";
+
+            query.append("""
+                    AND (
+                        LOWER(patientFullName) LIKE :globalText
+                        OR LOWER(patientEmail) LIKE :globalText
+                        OR LOWER(patientPhoneNumber) LIKE :globalText
+                        OR LOWER(patientReason) LIKE :globalText
+                        OR LOWER(clinicianNotes) LIKE :globalText
+                    )
+                    """);
+
+            parameters.put("globalText", globalText);
+        }
+
+        if(appointmentSearchRequest.startDateFrom != null) {
+            query.append(" AND startDateTime >= :startDateFrom");
+            parameters.put("startDateFrom", appointmentSearchRequest.startDateFrom);
+        }
+
+        if(appointmentSearchRequest.startDateTo != null) {
+            query.append(" AND startDateTime <= :startDateTo");
+            parameters.put("startDateTo", appointmentSearchRequest.startDateTo);
+        }
+
+        // sorting
+
+        if(!ALLOWED_SORT_FIELDS.contains(appointmentSearchRequest.sortField)) {
+            throw new WebApplicationException("Unsupported sort field: " + appointmentSearchRequest.sortField, Response.Status.BAD_REQUEST.getStatusCode());
+        }
+
+        String sortField = appointmentSearchRequest.sortField != null ? appointmentSearchRequest.sortField : "createdAt";
+        boolean ascending = appointmentSearchRequest.ascending != null ? appointmentSearchRequest.ascending : false;;
+
+        Sort sort = Sort.by(sortField).direction(ascending ? Sort.Direction.Ascending : Sort.Direction.Descending);
+
+        LOG.info("appointmentSearchRequest: {}", appointmentSearchRequest.toString());
+        LOG.info("sortField: {}", sortField);
+        LOG.info("ascending: {}", ascending);
+
+        List<AppointmentEntity> appointmentEntities = appointmentRepository.find(query.toString(), sort, parameters).list();
+        List<AppointmentResponse> appointmentResponses = appointmentEntities.stream()
+            .map(appointmentMapper::toResponse)
+            .collect(Collectors.toList());
+
         return appointmentResponses;
     }
 
