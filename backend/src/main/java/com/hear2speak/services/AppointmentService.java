@@ -93,6 +93,11 @@ public class AppointmentService {
             parameters.put("startDateTo", appointmentSearchRequest.startDateTo);
         }
 
+        if(appointmentSearchRequest.appointmentStatus != null) {
+            query.append(" AND appointmentStatus = :status");
+            parameters.put("status", appointmentSearchRequest.appointmentStatus);
+        }
+
         // sorting
 
         if(!ALLOWED_SORT_FIELDS.contains(appointmentSearchRequest.sortField)) {
@@ -103,10 +108,6 @@ public class AppointmentService {
         boolean ascending = appointmentSearchRequest.ascending != null ? appointmentSearchRequest.ascending : false;;
 
         Sort sort = Sort.by(sortField).direction(ascending ? Sort.Direction.Ascending : Sort.Direction.Descending);
-
-        LOG.info("appointmentSearchRequest: {}", appointmentSearchRequest.toString());
-        LOG.info("sortField: {}", sortField);
-        LOG.info("ascending: {}", ascending);
 
         List<AppointmentEntity> appointmentEntities = appointmentRepository.find(query.toString(), sort, parameters).list();
         List<AppointmentResponse> appointmentResponses = appointmentEntities.stream()
