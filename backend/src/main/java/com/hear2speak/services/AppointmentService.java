@@ -56,9 +56,7 @@ public class AppointmentService {
         Map<String, Object> parameters = new HashMap<>();
 
         if(appointmentSearchRequest == null) {
-            appointmentSearchRequest = new AppointmentSearchRequest();
-            appointmentSearchRequest.sortField = "createdAt";
-            appointmentSearchRequest.ascending = false;
+            return getAllAppointments();
         }
 
         // filtering
