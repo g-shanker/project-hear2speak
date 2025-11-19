@@ -12,10 +12,16 @@ import jakarta.validation.constraints.Size;
 
 public class ClinicianAppointmentRequest {
 
-    // Mandatory fields
+    // Appointment details
     
     @NotNull
     public LocalDateTime startDateTime;
+
+    public Integer durationInSeconds;
+
+    public AppointmentStatus appointmentStatus;
+
+    // Patient details
 
     @NotBlank
     @Size(min = 2)
@@ -33,19 +39,10 @@ public class ClinicianAppointmentRequest {
     @Size(min = 3, max = 1000)
     public String patientReason;
 
-    // Optional fields
-
-    public Integer durationInSeconds;
-
-    public AppointmentStatus appointmentStatus;
-    
-    @Size(max = 255)
-    public String location;
-
-    public Long previousAppointmentId;
-
     @Size(max = 1000)
     public String clinicianNotes;
+
+    // Audit details
 
     public Boolean isAcknowledged;
 

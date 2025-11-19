@@ -10,10 +10,12 @@ import jakarta.validation.constraints.Size;
 
 public class PatientAppointmentRequest {
 
-    // Mandatory fields
+    // Appointment details
     
     @NotNull
     public LocalDateTime startDateTime;
+
+    // Patient details
 
     @NotBlank
     @Size(min = 2)

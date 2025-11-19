@@ -31,12 +31,6 @@ public class AppointmentEntity {
     @Enumerated(EnumType.STRING)
     public AppointmentStatus appointmentStatus;
 
-    @Column(name = "location", length = 255)
-    public String location;
-
-    @Column(name = "previous_appointment_id")
-    public Long previousAppointmentId;
-
     // Patient details
 
     @Column(name = "patient_full_name")
@@ -68,8 +62,6 @@ public class AppointmentEntity {
     public AppointmentEntity() {
         this.durationInSeconds = 1800;
         this.appointmentStatus = AppointmentStatus.REQUESTED;
-        this.location = "";
-        this.previousAppointmentId = null;
         this.clinicianNotes = "";
         this.isAcknowledged = false;
     }

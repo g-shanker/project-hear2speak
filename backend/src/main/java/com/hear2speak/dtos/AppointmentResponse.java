@@ -5,6 +5,8 @@ import com.hear2speak.entities.AppointmentStatus;
 public class AppointmentResponse {
 
     public Long id;
+
+    // Appointment details
     
     public String startDateTime;
 
@@ -12,9 +14,7 @@ public class AppointmentResponse {
 
     public AppointmentStatus appointmentStatus;
 
-    public String location;
-
-    public Long previousAppointmentId;
+    // Patient details
 
     public String patientFullName;
 
@@ -25,6 +25,8 @@ public class AppointmentResponse {
     public String patientReason;
 
     public String clinicianNotes;
+
+    // Audit details
 
     public Boolean isAcknowledged;
 
