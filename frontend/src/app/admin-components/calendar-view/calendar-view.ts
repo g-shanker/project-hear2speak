@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-calendar-view',
   imports: [],
   templateUrl: './calendar-view.html',
-  styleUrl: './calendar-view.scss',
+  styleUrls: ['./calendar-view.scss'],
 })
 export class CalendarView {
 

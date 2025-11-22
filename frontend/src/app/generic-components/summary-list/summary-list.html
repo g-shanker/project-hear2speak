@@ -1,0 +1,20 @@
+<div class="summary-panel-container">
+    <div class="summary-summary">
+        Found {{ items().length }} appointments.
+    </div>
+
+    @for (item of items(); track item.id) {
+        <div
+            class="summary-item"
+            [class.selected]="selectedItem()?.id === item.id"
+            (click)="select.emit(item)"
+        >
+            <ng-container
+                *ngTemplateOutlet="itemTemplate(); context: { $implicit: item }"
+            >
+            </ng-container>
+        </div>
+    } @empty {
+        <div class="empty">No items to found.</div>
+    }
+</div>

@@ -1,50 +1,69 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AppointmentApiService } from './appointment-api-service';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { AppointmentResponse } from '../interfaces/appointment-response';
-import { ClinicianAppointmentRequest } from '../interfaces/clinician-appointment-request';
 import { AppointmentSearchRequest } from '../interfaces/appointment-search-request';
+import { ClinicianAppointmentRequest } from '../interfaces/clinician-appointment-request';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class AppointmentService {
-    private apiUrl = '/api/appointments';
+    private api = inject(AppointmentApiService);
 
-    private appointmentUpdatedSource = new BehaviorSubject<AppointmentResponse | null>(null);
-    appointmentUpdated$ = this.appointmentUpdatedSource.asObservable();
-    notifyAppointmentUpdated(appointment: AppointmentResponse) {
-        this.appointmentUpdatedSource.next(appointment);
+    private _isLoading = signal(false);
+    private _errorMessage = signal<string | null>(null);
+    private _searchResults = signal<AppointmentResponse[]>([]);
+    private _selectedAppointment = signal<AppointmentResponse | null>(null);
+    
+    readonly searchResults = this._searchResults.asReadonly();
+    readonly isLoading = this._isLoading.asReadonly();
+    readonly errorMessage = this._errorMessage.asReadonly();
+    readonly selectedAppointment = this._selectedAppointment.asReadonly();
+
+    selectAppointment(appointment: AppointmentResponse): void {
+        if(!appointment.isAcknowledged) {
+            this.acknowledgeAppointment(appointment);
+        }
+        this._selectedAppointment.set(appointment);
     }
 
-    private appointmentSelectedSource = new BehaviorSubject<AppointmentResponse | null>(null);
-    appointmentSelected$ = this.appointmentSelectedSource.asObservable();
-    notifyAppointmentSelected(appointment: AppointmentResponse) {
-        this.appointmentSelectedSource.next(appointment);
+    private acknowledgeAppointment(appointment: AppointmentResponse): void {
+        const payload = { ...appointment, isAcknowledged: true };
+
+        this.api.update(appointment.id, payload).subscribe({
+            next: (updated) => {
+                this._searchResults.update(list =>
+                    list.map(a => a.id === updated.id ? updated : a)
+                );
+                this._selectedAppointment.set(appointment);
+            },
+            error: (error) => console.error(error)
+        })
+    }
+    
+    searchAppointments(searchRequest: AppointmentSearchRequest): void {
+        this._isLoading.set(true);
+        this._errorMessage.set(null);
+        
+        this.api.search(searchRequest).subscribe({
+            next: (searchResults) => {
+                this._searchResults.set(searchResults);
+                this._isLoading.set(false);
+            },
+            error: (error) => {
+                this._errorMessage.set('Failed to search for appointments.');
+                this._isLoading.set(false);
+            }
+        })
     }
 
-    private searchResultsUpdatedSource = new BehaviorSubject<AppointmentResponse[] | null>(null);
-    searchResultsUpdated$ = this.searchResultsUpdatedSource.asObservable();
-    notifySearchResultsUpdated(searchResults: AppointmentResponse[]) {
-        this.searchResultsUpdatedSource.next(searchResults);
+    updateAppointment(id: number, appointment: ClinicianAppointmentRequest): Observable<ClinicianAppointmentRequest> {
+        return this.api.update(id, appointment)
     }
-
-    constructor(private http: HttpClient) {}
 
     createAppointment(appointment: ClinicianAppointmentRequest): Observable<ClinicianAppointmentRequest> {
-        return this.http.post<ClinicianAppointmentRequest>(this.apiUrl, appointment);
-    }
-
-    updateAppointment(appointmentId: number, appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
-        return this.http.put<AppointmentResponse>(`${this.apiUrl}/${appointmentId}`, appointment);
-    }
-
-    getAllAppointments(): Observable<AppointmentResponse[]> {
-        return this.http.get<AppointmentResponse[]>(this.apiUrl);
-    }
-
-    searchAppointments(searchRequest: AppointmentSearchRequest | null): Observable<AppointmentResponse[]> {
-        return this.http.post<AppointmentResponse[]>(`${this.apiUrl}/search`, searchRequest);
+        return this.api.create(appointment);
     }
 }

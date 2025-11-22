@@ -1,73 +1,48 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AppointmentService } from '../../services/appointment-service';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
-import { AppointmentSearchBar } from './appointment-search-bar/appointment-search-bar';
-import { AppointmentViewPanel } from './appointment-view-panel/appointment-view-panel';
-import { AppointmentSummaryPanel } from './appointment-summary-panel/appointment-summary-panel';
 import { AppointmentSearchRequest } from '../../interfaces/appointment-search-request';
+import { AppointmentSearchBar } from '../../domain-components/appointment-search-bar/appointment-search-bar';
+import { AppointmentSummaryPanel } from '../../domain-components/appointment-summary-panel/appointment-summary-panel';
+import { AppointmentViewPanel } from '../../domain-components/appointment-view-panel/appointment-view-panel';
 
 @Component({
     selector: 'app-find-appointment',
     standalone: true,
     imports: [
-        CommonModule,
         AppointmentSearchBar,
         AppointmentViewPanel,
-        AppointmentSummaryPanel
+        AppointmentSummaryPanel,
     ],
     templateUrl: './find-appointment.html',
-    styleUrl: './find-appointment.scss',
+    styleUrls: ['./find-appointment.scss'],
 })
 
 export class FindAppointment implements OnInit {
-    isLoading: boolean = true;
-    errorMessage: string = '';
-    appointments: AppointmentResponse[] = [];
-    selectedAppointment: AppointmentResponse | null = null;
+    private appointmentService = inject(AppointmentService);
 
-    constructor(
-        private appointmentService: AppointmentService
-    ) {
-        this.appointmentService.appointmentSelected$.subscribe(selected => {
-            if(!selected) return;
-            this.selectedAppointment = selected;
-        })
-        this.appointmentService.appointmentUpdated$.subscribe(updated => {
-            if(!updated) return;
-            if(this.selectedAppointment?.id === updated.id) this.selectedAppointment = updated;
-            this.appointments = this.appointments.map(a =>
-                a.id === updated.id ? updated : a
-            );
-        })
-        this.appointmentService.searchResultsUpdated$.subscribe(updated => {
-            if(!updated) return;
-            this.appointments = updated;
-        })
+    isLoading = this.appointmentService.isLoading;
+    errorMessage = this.appointmentService.errorMessage;
+    appointments = this.appointmentService.searchResults;
+    selectedAppointment = this.appointmentService.selectedAppointment;
+
+    onSelect(appointment: AppointmentResponse): void {
+        console.log('selected appointment:', appointment.id)
+        this.appointmentService.selectAppointment(appointment);
+    }
+
+    onSearch(searchRequest: AppointmentSearchRequest) {
+        this.appointmentService.searchAppointments(searchRequest);
     }
 
     ngOnInit(): void {
-        setTimeout(() => {
-            this.getAppointments();
-        }, 1000);
-    }
-
-    defaultSearchRequest: AppointmentSearchRequest = {
-        sortField: "createdAt",
-        ascending: false,
-    }
-
-    getAppointments(): void {
-        this.isLoading = true;
-        this.appointmentService.searchAppointments(this.defaultSearchRequest).subscribe({
-            next: (appointments: AppointmentResponse[]) => {
-                this.appointments = appointments;
-                this.isLoading = false;
-            },
-            error: (error: any) => {
-                this.errorMessage = 'Failed to load appointments: ' + error;
-                this.isLoading = false;
-            }
+        this.appointmentService.searchAppointments({
+            sortField: 'createdAt',
+            ascending: false,
+            globalText: null,
+            startDateFrom: null,
+            startDateTo: null,
+            appointmentStatus: null
         })
     }
 }

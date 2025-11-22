@@ -1,0 +1,140 @@
+<form
+    [formGroup]="form" 
+    class="appointment-form-container"
+>
+
+    <div class="section-header">
+        Patient Details
+    </div>
+
+    <div class="form-item">
+        <label class="key">Full Name <span class="required">*</span></label>
+        <input 
+            class="value" 
+            type="text" 
+            formControlName="patientFullName" 
+            placeholder="e.g. John Doe"
+        >
+        
+        @if (form.get('patientFullName')?.touched && 
+             form.get('patientFullName')?.hasError('required')) {
+            <div class="error">Patient name is required.</div>
+        }
+    </div>
+
+    <div class="form-item">
+        <label class="key">Email Address <span class="required">*</span></label>
+        <input 
+            class="value" 
+            type="email" 
+            formControlName="patientEmail" 
+            placeholder="john@example.com"
+        >
+
+        @if (form.get('patientEmail')?.touched) {
+            @if (form.get('patientEmail')?.hasError('required')) {
+                <div class="error">Email is required.</div>
+            }
+            @if (form.get('patientEmail')?.hasError('email')) {
+                <div class="error">Please enter a valid email address.</div>
+            }
+        }
+    </div>
+
+    <div class="form-item">
+        <label class="key">Phone Number <span class="required">*</span></label>
+        <input 
+            class="value" 
+            type="tel" 
+            formControlName="patientPhoneNumber" 
+            placeholder="(555) 000-0000"
+        >
+
+        @if (form.get('patientPhoneNumber')?.touched && 
+             form.get('patientPhoneNumber')?.hasError('required')) {
+            <div class="error">Phone number is required.</div>
+        }
+    </div>
+
+    <div class="form-item">
+        <label class="key">Appointment Time <span class="required">*</span></label>
+        <input 
+            class="value" 
+            type="datetime-local" 
+            formControlName="startDateTime"
+        >
+
+        @if (form.get('startDateTime')?.touched && 
+             form.get('startDateTime')?.hasError('required')) {
+            <div class="error">Date and time are required.</div>
+        }
+    </div>
+
+    <div class="form-item full-width">
+        <label class="key">Reason for Visit <span class="required">*</span></label>
+        <textarea 
+            class="value" 
+            formControlName="patientReason" 
+            rows="3" 
+        ></textarea>
+
+        @if (form.get('patientReason')?.touched && 
+             form.get('patientReason')?.hasError('required')) {
+            <div class="error">A reason for the visit is required.</div>
+        }
+    </div>
+
+
+    @if (mode() === 'CLINICIAN') {
+        
+        <div class="section-header admin-header">
+            Internal / Clinical Details
+        </div>
+
+        <div class="form-item">
+            <label class="key">Status <span class="required">*</span></label>
+            <select class="value" formControlName="appointmentStatus">
+                <option value="REQUESTED">REQUESTED</option>
+                <option value="SCHEDULED">SCHEDULED</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="CANCELED">CANCELED</option>
+                <option value="NO_SHOW">NO_SHOW</option>
+                <option value="RESCHEDULED">RESCHEDULED</option>
+            </select>
+
+            @if (form.get('appointmentStatus')?.touched && 
+                 form.get('appointmentStatus')?.hasError('required')) {
+                <div class="error">Status is required.</div>
+            }
+        </div>
+
+        <div class="form-item">
+            <label class="key">Duration (Minutes) <span class="required">*</span></label>
+            <input 
+                class="value" 
+                type="number" 
+                formControlName="durationInMinutes"
+                min="1"
+            >
+
+            @if (form.get('durationInMinutes')?.touched) {
+                @if (form.get('durationInMinutes')?.hasError('required')) {
+                    <div class="error">Duration is required.</div>
+                }
+                @if (form.get('durationInMinutes')?.hasError('min')) {
+                    <div class="error">Duration must be at least 1 minute.</div>
+                }
+            }
+        </div>
+
+        <div class="form-item full-width">
+            <label class="key">Clinician Notes</label>
+            <textarea 
+                class="value" 
+                formControlName="clinicianNotes" 
+                rows="3"
+            ></textarea>
+        </div>
+    }
+
+</form>

@@ -1,144 +1,20 @@
 <div class="create-appointment-container">
     <div class="create-appointment-header">
-        Schedule Appointment:
+        Create Appointment:
     </div>
   
-    <form
-        class="form-container"
-        [formGroup]="appointmentForm"
-        (ngSubmit)="onSubmit()"
-    >
-        <div class="form-item">
-            <div class="key">Patient Name:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="patientFullName"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('patientFullName')?.touched && appointmentForm.get('patientFullName')?.invalid"
-            >
-                Patient's name is required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Appointment Status:</div>
-            <select
-                class="value"
-                formControlName="appointmentStatus"
-            >
-                <option value="REQUESTED">REQUESTED</option>
-                <option value="SCHEDULED">SCHEDULED</option>
-                <option value="COMPLETED">COMPLETED</option>
-                <option value="CANCELED">CANCELED</option>
-                <option value="NO_SHOW">NO_SHOW</option>
-                <option value="RESCHEDULED">RESCHEDULED</option>
-            </select>
-        </div>
-        <div class="form-item">
-            <div class="key">Patient Email:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="patientEmail"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('patientEmail')?.touched && appointmentForm.get('patientEmail')?.invalid"
-            >
-                Patient's email is required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Patient Phone:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="patientPhoneNumber"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('patientPhoneNumber')?.touched && appointmentForm.get('patientPhoneNumber')?.invalid"
-            >
-                Patient's phone number is required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Appointment Time:</div>
-            <input
-                class="value"
-                type="datetime-local"
-                formControlName="startDateTime"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('startDateTime')?.touched && appointmentForm.get('startDateTime')?.invalid"
-            >
-                Appointment start date and time are required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Appointment Duration:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="durationInMinutes"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('durationInMinutes')?.touched && appointmentForm.get('durationInMinutes')?.invalid"
-            >
-                Appointment duration is required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Appointment Location:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="location"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('location')?.touched && appointmentForm.get('location')?.invalid"
-            >
-                Appointment location is required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Patient's reason:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="patientReason"
-            />
-            <div
-                class="error"
-                *ngIf="appointmentForm.get('patientReason')?.touched && appointmentForm.get('patientReason')?.invalid"
-            >
-                Patient's reason is required
-            </div>
-        </div>
-        <div class="form-item">
-            <div class="key">Clinician's notes:</div>
-            <input
-                class="value"
-                type="text"
-                formControlName="clinicianNotes"
-            />
-        </div>
+    <app-appointment-form></app-appointment-form>
 
-        <div class="schedule-button">
-            <i class="material-icons">
-                add
-            </i>
-            <div
-                class="schedule-button-text"
-                (click)="onSubmit()"
-            >
-                Schedule Appointment
-            </div>
-        </div>
-    </form>
+    <div class="actions-container">
+        <button 
+            class="schedule-button"
+            [disabled]="isSubmitting()"
+            (click)="onCreate()"
+        >
+            <i class="material-icons">add</i>
+            <span class="button-text">
+                {{ isSubmitting() ? 'Creating...' : 'Create Appointment' }}
+            </span>
+        </button>
+    </div>
 </div>

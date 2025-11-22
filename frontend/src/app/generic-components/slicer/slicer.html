@@ -1,0 +1,25 @@
+<div class="slicer-container">
+    <div class="slicer-nav">
+        @for(item of items(); track item.title) {
+            <div
+                class="slicer-item"
+                [class.active]="selectedItem() === item"
+                (click)="onItemClick(item)"
+            >
+                <i class="material-icons">{{item.icon}}</i>
+                <span class="slicer-text" >{{item.title}}</span>
+            </div>
+        }
+    </div>
+
+    @if(selectedItem(); as itemToRender) {
+        <div class="render-container">
+            <ng-container *ngComponentOutlet="itemToRender.component"></ng-container>
+        </div>
+    }
+    @else {
+        <div class="render-container placeholder">
+            <p>Select an item in order to render it.</p>
+        </div>
+    }
+</div>

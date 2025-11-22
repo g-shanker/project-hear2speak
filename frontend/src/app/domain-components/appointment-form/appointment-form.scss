@@ -1,0 +1,21 @@
+@use '../../../styles.scss' as *;
+
+:host {
+  height: 100%;
+  min-height: 0;
+}
+
+
+.appointment-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  padding: $space-lg 0;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+  width: 100%;
+}

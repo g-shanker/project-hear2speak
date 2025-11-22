@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppointmentEditView } from './appointment-edit-view';
+import { SearchBar } from './search-bar';
 
-describe('AppointmentEditView', () => {
-    let component: AppointmentEditView;
-    let fixture: ComponentFixture<AppointmentEditView>;
-
+describe('SearchBar', () => {
+    let component: SearchBar;
+    let fixture: ComponentFixture<SearchBar>;
+    
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [AppointmentEditView]
+            imports: [SearchBar]
         })
         .compileComponents();
-      
-        fixture = TestBed.createComponent(AppointmentEditView);
+    
+        fixture = TestBed.createComponent(SearchBar);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
-
+  
     it('should create', () => {
         expect(component).toBeTruthy();
     });

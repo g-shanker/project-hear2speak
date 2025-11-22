@@ -1,0 +1,33 @@
+<form
+    class="search-bar-container"
+    [formGroup]="searchForm()"
+    (ngSubmit)="search.emit()"
+>
+    <div class="global-search-container">
+        <div class="search-button-container">
+            <div
+                class="search-button"
+                (click)="toggleAdvancedSearch()"
+            >
+                <i class="material-icons">filter_alt</i>
+            </div>
+            <div
+                class="search-button"
+                (click)="search.emit()"
+            >
+                <i class="material-icons">search</i>
+            </div>
+        </div>
+
+        <input
+            type="text"
+            [placeholder]="placeholder()"
+            formControlName="globalText"
+            class="global-search-input"
+        />
+    </div>
+
+    @if(advancedSearch()) {
+        <ng-content></ng-content>
+    }
+</form>

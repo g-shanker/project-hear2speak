@@ -1,0 +1,109 @@
+@if (appointment()) {
+    <div class="view-panel-container">
+        <div class="view-panel-toolbar">
+            @if (editMode()) {
+                <div
+                    class="toolbar-button"
+                    (click)="editMode.set(false)"
+                    [class.disabled]="isSaving()"
+                >
+                    <i class="material-icons">edit_off</i>
+                    <div class="toolbar-button-text">Exit Editor</div>
+                </div>
+                <div
+                    class="toolbar-button"
+                    (click)="saveChanges()"
+                    [class.disabled]="isSaving()"
+                >
+                    <i class="material-icons">save</i>
+                    <div class="toolbar-button-text">
+                        {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+                    </div>
+                </div>
+            }
+
+            @else {
+                <div
+                    class="toolbar-button"
+                    (click)="editMode.set(true)"
+                >
+                    <i class="material-icons">edit</i>
+                    <div class="toolbar-button-text">Edit Appointment</div>
+                </div>
+            }
+        </div>
+        <div class="view-panel-content">
+            @if (editMode()) {
+                <app-appointment-form
+                    mode="CLINICIAN"
+                    [initialData]="appointment()"
+                ></app-appointment-form>
+            }
+
+            @else {
+                <app-appointment-details-view
+                    [appointment]="appointment()"
+                ></app-appointment-details-view>
+            }
+        </div>
+    </div>
+}
+
+@else {
+    <div class="placeholder">
+        <p>Select an appointment to view details.</p>
+    </div>
+}
+
+<!-- @if (appointment()) {
+    <div class="view-panel-container">
+        <div class="view-panel-toolbar">
+            @if (editMode()) {
+                <div
+                    class="toolbar-button"
+                    (click)="editMode.set(false)"
+                >
+                    <i class="material-icons">edit_off</i>
+                    <div class="toolbar-button-text">Exit Editor</div>
+                </div>
+                <div 
+                    class="toolbar-button" 
+                    (click)="saveChanges()" 
+                >
+                    <i class="material-icons">save</i>
+                    <div class="toolbar-button-text">Save Changes</div>
+                </div>
+            }
+
+            @else {
+                <div
+                    class="toolbar-button"
+                    (click)="editMode.set(true)"
+                >
+                    <i class="material-icons">edit</i>
+                    <div class="toolbar-button-text">Edit Appointment</div>
+                </div>
+            }
+        </div>
+
+        @if (editMode()) {
+            <app-appointment-edit-view
+                [appointment]="appointment()"
+                (save)="onSaveEdits($event)"
+            ></app-appointment-edit-view>
+        }
+        
+        @else {
+            <app-appointment-details-view
+                [appointment]="appointment()"
+            ></app-appointment-details-view>
+        }
+    </div>
+}
+
+@else {
+    <div class="placeholder">
+        <p>Select an appointment to view details.</p>
+    </div>
+}
+ -->

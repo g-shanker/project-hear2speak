@@ -1,0 +1,40 @@
+@if (appointment(); as appointment) {
+    <div class="details-view-container">
+        <div class="details-item">
+            <span class="key">Patient Name:</span>
+            <span class="value">{{ appointment.patientFullName }}</span>
+        </div>
+        <div class="details-item">
+            <span class="key">Appointment Status:</span>
+            <span class="value">{{ appointment.appointmentStatus }}</span>
+        </div>
+        <div class="details-item">
+            <span class="key">Patient Email:</span>
+            <span class="value">{{ appointment.patientEmail }}</span>
+        </div>
+        <div class="details-item">
+            <span class="key">Patient Phone:</span>
+            <span class="value">{{ appointment.patientPhoneNumber }}</span>
+        </div>
+        <div class="details-item">
+            <span class="key">Appointment Time:</span>
+            <span class="value">{{ appointment.startDateTime | date:'shortTime' }}  {{ appointment.startDateTime | date:'mediumDate' }}</span>
+        </div>
+        <div class="details-item">
+            <span class="key">Appointment Duration:</span>
+            <span class="value">{{ durationInMinutes() }} minutes</span>
+        </div>
+        <div class="details-item fill-row">
+            <span class="key">Patient's Reason:</span>
+            <span class="value">{{ appointment.patientReason }}</span>
+        </div>
+        <div class="details-item fill-row">
+            <span class="key">Clinician Notes:</span>
+            <span class="value">{{ appointment.clinicianNotes}}</span>
+        </div>
+    </div>
+}
+
+@else {
+    <div>No Appointment data available.</div>
+}

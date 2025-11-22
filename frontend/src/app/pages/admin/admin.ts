@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { Slicer } from '../../admin-components/slicer/slicer';
-import { SlicerItem } from '../../admin-components/slicer/slicer-item.interface';
+import { Slicer } from '../../generic-components/slicer/slicer';
+import { Dashboards } from '../../admin-components/dashboards/dashboards';
+import { CalendarView } from '../../admin-components/calendar-view/calendar-view';
+import { SlicerItem } from '../../generic-components/slicer/slicer-item.interface';
 import { FindAppointment } from '../../admin-components/find-appointment/find-appointment';
 import { CreateAppointment } from '../../admin-components/create-appointment/create-appointment';
-import { CalendarView } from '../../admin-components/calendar-view/calendar-view';
-import { Dashboards } from '../../admin-components/dashboards/dashboards';
 
 @Component({
     selector: 'app-admin',
     standalone: true,
     imports: [Slicer],
     templateUrl: './admin.html',
-    styleUrl: './admin.scss',
+    styleUrls: ['./admin.scss'],
 })
 
 export class Admin {

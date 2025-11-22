@@ -5,7 +5,7 @@ import { Component, signal } from '@angular/core';
     selector: 'app-root',
     imports: [RouterOutlet],
     templateUrl: './app.html',
-    styleUrl: './app.scss'
+    styleUrls: ['./app.scss']
 })
 
 export class App {

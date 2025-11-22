@@ -1,0 +1,45 @@
+@use '../../../styles.scss' as *;
+
+:host {
+  height: 100%;
+  min-height: 0;
+}
+
+.view-panel-container {
+    height: 100%;
+    min-height: 0;
+}
+
+.view-panel-content {
+    height: 100%;
+    min-height: 0;
+
+    overflow-y: auto;
+    padding: $space-lg;
+    padding-bottom: $space-lg * 5;
+}
+
+.placeholder {
+    height: 100%;
+    min-height: 0;
+
+    display: grid;
+    place-items: center;
+}
+
+.view-panel-toolbar {
+    padding: $space-sm;
+}
+
+.view-panel-toolbar {
+    display: flex;
+    flex-direction: row;
+    gap: $space-sm
+}
+
+.toolbar-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $space-xxs;
+}
