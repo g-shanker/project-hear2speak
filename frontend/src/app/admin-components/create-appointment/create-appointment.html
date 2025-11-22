@@ -1,9 +1,14 @@
 <div class="create-appointment-container">
     <div class="create-appointment-header">
-        Create Appointment:
+        <i class="material-icons close-icon" (click)="cancel.emit()">close</i>
+        <div class="create-appointment-header-text">
+            Create Appointment:
+        </div>
     </div>
   
-    <app-appointment-form></app-appointment-form>
+    <app-appointment-form
+        [defaultStartTime]="defaultStartTime()"
+    ></app-appointment-form>
 
     <div class="actions-container">
         <button 

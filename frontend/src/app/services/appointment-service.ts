@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AppointmentApiService } from './appointment-api-service';
 import { inject, Injectable, signal, Signal } from '@angular/core';
 import { AppointmentResponse } from '../interfaces/appointment-response';
@@ -22,8 +22,8 @@ export class AppointmentService {
     readonly errorMessage = this._errorMessage.asReadonly();
     readonly selectedAppointment = this._selectedAppointment.asReadonly();
 
-    selectAppointment(appointment: AppointmentResponse): void {
-        if(!appointment.isAcknowledged) {
+    selectAppointment(appointment: AppointmentResponse | null): void {
+        if(appointment && !appointment.isAcknowledged) {
             this.acknowledgeAppointment(appointment);
         }
         this._selectedAppointment.set(appointment);
@@ -59,11 +59,29 @@ export class AppointmentService {
         })
     }
 
-    updateAppointment(id: number, appointment: ClinicianAppointmentRequest): Observable<ClinicianAppointmentRequest> {
-        return this.api.update(id, appointment)
+    updateAppointment(id: number, appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
+        return this.api.update(id, appointment).pipe(
+            tap((updatedAppointment) => {
+                this._searchResults.update(currentList =>
+                    currentList.map(appointment =>
+                        appointment.id === id ? updatedAppointment : appointment
+                    )
+                );
+
+                if(this._selectedAppointment()?.id === id) {
+                    this._selectedAppointment.set(updatedAppointment);
+                }
+            })
+        );
     }
 
-    createAppointment(appointment: ClinicianAppointmentRequest): Observable<ClinicianAppointmentRequest> {
-        return this.api.create(appointment);
+    createAppointment(appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
+        return this.api.create(appointment).pipe(
+            tap((createdAppointment: AppointmentResponse) => {
+                this._searchResults.update(currentList => {
+                    return [...currentList, createdAppointment];
+                });
+            })
+        );
     }
 }

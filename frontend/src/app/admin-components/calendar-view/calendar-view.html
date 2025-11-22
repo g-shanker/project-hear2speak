@@ -1,1 +1,33 @@
-<p>calendar-view works!</p>
+<div class="calendar-layout">
+    <app-appointment-search-bar
+        class="calendar-header"
+        (search)="onSearch($event)"
+    ></app-appointment-search-bar>
+
+    <div
+        class="calendar-main"
+        [class.panel-open]="!!selectedAppointment()"
+    >
+        <full-calendar [options]="calendarOptions()"></full-calendar>
+        
+        @if (selectedAppointment()) {
+            <div class="floating-drawer">
+                <app-appointment-view-panel
+                    [appointment]="selectedAppointment()"
+                    (close)="closePanel()"
+                >
+                </app-appointment-view-panel>
+            </div>
+        }
+
+        @if (isCreating()) {
+            <div class="floating-drawer" @slideInOut>
+                <app-create-appointment
+                    [defaultStartTime]="draftStartTime()"
+                    (created)="onSearchCreateSuccess()"
+                    (cancel)="closePanel()"
+                ></app-create-appointment>
+            </div>
+        }
+    </div>
+</div>

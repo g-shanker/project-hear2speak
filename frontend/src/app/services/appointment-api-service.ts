@@ -13,8 +13,8 @@ export class AppointmentApiService {
     private http = inject(HttpClient);
     private apiUrl  = '/api/appointments'
 
-    create(appointment: ClinicianAppointmentRequest): Observable<ClinicianAppointmentRequest> {
-        return this.http.post<ClinicianAppointmentRequest>(this.apiUrl, appointment);
+    create(appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
+        return this.http.post<AppointmentResponse>(this.apiUrl, appointment);
     }
 
     update(id: number, appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {

@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PatientAppointmentRequest } from '../../interfaces/patient-appointment-request';
 import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
 import { AppointmentStatus } from '../../interfaces/appointment-status';
+import { format } from 'date-fns';
 
 export type FormMode = 'CLINICIAN' | 'PATIENT';
 
@@ -18,8 +19,9 @@ export type FormMode = 'CLINICIAN' | 'PATIENT';
 export class AppointmentForm {
     private formBuilder = inject(FormBuilder);
 
-        mode = input<FormMode>('CLINICIAN');
-        initialData = input<AppointmentResponse | null>(null);
+    mode = input<FormMode>('CLINICIAN');
+    initialData = input<AppointmentResponse | null>(null);
+    defaultStartTime = input<string | null>(null);
 
     form = this.formBuilder.group({
 
@@ -54,10 +56,17 @@ export class AppointmentForm {
 
         effect(() => {
             const data = this.initialData();
+            const defaultStart = this.defaultStartTime();
             if (data) {
                 this.form.patchValue({
                     ...data,
                     durationInMinutes: Math.floor(data.durationInSeconds / 60)
+                });
+            } else {
+                this.form.reset({
+                    appointmentStatus: 'SCHEDULED',
+                    durationInMinutes: 30,
+                    startDateTime: defaultStart || ''
                 });
             }
         });

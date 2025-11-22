@@ -1,6 +1,13 @@
 @if (appointment()) {
     <div class="view-panel-container">
         <div class="view-panel-toolbar">
+
+            <div class="toolbar-button" (click)="close.emit()">
+                <i class="material-icons">close</i>
+            </div>
+
+            <div class="divider" style="width: 1px; height: 24px; background: #eee; margin: 0 8px;"></div>
+
             @if (editMode()) {
                 <div
                     class="toolbar-button"

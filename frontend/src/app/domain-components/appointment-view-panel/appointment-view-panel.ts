@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, viewChild } from '@angular/core';
+import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { AppointmentForm } from '../appointment-form/appointment-form';
 import { AppointmentService } from '../../services/appointment-service';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
@@ -18,6 +18,7 @@ import { AppointmentDetailsView } from '../appointment-details-view/appointment-
 export class AppointmentViewPanel {
     private appointmentService = inject(AppointmentService)
     appointment = input<AppointmentResponse | null>(null);
+    close = output<void>();
     editMode = signal(false);
     isSaving = signal(false);
     appointmentForm = viewChild(AppointmentForm);
@@ -33,7 +34,7 @@ export class AppointmentViewPanel {
         if (payload) {
             this.isSaving.set(true);
             this.appointmentService.updateAppointment(currentAppointment.id, payload).subscribe({
-                next: (updatedAppointment) => {
+                next: (updatedAppointment: AppointmentResponse) => {
                     console.log('Updated clinician appointment successfully:', updatedAppointment);
                     this.isSaving.set(false);
                     this.editMode.set(false);
