@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, viewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { AppointmentViewPanel } from '../../domain-components/appointment-view-panel/appointment-view-panel';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -16,7 +16,6 @@ import { AppointmentResponse } from '../../interfaces/appointment-response';
 import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
 import { AppointmentStatus } from '../../interfaces/appointment-status';
 
-import { trigger, transition, style, animate } from '@angular/animations';
 import { CreateAppointment } from '../create-appointment/create-appointment';
 
 @Component({
@@ -41,6 +40,8 @@ export class CalendarView {
     isCreating = signal(false);
     draftStartTime = signal<string | null>(null);
 
+    calendarContainer = viewChild<ElementRef>('calendarContainer');
+
     calendarOptions = signal<CalendarOptions>({
         plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         initialView: 'timeGridWeek',
@@ -57,6 +58,11 @@ export class CalendarView {
         slotLabelInterval: '01:00',
         allDaySlot: false,
         height: '100%',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
 
         select: (arg) => this.handleDateSelect(arg),
 
@@ -76,6 +82,20 @@ export class CalendarView {
                 events: mappedEvents
             }));
         });
+
+        effect((onCleanup) => {
+            const element = this.calendarContainer()?.nativeElement;
+            const calendarApi = this.calendarComponent()?.getApi();
+
+            if(element && calendarApi) {
+                const observer = new ResizeObserver(() => {
+                    calendarApi.updateSize();
+                });
+
+                observer.observe(element);
+                onCleanup(() => observer.disconnect());
+            }
+        });
     }
 
     handleDateSelect(selectInfo: DateSelectArg) {
@@ -94,18 +114,12 @@ export class CalendarView {
         this.appointmentService.selectAppointment(null);
         this.isCreating.set(false);
         this.draftStartTime.set(null);
-        setTimeout(() => {
-            this.calendarComponent()?.getApi()?.updateSize();
-        }, 5);
     }
 
     handleEventClick(clickInfo: EventClickArg) {
         this.isCreating.set(false);
         const appointment = clickInfo.event.extendedProps['originalData'];
         this.appointmentService.selectAppointment(appointment);
-        setTimeout(() => {
-            this.calendarComponent()?.getApi()?.updateSize();
-        }, 5);
     }
 
     handleReschedule(arg: EventDropArg | EventResizeDoneArg) {

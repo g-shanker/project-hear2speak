@@ -1,1 +1,62 @@
-<p>dashboards works!</p>
+<div class="dashboard-container">
+    <div class="header">
+        <h2 class="page-title">Statistics</h2>
+        <div class="timestamp">Data live from server</div>
+    </div>
+
+    <div class="kpi-grid">
+        <app-stat-card 
+            label="Total Volume" 
+            [value]="totalCount()" 
+            icon="library_books"
+            color="#3f51b5">
+        </app-stat-card>
+
+        <app-stat-card 
+            label="Pending Requests" 
+            [value]="pendingCount()" 
+            icon="pending_actions"
+            color="#ff9800">
+        </app-stat-card>
+
+        <app-stat-card 
+            label="Billable Hours" 
+            [value]="billableHours()" 
+            icon="schedule"
+            color="#4caf50">
+        </app-stat-card>
+
+        <app-stat-card 
+            label="Audit Rate" 
+            [value]="acknowledgmentRate()" 
+            icon="verified_user"
+            color="#009688">
+        </app-stat-card>
+    </div>
+
+    <div class="charts-grid">
+        
+        <div class="chart-card">
+            <h3>Daily Volume</h3>
+            <div class="chart-wrapper">
+                <canvas baseChart
+                    [data]="volumeChartData()"
+                    [options]="barOptions"
+                    [type]="'bar'">
+                </canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3>Status Breakdown</h3>
+            <div class="chart-wrapper">
+                <canvas baseChart
+                    [data]="statusChartData()"
+                    [options]="doughnutOptions"
+                    [type]="'doughnut'">
+                </canvas>
+            </div>
+        </div>
+
+    </div>
+</div>

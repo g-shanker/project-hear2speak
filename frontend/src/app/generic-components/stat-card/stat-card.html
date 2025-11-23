@@ -1,0 +1,9 @@
+<div class="stat-card" [style.border-left-color]="color()">
+    <div class="icon-wrapper" [style.background-color]="color() + '20'">
+        <i class="material-icons" [style.color]="color()">{{ icon() }}</i>
+    </div>
+    <div class="content">
+        <div class="label">{{ label() }}</div>
+        <div class="value">{{ value() }}</div>
+    </div>
+</div>
