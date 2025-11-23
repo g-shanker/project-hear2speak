@@ -21,6 +21,7 @@
             @if (isCreating()) {
                 <app-create-appointment
                     [defaultStartTime]="draftStartTime()"
+                    [defaultDurationInMinutes]="draftDurationInMinutes()"
                     (created)="onSearchCreateSuccess()"
                     (cancel)="closePanel()"
                 ></app-create-appointment>

@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, signal, viewChild } from '@angular/core';
 import { AppointmentViewPanel } from '../../domain-components/appointment-view-panel/appointment-view-panel';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,7 +11,7 @@ import { CalendarOptions, DateSelectArg, DatesSetArg, EventClickArg, EventDropAr
 import { mapAppointmentsToEvents } from './calendar-utils';
 import { AppointmentSearchRequest } from '../../interfaces/appointment-search-request';
 import { AppointmentSearchBar } from '../../domain-components/appointment-search-bar/appointment-search-bar';
-import { differenceInSeconds, format } from 'date-fns';
+import { differenceInMinutes, differenceInSeconds, format } from 'date-fns';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
 import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
 import { AppointmentStatus } from '../../interfaces/appointment-status';
@@ -31,7 +31,7 @@ import { CreateAppointment } from '../create-appointment/create-appointment';
     styleUrls: ['./calendar-view.scss'],
 })
 
-export class CalendarView {
+export class CalendarView implements AfterViewInit, OnDestroy {
     private appointmentService = inject(AppointmentService);
     appointments = this.appointmentService.searchResults;
     selectedAppointment = this.appointmentService.selectedAppointment;
@@ -39,7 +39,9 @@ export class CalendarView {
 
     isCreating = signal(false);
     draftStartTime = signal<string | null>(null);
+    draftDurationInMinutes = signal<number>(30);
 
+    private resizeObserver: ResizeObserver | null = null;
     calendarContainer = viewChild<ElementRef>('calendarContainer');
 
     calendarOptions = signal<CalendarOptions>({
@@ -82,26 +84,28 @@ export class CalendarView {
                 events: mappedEvents
             }));
         });
+    }
 
-        effect((onCleanup) => {
-            const element = this.calendarContainer()?.nativeElement;
-            const calendarApi = this.calendarComponent()?.getApi();
+    ngAfterViewInit(): void {
+        const element = this.calendarContainer()?.nativeElement;
+        if(element) {
+            this.resizeObserver = new ResizeObserver(() => {
+                this.calendarComponent()?.getApi()?.updateSize();
+            });
+            this.resizeObserver.observe(element);
+        }
+    }
 
-            if(element && calendarApi) {
-                const observer = new ResizeObserver(() => {
-                    calendarApi.updateSize();
-                });
-
-                observer.observe(element);
-                onCleanup(() => observer.disconnect());
-            }
-        });
+    ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
     }
 
     handleDateSelect(selectInfo: DateSelectArg) {
         this.appointmentService.selectAppointment(null);
         const startStr = format(selectInfo.start, "yyyy-MM-dd'T'HH:mm");
+        const duration = differenceInMinutes(selectInfo.end, selectInfo.start);
         this.draftStartTime.set(startStr);
+        this.draftDurationInMinutes.set(duration);
         this.isCreating.set(true);
     }
 
@@ -114,6 +118,7 @@ export class CalendarView {
         this.appointmentService.selectAppointment(null);
         this.isCreating.set(false);
         this.draftStartTime.set(null);
+        this.draftDurationInMinutes.set(30);
     }
 
     handleEventClick(clickInfo: EventClickArg) {

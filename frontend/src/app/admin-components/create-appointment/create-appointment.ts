@@ -15,6 +15,7 @@ export class CreateAppointment {
     formComponent = viewChild(AppointmentForm);
     isSubmitting = signal(false);
     defaultStartTime = input<string | null>(null);
+    defaultDurationInMinutes = input<number>(30);
 
     created = output<void>();
     cancel = output<void>();

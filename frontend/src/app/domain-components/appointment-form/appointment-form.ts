@@ -22,6 +22,8 @@ export class AppointmentForm {
     mode = input<FormMode>('CLINICIAN');
     initialData = input<AppointmentResponse | null>(null);
     defaultStartTime = input<string | null>(null);
+    defaultDurationInMinutes = input<number>(30);
+
 
     form = this.formBuilder.group({
 
@@ -57,6 +59,7 @@ export class AppointmentForm {
         effect(() => {
             const data = this.initialData();
             const defaultStart = this.defaultStartTime();
+            const defaultDuration = this.defaultDurationInMinutes();
             if (data) {
                 this.form.patchValue({
                     ...data,
@@ -65,8 +68,8 @@ export class AppointmentForm {
             } else {
                 this.form.reset({
                     appointmentStatus: 'SCHEDULED',
-                    durationInMinutes: 30,
-                    startDateTime: defaultStart || ''
+                    startDateTime: defaultStart || '',
+                    durationInMinutes: defaultDuration,
                 });
             }
         });
