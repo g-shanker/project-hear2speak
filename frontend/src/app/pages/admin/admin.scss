@@ -1,19 +1,78 @@
-@use '../../../styles.scss' as *;
+/* No @use needed */
 
 :host {
-    height: 100%;
-    min-height: 0;
+  display: block;
+  height: 100%;
+  overflow: hidden; /* Page container shouldn't scroll */
 }
 
-.admin-banner {
-    padding: $space-lg;
-    text-align: center;    
-}
-
+/* 1. Main Page Shell */
 .admin-container {
-    height: 100%;
-    min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  
+  /* UPDATED: Gunmetal Gray (Slate 700) */
+  /* Deep, blue-ish gray that provides high contrast for white panels */
+  background-color: #334155; 
+  
+  /* Add padding around the slicer so it looks like a floating tool */
+  padding: 1.5rem; 
+  
+  @media (max-width: 600px) {
+    padding: 1rem;
+  }
+}
 
-    display: grid;
-    grid-template-rows: auto 1fr;
+/* 2. The Header */
+.admin-banner {
+  flex-shrink: 0;
+  margin-bottom: 1.5rem; /* Space between title and slicer */
+  
+  /* UPDATED: Solid White Background (No Gradient) */
+  background-color: #ffffff;
+  
+  /* Remove the glassy border since we are now solid white */
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  
+  /* Typography */
+  font-size: 1.25rem; 
+  font-weight: 600;
+  color: #1e1b4b; /* Deep Indigo text */
+  letter-spacing: -0.01em;
+  
+  text-align: left; 
+  display: flex;
+  align-items: center;
+  
+  /* Clean shadow to separate it from the dark background */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  /* The "SETTINGS" kicker */
+  &::before {
+    content: 'SETTINGS';
+    display: inline-block;
+    font-size: 0.75rem;
+    color: #4f46e5; /* Primary Indigo Accent */
+    font-weight: 700;
+    margin-right: 1rem;
+    padding-right: 1rem;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    letter-spacing: 0.05em;
+  }
+}
+
+/* 3. The Slicer Wrapper */
+app-slicer {
+  flex: 1; /* Fill remaining height */
+  min-height: 0; /* Flexbox overflow fix */
+  
+  /* Shadow to match the banner */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-md);
+  
+  /* Keep the slicer white */
+  background-color: var(--bg-surface);
 }

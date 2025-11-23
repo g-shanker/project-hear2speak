@@ -8,24 +8,26 @@
         <div class="calendar-wrapper" #calendarContainer>
             <full-calendar [options]="calendarOptions()"></full-calendar>
         </div>
-        
-        <div class="side-panel">
-            @if (selectedAppointment()) {
-                <app-appointment-view-panel
-                    [appointment]="selectedAppointment()"
-                    (close)="closePanel()"
-                >
-                </app-appointment-view-panel>
-            }
 
-            @if (isCreating()) {
-                <app-create-appointment
-                    [defaultStartTime]="draftStartTime()"
-                    [defaultDurationInMinutes]="draftDurationInMinutes()"
-                    (created)="onSearchCreateSuccess()"
-                    (cancel)="closePanel()"
-                ></app-create-appointment>
-            }
-        </div>
+        @if (selectedAppointment() || isCreating()) {
+            <div class="side-panel" @slideInOut>
+                @if (selectedAppointment()) {
+                    <app-appointment-view-panel
+                        [appointment]="selectedAppointment()"
+                        (close)="closePanel()"
+                    >
+                    </app-appointment-view-panel>
+                }
+
+                @if (isCreating()) {
+                    <app-create-appointment
+                        [defaultStartTime]="draftStartTime()"
+                        [defaultDurationInMinutes]="draftDurationInMinutes()"
+                        (created)="onSearchCreateSuccess()"
+                        (cancel)="closePanel()"
+                    ></app-create-appointment>
+                }
+            </div>
+        }
     </div>
 </div>

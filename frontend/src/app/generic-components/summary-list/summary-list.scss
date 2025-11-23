@@ -1,52 +1,128 @@
-@use '../../../styles.scss' as *;
+/* No imports needed - using global CSS variables */
 
 :host {
-    height: 100%;
-    min-height: 0;
+  display: block;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden; /* Container defines the boundary */
+  background-color: var(--bg-surface);
+  border-right: 0.0625rem solid var(--border-subtle); /* Optional: Defines the panel edge */
 }
 
+/* 1. The Scrollable Container */
 .summary-panel-container {
-    height: 100%;
-    min-height: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    padding-bottom: $space-xl * 5;
-
-    overflow-y: scroll;
-    scroll-behavior: smooth;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Scroll happens here */
+  
+  /* Scrollbar polish */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  
+  /* Bottom padding to ensure last item isn't cut off by floating elements */
+  padding-bottom: 2rem; 
 }
 
+/* 2. The Header ("Found 5 items") 
+   Design: Sticky, Uppercase, Technical 
+*/
+.summary-summary {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  
+  background-color: var(--bg-surface); /* Opaque background for sticky behavior */
+  border-bottom: 0.0625rem solid var(--border-subtle);
+  
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+/* 3. The List Item Wrapper */
 .summary-item {
-    display: grid;
-    grid-template-rows: auto 1fr;
+  position: relative;
+  display: block; /* Allows grid/flex inside via template */
+  padding: 1rem;
+  border-bottom: 0.0625rem solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.15s ease;
 
-    padding: $space-sm;
+  &:hover {
+    background-color: var(--bg-hover);
+  }
+
+  /* Active State - The "Blue Flash" */
+  &.selected {
+    background-color: var(--primary-50);
+    
+    /* Left border accent using box-shadow to avoid layout shift */
+    box-shadow: inset 0.25rem 0 0 0 var(--primary-600);
+  }
 }
 
+/* 4. Empty State */
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* ==========================================================
+   5. TEMPLATE UTILITIES (Projected Content Styling)
+   These classes are used by the content passed into ngTemplateOutlet
+   ========================================================== */
+
+/* Header Row inside an item (Name | Status) */
 .summary-header {
-    width: 100%;
-    min-width: 0;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: $space-xs;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  min-width: 0;
 }
 
+/* Body Row inside an item (Date | Reason) */
 .summary-body {
-    width: 100%;
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-    gap: $space-xxs;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
 
+/* Text Utilities (Truncation) */
 .status, .created, .name, .reason {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Specific Field Styling */
+.name {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 0.9375rem; /* 15px */
+}
+
+.reason {
+  color: var(--text-muted);
+  font-size: 0.8125rem; /* 13px */
+}
+
+/* If you use the .status class, ensure it works with the badge logic */
+.status {
+  /* Usually this will be a badge component, but if it's text: */
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
 }

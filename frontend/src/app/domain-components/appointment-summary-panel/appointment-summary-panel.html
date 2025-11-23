@@ -10,13 +10,18 @@
     #appointmentSummaryTemplate
     let-appointment
 >
-    <div
-        class="summary-item"
-        [class.acknowledged]="appointment.isAcknowledged"
+    <div 
+        class="appointment-content"
+        [class.is-acknowledged]="appointment.isAcknowledged"
     >
         <div class="summary-header">
-            <span class="status">{{ appointment.appointmentStatus }}</span>
-            <span class="created">{{ appointment.createdAt | date: 'short' }}</span>
+            <span class="badge" [ngClass]="'status-' + appointment.appointmentStatus.toLowerCase()">
+                {{ appointment.appointmentStatus }}
+            </span>
+            
+            <span class="created">
+                {{ appointment.createdAt | date: 'MMM d, h:mm a' }}
+            </span>
         </div>
 
         <div class="summary-body">
@@ -25,31 +30,3 @@
         </div>
     </div>
 </ng-template>
-
-<!-- <div class="summary-panel-container">
-    <div class="summary-summary">
-        Found {{ appointments().length }} appointments.
-    </div>
-
-    @for (appointment of appointments(); track appointment.id) {
-        <div
-            class="summary-item"
-            [class.selected]="selectedAppointment()?.id === appointment.id"
-            [class.acknowledged]="appointment.isAcknowledged"
-            (click)="onAppointmentClick(appointment)"
-        >
-            <div class="summary-header">
-                <span class="status">
-                    {{ appointment.appointmentStatus }}
-                </span>
-                <span class="created">{{ appointment.createdAt | date: 'short' }}</span>
-            </div>
-                <div class="summary-body">
-                <span class="name">{{ appointment.patientFullName }}</span>
-                <span class="reason">{{ appointment.patientReason }}</span>
-            </div>
-        </div>
-    } @empty {
-        <div class="empty">No appointments to display.</div>
-    }
-</div> -->

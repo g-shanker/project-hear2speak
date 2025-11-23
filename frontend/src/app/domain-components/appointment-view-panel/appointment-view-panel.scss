@@ -1,45 +1,129 @@
-@use '../../../styles.scss' as *;
+/* No @use needed */
 
 :host {
+  display: block;
   height: 100%;
   min-height: 0;
+  overflow: hidden; /* Important: Prevents double scrollbars */
 }
 
+/* 1. Main Layout Shell */
 .view-panel-container {
-    height: 100%;
-    min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column; /* Toolbar Top | Content Bottom */
+  background-color: var(--bg-surface);
+  
+  /* Optional: If this panel sits next to a list, add a border left */
+  border-left: 0.0625rem solid var(--border-subtle);
 }
 
-.view-panel-content {
-    height: 100%;
-    min-height: 0;
-
-    overflow-y: auto;
-    padding: $space-lg;
-    padding-bottom: $space-lg * 5;
-}
-
-.placeholder {
-    height: 100%;
-    min-height: 0;
-
-    display: grid;
-    place-items: center;
-}
-
+/* 2. The Sticky Toolbar */
 .view-panel-toolbar {
-    padding: $space-sm;
+  flex-shrink: 0; /* Never collapse */
+  height: 3.5rem; /* Fixed height (56px) */
+  
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  
+  background-color: var(--bg-surface);
+  border-bottom: 0.0625rem solid var(--border-subtle);
+  
+  z-index: 10; /* Ensure it stays above content */
 }
 
-.view-panel-toolbar {
-    display: flex;
-    flex-direction: row;
-    gap: $space-sm
-}
-
+/* 3. Toolbar Buttons (Interactive Tools) */
 .toolbar-button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: $space-xxs;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  
+  /* Typography */
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  
+  /* Icons */
+  i.material-icons {
+    font-size: 1.25rem; /* 20px */
+    color: var(--text-muted);
+  }
+
+  /* Hover State */
+  &:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-main);
+    
+    i.material-icons {
+      color: var(--text-secondary);
+    }
+  }
+
+  /* Disabled State */
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+/* 4. Special Handling for "Save" (Primary Action) */
+/* You might want to add a class in HTML like 'action-save' */
+.toolbar-button:has(.material-icons:contains('save')) {
+  color: var(--primary-600);
+  
+  i.material-icons {
+    color: var(--primary-500);
+  }
+
+  &:hover {
+    background-color: var(--primary-50);
+  }
+}
+
+/* 5. The Content Viewport */
+.view-panel-content {
+  flex: 1; /* Fill remaining height */
+  min-height: 0; /* Flexbox overflow fix */
+  overflow: hidden; /* Pass scroll responsibility to child component */
+  position: relative;
+  
+  /* Note: Padding is handled inside the child components (Form/Details) 
+     to ensure scrollbars appear at the very edge of the panel */
+}
+
+/* 6. Placeholder (Empty State) */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  
+  background-color: var(--bg-app); /* Subtle contrast to show it's empty */
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  
+  p {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+  }
+}
+
+/* 7. The Vertical Divider */
+/* We style the div directly since you used inline styles in HTML, 
+   but it's better to use a class */
+.divider {
+  width: 0.0625rem !important; /* Force override inline style if needed */
+  height: 1.5rem !important;
+  background-color: var(--border-subtle) !important;
+  margin: 0 0.5rem !important;
 }

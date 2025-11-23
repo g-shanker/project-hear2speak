@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { SummaryList } from '../../generic-components/summary-list/summary-list';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
@@ -8,7 +8,8 @@ import { AppointmentResponse } from '../../interfaces/appointment-response';
     standalone: true,
     imports: [
         DatePipe,
-        SummaryList
+        SummaryList,
+        CommonModule,
     ],
     templateUrl: './appointment-summary-panel.html',
     styleUrls: ['./appointment-summary-panel.scss'],

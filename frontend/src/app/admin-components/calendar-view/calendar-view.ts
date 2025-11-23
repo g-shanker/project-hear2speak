@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, signal, viewChild } from '@angular/core';
 import { AppointmentViewPanel } from '../../domain-components/appointment-view-panel/appointment-view-panel';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -29,6 +30,19 @@ import { CreateAppointment } from '../create-appointment/create-appointment';
     ],
     templateUrl: './calendar-view.html',
     styleUrls: ['./calendar-view.scss'],
+    animations: [
+        trigger('slideInOut', [
+            // Slide In (Void -> Enter)
+            transition(':enter', [
+                style({ transform: 'translateX(100%)', opacity: 0 }),
+                animate('300ms cubic-bezier(0.16, 1, 0.3, 1)', style({ transform: 'translateX(0)', opacity: 1 }))
+            ]),
+            // Slide Out (Enter -> Void)
+            transition(':leave', [
+                animate('250ms cubic-bezier(0.16, 1, 0.3, 1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+            ])
+        ])
+    ]
 })
 
 export class CalendarView implements AfterViewInit, OnDestroy {

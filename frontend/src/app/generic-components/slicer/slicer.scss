@@ -1,55 +1,129 @@
-@use '../../../styles.scss' as *;
+/* No @use needed */
 
 :host {
-    height: 100%;
-    min-height: 0;
+  display: block;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
+/* 1. Main Layout Shell */
 .slicer-container {
-    height: 100%;
-    min-height: 0;
-
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: 1fr;
-
-    overflow: hidden;
+  display: flex; 
+  height: 100%;
+  width: 100%;
+  
+  /* The container itself handles the "Card" border logic for the whole block */
+  background: var(--bg-surface);
+  border: 0.0625rem solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden; 
 }
 
+/* 2. The Vibrant Sidebar (Left Rail) */
 .slicer-nav {
-    height: 100%;
-    min-height: 0;
-
-    width: 8 * $space-xl;
-
-    overflow-y: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
+  /* Fixed width */
+  width: 17.5rem; /* ~280px, matches your global nav width */
+  flex-shrink: 0; 
+  
+  /* THE VIBRANT THEME APPLIED HERE */
+  background: var(--shell-bg);
+  color: var(--shell-text);
+  
+  /* Remove right border, the color difference is enough separation */
+  /* border-right: 0.0625rem solid var(--border-subtle); */
+  
+  padding: 1rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Space between items */
+  
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  
+  /* Scrollbar polish for the dark theme */
+  scrollbar-width: thin;
+  scrollbar-color: var(--shell-hover-bg) transparent;
 }
 
+/* 3. The Navigation Item */
 .slicer-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Default State: Semi-transparent white */
+  color: var(--shell-text-muted);
+  font-size: 0.95rem; /* 15px */
+  font-weight: 500;
 
-    gap: $space-sm;
-    padding: $space-sm;
-}
+  i.material-icons {
+    font-size: 1.25rem; 
+    color: var(--shell-text-muted);
+    transition: color 0.2s ease;
+  }
 
-.slicer-text {
-    display: grid;
-    align-items: center;
-}
-
-.render-container {
-    height: 100%;
-    min-height: 0;
-
-    .placeholder {
-        height: 100%;
-        min-height: 0;
-        
-        display: grid;
-        place-items: center;
-
+  /* Hover State: Light white overlay */
+  &:hover {
+    background-color: var(--shell-hover-bg);
+    color: var(--shell-text);
+    transform: translateX(4px); /* Subtle nudge */
+    
+    i.material-icons {
+      color: var(--shell-text);
     }
+  }
+
+  /* Active State: The "Pop" */
+  &.active {
+    background-color: var(--shell-active-bg);
+    color: var(--shell-text);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    
+    i.material-icons {
+      color: #38bdf8; /* Cyan accent for active icon */
+      opacity: 1;
+    }
+  }
+}
+
+/* Text Helper */
+.slicer-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 4. The Content Area (Right Side) */
+.render-container {
+  flex: 1; 
+  height: 100%;
+  min-width: 0; 
+  
+  /* Keep the content clean and white */
+  background-color: var(--bg-surface);
+  overflow-y: auto;
+  
+  /* Empty State Centering */
+  &.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    background-color: var(--bg-app); 
+    
+    p {
+      padding: 1rem 2rem;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+    }
+  }
 }

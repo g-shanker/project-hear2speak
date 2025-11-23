@@ -6,7 +6,14 @@
         </div>
         <div class="details-item">
             <span class="key">Appointment Status:</span>
-            <span class="value">{{ appointment.appointmentStatus }}</span>
+            <span class="value">
+                <span
+                    class="badge"
+                    [ngClass]="'status-' + appointment.appointmentStatus.toLowerCase()"
+                >
+                    {{ appointment.appointmentStatus }}
+                </span>
+            </span>
         </div>
         <div class="details-item">
             <span class="key">Patient Email:</span>

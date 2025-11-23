@@ -35,6 +35,10 @@ export class FindAppointment implements OnInit {
         this.appointmentService.searchAppointments(searchRequest);
     }
 
+    closePanel() {
+        this.appointmentService.selectAppointment(null);
+    }
+
     ngOnInit(): void {
         this.appointmentService.searchAppointments({
             sortField: 'createdAt',

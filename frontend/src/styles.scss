@@ -1,84 +1,269 @@
-// ------------------------------
-//  Color Palette
-// ------------------------------
-$color-primary: #3f51b5;  // Indigo 500
-$color-primary-dark: #303f9f;
-$color-accent: #ff4081;
-$color-background: #f1f2f3;
-$color-surface: #ffffff;
-$color-text: #212121;
-$color-text-light: #666666;
-$color-border: #303030;
-$color-error: #e53935;
-$color-success: #43a047;
+/* ==========================================================================
+   1. EXTERNAL IMPORTS
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-// Text color
-$color-status-text: #ffffff;
+/* ==========================================================================
+   2. DESIGN TOKENS (CSS VARIABLES)
+   ========================================================================== */
+:root {
+  /* -----------------------------------
+     A. The Vibrant Shell (Sidebar/Nav)
+     ----------------------------------- */
+  --shell-bg: linear-gradient(145deg, #4338ca 0%, #6d28d9 100%);
+  --shell-text: #ffffff;
+  --shell-text-muted: rgba(255, 255, 255, 0.7);
+  --shell-hover-bg: rgba(255, 255, 255, 0.1);
+  --shell-active-bg: rgba(255, 255, 255, 0.2);
+  --shell-border: rgba(255, 255, 255, 0.1);
 
-// Status colors
-$color-status-requested:   #f4c430;  // Golden yellow
-$color-status-scheduled:   #1976d2;  // Calmer medium blue
-$color-status-cancelled:   #e53935;  // Vibrant red
-$color-status-completed:   #43a047;  // Balanced green
-$color-status-no-show:     #757575;  // Neutral grey
-$color-status-rescheduled: #fb8c00;  // Amber orange
+  /* -----------------------------------
+     B. The Refined Content (WARM PAPER THEME)
+     ----------------------------------- */
+  
+  /* BG APP: Stone 200 - A distinct warm gray, much easier on the eyes */
+  --bg-app: #e7e5e4;      
+  
+  /* BG SURFACE: Stone 50 - Creamy off-white, eliminates the "Blue Light" glare */
+  --bg-surface: #fafaf9;  
+  
+  /* HOVER: Stone 200 */
+  --bg-hover: #e7e5e4;    
 
-// ------------------------------
-//  Spacing
-// ------------------------------
-$space-xxs: 0.25rem;
-$space-xs: 0.5rem;
-$space-sm: 0.75rem;
-$space-md: 1rem;
-$space-lg: 1.5rem;
-$space-xl: 2rem;
+  /* BORDERS: Stone 300 - Warm gray borders */
+  --border-subtle: #d6d3d1; 
+  --border-strong: #a8a29e; 
+  --border-focus: #6366f1;  
 
-// ------------------------------
-//  Typography
-// ------------------------------
-$font-family-base: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-$font-size-base: 1rem;
-$font-size-md: 1rem;
-$font-size-lg: 1.5rem;
-$font-weight-normal: 400;
-$font-weight-bold: 600;
-$line-height-base: 1.5;
+  /* TYPOGRAPHY: Warm Charcoal instead of sharp black */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --text-main: #1c1917;      /* Stone 900 */
+  --text-secondary: #44403c; /* Stone 700 */
+  --text-muted: #78716c;     /* Stone 500 */
 
-// ------------------------------
-//  Borders & Shadows
-// ------------------------------
-$radius-sm: 0.25rem;
-$radius-md: 0.5rem;
-$radius-lg: 0.75rem;
+  /* Brand Colors */
+  --primary-50: #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
 
-$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-$shadow-md: 0 2px 6px rgba(0, 0, 0, 0.15);
-$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* -----------------------------------
+     C. Status Indicators (High Contrast Badges)
+     ----------------------------------- */
+  
+  /* Requested (Gold/Yellow - Use dark text for accessibility) */
+  --status-requested-bg: #f5cd47;      /* Atlassian Yellow Bold */
+  --status-requested-text: #172b4d;    /* Dark Slate Text */
+  --status-requested-border: transparent;
 
-// ------------------------------
-//  Global Reset / Base
-// ------------------------------
+  /* Scheduled (Jira Blue) */
+  --status-scheduled-bg: #0c66e4;      /* Atlassian Blue Bold */
+  --status-scheduled-text: #ffffff;    /* White */
+  --status-scheduled-border: transparent;
+
+  /* Cancelled (Red) */
+  --status-cancelled-bg: #ca3521;      /* Atlassian Red Bold */
+  --status-cancelled-text: #ffffff;    /* White */
+  --status-cancelled-border: transparent;
+
+  /* Completed (Green) */
+  --status-completed-bg: #22a06b;      /* Atlassian Green Bold */
+  --status-completed-text: #ffffff;    /* White */
+  --status-completed-border: transparent;
+
+  /* Rescheduled (Purple) */
+  --status-rescheduled-bg: #8270db;    /* Atlassian Purple Bold */
+  --status-rescheduled-text: #ffffff;  /* White */
+  --status-rescheduled-border: transparent;
+
+  /* No Show (Neutral/Dark Slate) */
+  --status-noshow-bg: #44546f;         /* Atlassian Neutral Bold */
+  --status-noshow-text: #ffffff;       /* White */
+  --status-noshow-border: transparent;
+
+  /* -----------------------------------
+     D. Dimensions & Spacing
+     ----------------------------------- */
+  --nav-width: 17.5rem;      
+  --nav-collapsed: 4.5rem;   
+  --header-height: 4rem;  
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Softer Shadows (Warm) */
+  --shadow-sm: 0 1px 2px 0 rgba(28, 25, 23, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(28, 25, 23, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(28, 25, 23, 0.1);
+
+  /* Spacing Units */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+}
+
+/* ==========================================================================
+   3. LEGACY BRIDGE
+   ========================================================================== */
+$color-primary: var(--primary-600);
+$color-primary-dark: var(--primary-700);
+$color-accent: var(--shell-active-bg);
+$color-background: var(--bg-app);
+$color-surface: var(--bg-surface);
+$color-text: var(--text-main);
+$color-text-light: var(--text-secondary);
+$color-border: var(--border-subtle);
+
+/* ==========================================================================
+   4. RESET & BASE
+   ========================================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-router-outlet {
-    height: 100%;
-    min-height: 0;
-}
-
-app-root {
-    height: 100%;
-    min-height: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html, body {
-    height: 100%;
-    min-height: 0;
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    color: $color-text;
-    background-color: $color-background;
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 1rem; /* 16px Base */
+  color: var(--text-main);
+  background-color: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Angular Layout Fixes */
+app-root {
+  display: block;
+  height: 100%;
+}
+
+/* ==========================================================================
+   5. GLOBAL UTILITIES
+   ========================================================================== */
+
+/* --- PANELS --- */
+.panel {
+  background: var(--bg-surface);
+  border: 0.0625rem solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+/* --- BUTTONS --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 0.0625rem solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-600);
+  color: white;
+  &:hover { background-color: var(--primary-700); }
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface);
+  border-color: var(--border-subtle);
+  color: var(--text-main);
+  &:hover { 
+    background-color: var(--bg-hover); 
+    border-color: var(--border-strong);
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  &:hover { background-color: var(--bg-hover); color: var(--text-main); }
+}
+
+/* --- FORM INPUTS --- */
+.form-input, input, select, textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  border: 0.0625rem solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  
+  /* Inputs remain Pure White for contrast against the creamy cards */
+  background: #ffffff; 
+  color: var(--text-main);
+  transition: border-color 0.15s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 0.125rem var(--primary-100);
+  }
+
+  &::placeholder { color: var(--text-muted); }
+}
+
+/* --- BADGES --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Slightly taller for the solid look */
+  padding: 0.25rem 0.75rem; 
+  font-size: 0.75rem;     
+  font-weight: 700; /* Extra Bold for readability on color */
+  line-height: 1.2;
+  
+  /* Confluence badges usually have slightly tighter radius (not full pill) */
+  border-radius: 4px;   
+  white-space: nowrap;
+  
+  /* Text Transform helps the "Official" feel */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  border: 1px solid transparent; 
+  
+  &.status-requested { 
+    background: var(--status-requested-bg); 
+    color: var(--status-requested-text); 
+  }
+  &.status-scheduled { 
+    background: var(--status-scheduled-bg); 
+    color: var(--status-scheduled-text); 
+  }
+  &.status-cancelled { 
+    background: var(--status-cancelled-bg); 
+    color: var(--status-cancelled-text); 
+  }
+  &.status-completed { 
+    background: var(--status-completed-bg); 
+    color: var(--status-completed-text); 
+  }
+  &.status-noshow    { 
+    background: var(--status-noshow-bg);    
+    color: var(--status-noshow-text); 
+  }
+  &.status-rescheduled { 
+    background: var(--status-rescheduled-bg); 
+    color: var(--status-rescheduled-text); 
+  }
+}
+
+/* --- SCROLLBARS --- */
+::-webkit-scrollbar { width: 0.5rem; height: 0.5rem; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 0.25rem; }
+::-webkit-scrollbar-thumb:hover { background: #a8a29e; }

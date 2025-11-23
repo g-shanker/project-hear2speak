@@ -1,78 +1,114 @@
-@use '../../../styles.scss' as *;
+/* No @use needed */
 
 :host {
-    height: 100%;
-    min-height: 0;
+  display: block;
+  height: 100%;
+  overflow: hidden; /* Container handles scroll */
 }
 
+/* 1. Main Scrollable Container */
 .dashboard-container {
-    padding: 24px;
-    background-color: #f5f7fa; // Light grey background
-    height: 100%;
-    overflow-y: auto;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1.5rem; /* Consistent spacing with other pages */
+  background-color: var(--bg-app);
 }
 
+/* 2. Header Section */
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .page-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.02em; /* Tighten headline */
+  }
+  
+  .timestamp {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    
+    /* "Live Badge" Look */
+    background: var(--bg-surface);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    border: 0.0625rem solid var(--border-subtle);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    gap: 0.5rem;
 
-    .page-title {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: #2c3e50;
+    /* Green Dot for "Live" */
+    &::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      background-color: var(--status-completed-text); /* Green */
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--status-completed-bg);
     }
-    
-    .timestamp {
-        font-size: 0.8rem;
-        color: #999;
-    }
+  }
 }
 
-/* --- KPI GRID --- */
+/* 3. KPI Grid (The Stats) */
 .kpi-grid {
-    display: grid;
-    // Auto-fit: Create as many columns as possible, min 240px each
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 24px;
+  display: grid;
+  /* Responsive: fit as many as possible, min width ~250px */
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); 
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* --- CHARTS GRID --- */
+/* 4. Charts Layout */
 .charts-grid {
-    display: grid;
-    // 2 columns by default
-    grid-template-columns: 2fr 1fr; 
-    gap: 24px;
-    padding: $space-lg;
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Bar Chart gets 2/3, Donut gets 1/3 */
+  gap: 1.5rem;
+  margin-bottom: 1.5rem; /* Space between rows */
 
-    // Stack vertically on smaller screens (tablets)
-    @media (max-width: 1024px) {
-        grid-template-columns: 1fr;
-    }
+  /* Stack on tablets */
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
 }
 
+/* 5. Chart Card (The "Panel") */
 .chart-card {
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,0,0,0.02);
-    
-    h3 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: #555;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
+  background: var(--bg-surface);
+  border: 0.0625rem solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  
+  /* Minimalist Transition */
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  
+  &:hover {
+    box-shadow: var(--shadow-sm);
+    /* transform: translateY(-1px); // Optional: if you like movement */
+  }
+
+  h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  /* Helper for full-width charts */
+  &.wide {
+    grid-column: 1 / -1; 
+  }
 }
 
+/* 6. Chart Canvas Wrapper */
 .chart-wrapper {
-    position: relative;
-    height: 300px; // Fixed height ensures charts don't collapse or explode
-    width: 100%;
+  position: relative;
+  height: 300px; /* Fixed height for stability */
+  width: 100%;
 }
-

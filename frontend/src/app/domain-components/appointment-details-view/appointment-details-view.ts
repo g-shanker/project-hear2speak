@@ -1,11 +1,14 @@
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
 
 @Component({
     selector: 'app-appointment-details-view',
     standalone: true,
-    imports: [DatePipe],
+    imports: [
+        DatePipe,
+        CommonModule,
+    ],
     templateUrl: './appointment-details-view.html',
     styleUrls: ['./appointment-details-view.scss'],
 })
