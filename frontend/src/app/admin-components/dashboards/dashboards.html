@@ -12,6 +12,27 @@
             color="#3f51b5">
         </app-stat-card>
 
+        <app-stat-card
+            label="Today's Appts"
+            [value]="todayCount()"
+            icon="today"
+            color="#4caf50">
+        </app-stat-card>
+
+        <app-stat-card
+            label="Future Bookings"
+            [value]="futureCount()"
+            icon="event"
+            color="#ff9800">
+        </app-stat-card>
+
+        <app-stat-card
+            label="Cancellation Rate"
+            [value]="cancellationRate()"
+            icon="event_busy"
+            color="#f44336">
+        </app-stat-card>
+
         <app-stat-card 
             label="Pending Requests" 
             [value]="pendingCount()" 
@@ -20,14 +41,7 @@
         </app-stat-card>
 
         <app-stat-card 
-            label="Billable Hours" 
-            [value]="billableHours()" 
-            icon="schedule"
-            color="#4caf50">
-        </app-stat-card>
-
-        <app-stat-card 
-            label="Audit Rate" 
+            label="Acknowledged Requests" 
             [value]="acknowledgmentRate()" 
             icon="verified_user"
             color="#009688">
@@ -55,6 +69,17 @@
                     [options]="doughnutOptions"
                     [type]="'doughnut'">
                 </canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="charts-grid">
+        
+        <div class="chart-card wide">
+            <h3>Busiest Hours (Heatmap)</h3>
+            <div class="chart-wrapper">
+                <canvas baseChart [data]="hourlyChartData()" [options]="barOptions" [type]="'bar'"></canvas>
             </div>
         </div>
 
