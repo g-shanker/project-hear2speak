@@ -3,6 +3,7 @@ package com.hear2speak.controllers;
 import java.util.List;
 
 import com.hear2speak.dtos.ClinicianAppointmentRequest;
+import com.hear2speak.dtos.PatientAppointmentRequest;
 import com.hear2speak.dtos.AppointmentResponse;
 import com.hear2speak.dtos.AppointmentSearchRequest;
 import com.hear2speak.services.AppointmentService;
@@ -53,8 +54,16 @@ public class AppointmentController {
     }
 
     @POST
-    public Response createAppointment(@Valid ClinicianAppointmentRequest appointmentRequest) {
-        AppointmentResponse appointmentResponse = appointmentService.createAppointment(appointmentRequest);
+    @Path("/clinician")
+    public Response createClinicianAppointment(@Valid ClinicianAppointmentRequest appointmentRequest) {
+        AppointmentResponse appointmentResponse = appointmentService.createClinicianAppointment(appointmentRequest);
+        return Response.status(Response.Status.CREATED).entity(appointmentResponse).build();
+    }
+
+    @POST
+    @Path("/patient")
+    public Response createPatientAppointment(@Valid PatientAppointmentRequest appointmentRequest) {
+        AppointmentResponse appointmentResponse = appointmentService.createPatientAppointment(appointmentRequest);
         return Response.status(Response.Status.CREATED).entity(appointmentResponse).build();
     }
 

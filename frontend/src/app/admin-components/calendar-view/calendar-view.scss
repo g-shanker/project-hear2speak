@@ -133,7 +133,6 @@
 
     /* ---------------------------------------------------------
        D. EVENT STYLING (The "Sticker" Look)
-       This matches the CSS classes mapped in calendar-utils.ts
        --------------------------------------------------------- */
     .fc-event {
       /* Base Card Shape */
@@ -152,51 +151,47 @@
       border-left: 3px solid var(--text-muted);
 
       /* --- SEMANTIC VARIANTS --- */
-      /* Logic: 
-         1. Use the Bold Color (bg variable) for the left accent strip.
-         2. Keep the background clean/white.
-         3. Keep text dark for readability. 
-      */
       
       /* REQUESTED (Yellow) */
       &.evt-requested {
-        background-color: #fffbeb; /* Very light yellow tint (Hardcoded to match 'Yellow 50') */
-        border-left: 3px solid var(--status-requested-bg); /* Bold Yellow Strip */
-        
-        /* Force text color to dark charcoal for contrast */
+        background-color: #fffbeb; /* Very light yellow tint */
+        border-left: 3px solid var(--status-requested-bg); 
         .fc-event-main, .fc-event-time { color: #451a03; } 
       }
 
       /* SCHEDULED (Blue) */
       &.evt-scheduled {
         background-color: #eff6ff; /* Blue 50 */
-        border-left: 3px solid var(--status-scheduled-bg); /* Bold Blue Strip */
-        
-        .fc-event-main, .fc-event-time { color: #172554; } /* Blue 950 text */
+        border-left: 3px solid var(--status-scheduled-bg); 
+        .fc-event-main, .fc-event-time { color: #172554; } 
       }
 
       /* COMPLETED (Green) */
       &.evt-completed {
         background-color: #f0fdf4; /* Green 50 */
-        border-left: 3px solid var(--status-completed-bg); /* Bold Green Strip */
-        
-        .fc-event-main, .fc-event-time { color: #052e16; } /* Green 950 text */
+        border-left: 3px solid var(--status-completed-bg); 
+        .fc-event-main, .fc-event-time { color: #052e16; } 
       }
 
       /* CANCELLED (Red) */
       &.evt-canceled, &.evt-cancelled {
         background-color: #fef2f2; /* Red 50 */
-        border-left: 3px solid var(--status-cancelled-bg); /* Bold Red Strip */
-        
-        .fc-event-main, .fc-event-time { color: #450a0a; } /* Red 950 text */
+        border-left: 3px solid var(--status-cancelled-bg); 
+        .fc-event-main, .fc-event-time { color: #450a0a; } 
       }
 
       /* RESCHEDULED (Purple) */
       &.evt-rescheduled {
         background-color: #faf5ff; /* Purple 50 */
-        border-left: 3px solid var(--status-rescheduled-bg); /* Bold Purple Strip */
-        
-        .fc-event-main, .fc-event-time { color: #3b0764; } /* Purple 950 text */
+        border-left: 3px solid var(--status-rescheduled-bg); 
+        .fc-event-main, .fc-event-time { color: #3b0764; } 
+      }
+
+      /* NO SHOW (Gray/Slate) - ADDED THIS BLOCK */
+      &.evt-no_show {
+        background-color: #f3f4f6; /* Gray 100 */
+        border-left: 3px solid var(--status-noshow-bg); /* Dark Slate Bold */
+        .fc-event-main, .fc-event-time { color: #1f2937; } /* Gray 800 text */
       }
       
       /* Interaction: Lift and Brighten */

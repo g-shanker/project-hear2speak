@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, signal, untracked, viewChild } from '@angular/core';
 import { AppointmentViewPanel } from '../../domain-components/appointment-view-panel/appointment-view-panel';
 import { trigger, style, animate, transition } from '@angular/animations';
 
@@ -12,7 +12,7 @@ import { CalendarOptions, DateSelectArg, DatesSetArg, EventClickArg, EventDropAr
 import { mapAppointmentsToEvents } from './calendar-utils';
 import { AppointmentSearchRequest } from '../../interfaces/appointment-search-request';
 import { AppointmentSearchBar } from '../../domain-components/appointment-search-bar/appointment-search-bar';
-import { differenceInMinutes, differenceInSeconds, format } from 'date-fns';
+import { closestTo, differenceInMinutes, differenceInSeconds, format, isAfter, parseISO } from 'date-fns';
 import { AppointmentResponse } from '../../interfaces/appointment-response';
 import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
 import { AppointmentStatus } from '../../interfaces/appointment-status';
@@ -58,6 +58,8 @@ export class CalendarView implements AfterViewInit, OnDestroy {
     private resizeObserver: ResizeObserver | null = null;
     calendarContainer = viewChild<ElementRef>('calendarContainer');
 
+    isSearchJumpPending = signal(false);
+
     calendarOptions = signal<CalendarOptions>({
         plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         initialView: 'timeGridWeek',
@@ -97,7 +99,11 @@ export class CalendarView implements AfterViewInit, OnDestroy {
                 ...options,
                 events: mappedEvents
             }));
-        });
+
+            if(untracked(this.isSearchJumpPending) && rawData.length > 0) {
+                this.jumpToBestResult(rawData);
+            }
+        }, { allowSignalWrites: true });
     }
 
     ngAfterViewInit(): void {
@@ -178,14 +184,39 @@ export class CalendarView implements AfterViewInit, OnDestroy {
         this.appointmentService.searchAppointments({
             startDateFrom: format(dateInfo.start, "yyyy-MM-dd'T'HH:mm:ss"),
             startDateTo: format(dateInfo.end, "yyyy-MM-dd'T'HH:mm:ss"),
-            globalText: null,
-            appointmentStatus: null,
-            sortField: 'startDateTime',
-            ascending: true
         })
     }
 
     onSearch(searchRequest: AppointmentSearchRequest) {
+        this.isSearchJumpPending.set(true);
         this.appointmentService.searchAppointments(searchRequest);
+    }
+
+    private jumpToBestResult(appointments: AppointmentResponse[]) {
+        const calendarApi = this.calendarComponent()?.getApi();
+        if(!calendarApi) return;
+
+        const now = new Date();
+        const dates = appointments.map(a => parseISO(a.startDateTime));
+        const futureDates = dates.filter(d => isAfter(d, now));
+
+        let targetDate: Date;
+
+        if(futureDates.length > 0) {
+            targetDate = closestTo(now, futureDates)!;
+        }
+
+        else {
+            targetDate = closestTo(now, dates) || dates[0];
+        }
+
+        if(targetDate) {
+            calendarApi.gotoDate(targetDate);
+            const timeString = format(targetDate, 'HH:mm:ss');
+            calendarApi.scrollToTime(timeString);
+            // const targetAppointment = appointments.find(a => a.startDateTime === targetDate.toISOString());
+        }
+
+        this.isSearchJumpPending.set(false);
     }
 }

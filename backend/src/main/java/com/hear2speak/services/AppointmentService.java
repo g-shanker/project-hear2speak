@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.hear2speak.dtos.ClinicianAppointmentRequest;
+import com.hear2speak.dtos.PatientAppointmentRequest;
 import com.hear2speak.dtos.AppointmentResponse;
 import com.hear2speak.dtos.AppointmentSearchRequest;
 import com.hear2speak.entities.AppointmentEntity;
@@ -120,7 +121,15 @@ public class AppointmentService {
     }
 
     @Transactional
-    public AppointmentResponse createAppointment(ClinicianAppointmentRequest appointmentRequest) {
+    public AppointmentResponse createClinicianAppointment(ClinicianAppointmentRequest appointmentRequest) {
+        AppointmentEntity appointmentEntity = appointmentMapper.toEntity(appointmentRequest);
+        appointmentRepository.persist(appointmentEntity);
+        AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
+        return appointmentResponse;
+    }
+
+    @Transactional
+    public AppointmentResponse createPatientAppointment(PatientAppointmentRequest appointmentRequest) {
         AppointmentEntity appointmentEntity = appointmentMapper.toEntity(appointmentRequest);
         appointmentRepository.persist(appointmentEntity);
         AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);

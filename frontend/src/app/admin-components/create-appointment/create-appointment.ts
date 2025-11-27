@@ -28,7 +28,7 @@ export class CreateAppointment {
 
         if (payload) {
             this.isSubmitting.set(true);
-            this.appointmentService.createAppointment(payload).subscribe({
+            this.appointmentService.createClinicianAppointment(payload).subscribe({
                 next: (createdAppointment) => {
                     console.log('Created clinician appointment successfully:', createdAppointment);
                     this.isSubmitting.set(false);
