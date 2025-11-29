@@ -1,0 +1,60 @@
+<div class="login-wrapper">
+  
+  <div class="login-card">
+    
+    <div class="card-header">
+      <div class="logo-accent"></div>
+      <h2>Hear2Speak</h2>
+      <p>Please sign in to access the admin console.</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          id="username" 
+          type="text" 
+          class="form-input"
+          formControlName="username" 
+          placeholder="admin"
+          [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          id="password" 
+          type="password" 
+          class="form-input"
+          formControlName="password" 
+          placeholder="••••••••"
+          [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        >
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <button type="submit" class="btn btn-primary btn-full" [disabled]="loginForm.invalid || isLoading()">
+        @if (isLoading()) {
+          <span class="spinner"></span>
+          <span>Signing in...</span>
+        } @else {
+          <span>Sign In</span>
+        }
+      </button>
+
+    </form>
+  </div>
+
+  <div class="login-footer">
+    <p>&copy; 2025 Hear2Speak Clinic. Authorized access only.</p>
+  </div>
+
+</div>

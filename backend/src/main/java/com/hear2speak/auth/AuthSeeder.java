@@ -19,7 +19,7 @@ public class AuthSeeder {
 
     private final UserService userService;
 
-    @ConfigProperty(name = "app.admin.initial-password", defaultValue = "password123")
+    @ConfigProperty(name = "app.admin.initial-password", defaultValue = "password")
     String initialPassword;
 
     @ConfigProperty(name = "app.admin.seeding-enabled", defaultValue = "false")
@@ -41,6 +41,8 @@ public class AuthSeeder {
 
         if(userService.registerUser(request)) {
             LOG.info("--- Initial Admin User Created. ---");
+            LOG.info("Username: admin, Password: " + initialPassword);
+            LOG.info("-----------------------------------");
         }
     }
     

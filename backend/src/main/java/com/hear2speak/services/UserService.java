@@ -2,6 +2,7 @@ package com.hear2speak.services;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import com.hear2speak.dtos.ChangePasswordRequest;
 import com.hear2speak.dtos.LoginRequest;
@@ -26,6 +27,8 @@ public class UserService {
 
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
+
+    private static final Logger LOG = Logger.getLogger(UserService.class.getName());
 
     @Inject
     public UserService(
@@ -64,7 +67,15 @@ public class UserService {
     public String authenticate(LoginRequest loginRequest) {
         UserEntity user = findByUsername(loginRequest.username);
 
-        if(user == null || !BcryptUtil.matches(loginRequest.password, user.password)) {
+        if(user == null) {
+            LOG.info(">>> LOGIN FAILED: User '" + loginRequest.username + "' not found in Database.");
+            return null;
+        }
+
+        if(!BcryptUtil.matches(loginRequest.password, user.password)) {
+            LOG.info(">>> LOGIN FAILED: Password mismatch for user '" + loginRequest.username + "'.");
+            LOG.info(">>> Input: " + loginRequest.password); // Be careful with this in prod!
+            LOG.info(">>> Stored Hash: " + user.password);
             return null;
         }
 

@@ -1,5 +1,7 @@
 package com.hear2speak.controllers;
 
+import java.util.logging.Logger;
+
 import com.hear2speak.dtos.ChangePasswordRequest;
 import com.hear2speak.dtos.LoginRequest;
 import com.hear2speak.dtos.RegisterRequest;
@@ -28,6 +30,8 @@ public class AuthController {
     
     private final UserService userService;
 
+    private static final Logger LOG = Logger.getLogger(AuthController.class.getName());
+
     @Inject
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -36,6 +40,9 @@ public class AuthController {
     @POST
     @Path("/login")
     public Response login(@Valid LoginRequest request) {
+        
+        LOG.info("======= REACHED CONTROLLER ========");
+
         String token = userService.authenticate(request);
         if(token != null) {
             return Response.ok(new TokenResponse(token)).build();

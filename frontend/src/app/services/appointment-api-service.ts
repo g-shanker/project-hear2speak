@@ -12,7 +12,7 @@ import { PatientAppointmentRequest } from "../interfaces/patient-appointment-req
 
 export class AppointmentApiService {
     private http = inject(HttpClient);
-    private apiUrl  = '/api/appointments'
+    private readonly apiUrl  = '/api/appointments'
 
     clinicianCreate(appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
         return this.http.post<AppointmentResponse>(`${this.apiUrl}/clinician`, appointment);
