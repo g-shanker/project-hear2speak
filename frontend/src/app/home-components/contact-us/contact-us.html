@@ -34,7 +34,10 @@
                   
                   <!-- EMAILS (Click to Compose) -->
                   @else if (item.type === 'EMAIL') {
-                    <a [href]="'mailto:' + line" class="info-link">
+                    <a [href]="'https://mail.google.com/mail/?view=cm&fs=1&to=' + line" 
+                       class="info-link" 
+                       target="_blank" 
+                       rel="noopener noreferrer">
                       {{ line }}
                     </a>
                   }
