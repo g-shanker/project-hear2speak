@@ -24,12 +24,26 @@
               
               <div class="lines">
                 @for (line of item.lines; track line) {
-                  @if (item.isLink) {
-                    <!-- Render as clickable link if needed (simplified logic) -->
-                    <span class="info-link">{{ line }}</span>
-                  } @else {
+                  
+                  <!-- PHONE NUMBERS (Click to Call) -->
+                  @if (item.type === 'PHONE') {
+                    <a [href]="'tel:' + formatPhone(line)" class="info-link">
+                      {{ line }}
+                    </a>
+                  } 
+                  
+                  <!-- EMAILS (Click to Compose) -->
+                  @else if (item.type === 'EMAIL') {
+                    <a [href]="'mailto:' + line" class="info-link">
+                      {{ line }}
+                    </a>
+                  }
+                  
+                  <!-- REGULAR TEXT (Address / Hours) -->
+                  @else {
                     <p>{{ line }}</p>
                   }
+
                 }
               </div>
             </div>
@@ -40,10 +54,6 @@
 
       <!-- RIGHT: Map Placeholder -->
       <div class="map-wrapper">
-        <!-- 
-           This is where you would embed a Google Map iframe.
-           For now, it's a structural placeholder.
-        -->
         <div class="map-placeholder">
           <span class="material-icons map-icon">map</span>
           <span>Google Map Embed</span>
