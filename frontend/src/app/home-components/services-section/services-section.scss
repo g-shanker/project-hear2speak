@@ -1,7 +1,9 @@
-/* Variables inherited from .home-layout */
+/* src/app/features/home/services/services.component.scss */
 
+/* 1. Section Layout */
 .services-section {
-  background-color: #ffffff;
+  background-color: #ffffff; /* Clean white band */
+  padding: 6rem 0;
   scroll-margin-top: var(--nav-height); 
 }
 
@@ -10,12 +12,29 @@
   margin-bottom: 5rem;
 }
 
+.section-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: var(--color-primary-dark); /* Dark Green-Black */
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-family: var(--font-body);
+  color: #475569; /* Slate 600 */
+  font-size: 1.1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 /* --- THE DIRECTORY LAYOUT --- */
 .directory-list {
   display: flex;
   flex-direction: column;
   /* Top border to start the list visually */
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--bg-subtle);
 }
 
 .directory-row {
@@ -25,7 +44,7 @@
   gap: 4rem;
   
   padding: 4rem 0; /* Vertical breathing room */
-  border-bottom: 1px solid #e5e5e5; /* Structural Divider */
+  border-bottom: 1px solid var(--bg-subtle); /* Structural Divider */
 }
 
 /* --- LEFT COLUMN: IDENTITY --- */
@@ -35,35 +54,41 @@
   gap: 1.5rem;
 }
 
-/* Neutral Wireframe Icon Box */
+/* Branded Icon Box */
 .icon-box {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 4px; /* Minimal radius */
-  background-color: #f0f0f0; /* Neutral grey */
-  color: #333; /* Dark grey icon */
+  width: 4rem;
+  height: 4rem;
+  
+  /* Soft Emerald Background */
+  background-color: rgba(5, 150, 105, 0.1); 
+  
+  /* Emerald Icon */
+  color: var(--color-primary); 
+  
+  border-radius: 50%; /* Circle looks friendlier/more modern */
   display: flex;
   align-items: center;
   justify-content: center;
 
   .material-icons {
-    font-size: 1.75rem;
-    opacity: 0.8;
+    font-size: 2rem;
   }
 }
 
 .head-text {
   h3 {
+    font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
-    margin: 0 0 1rem 0;
-    color: #000; /* High contrast */
+    margin: 0 0 0.75rem 0;
+    color: var(--color-primary-dark); /* High contrast */
   }
 
   p {
+    font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.6;
-    color: #666; /* Secondary text */
+    color: #64748B; /* Slate 500 */
     margin: 0;
     max-width: 90%;
   }
@@ -73,11 +98,12 @@
 .service-items {
   .list-label {
     display: block;
+    font-family: var(--font-body);
     font-size: 0.75rem;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 0.05em;
-    color: #999;
+    color: #94A3B8; /* Slate 400 */
     margin-bottom: 1.5rem;
   }
 }
@@ -93,18 +119,18 @@
   gap: 1rem 2rem; /* Row Gap, Column Gap */
 
   li {
-    font-size: 0.95rem;
-    color: #333;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: #334155; /* Slate 700 */
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    line-height: 1.4;
+    line-height: 1.5;
 
     .check {
-      font-size: 1.1rem;
-      color: #999; /* Neutral checkmark */
-      font-weight: bold;
-      margin-top: 0.1rem; /* Visual alignment */
+      font-size: 1.25rem;
+      color: var(--color-primary); /* Green Checkmark */
+      margin-top: -2px; /* Visual alignment */
     }
   }
 }

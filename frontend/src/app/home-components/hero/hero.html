@@ -24,7 +24,7 @@
            We pass the array of numbers [1, 2, 3].
            The carousel iterates over them and uses the template below for each one.
         -->
-                <app-carousel [items]="heroSlides" [interval]="4000" [showArrows]=true>
+                <app-carousel [items]="heroSlides" [interval]="4000" [showArrows]="true" class="theme-light">
 
                     <ng-template #itemTemplate let-slideNum>
                         <!-- Your existing placeholder style, reused for every slide -->

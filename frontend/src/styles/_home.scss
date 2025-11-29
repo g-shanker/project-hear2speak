@@ -1,116 +1,97 @@
+/* src/styles/_home.scss */
+
+/* Import Fonts: Montserrat (Headings) + DM Sans (Body/UI) */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Montserrat:wght@600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
 html {
   scroll-behavior: smooth;
-  /* CRITICAL: Stops the scroll 5rem (80px) above the target ID.
-     This ensures the section title is visible below the sticky header. */
-  scroll-padding-top: 5rem; 
+  scroll-padding-top: 6rem; 
 }
 
 .home-layout {
+  /* --- 1. Backgrounds --- */
+  --bg-body: #EEF2F6;      /* Crisp, cool white (Slate 50) */
+  --bg-surface: #FDFDFD;   
+  --bg-subtle: #E2E8F0;    
 
-  /* ==========================================================================
-     1. DIMENSIONS & SPACING
-     ========================================================================== */
-  --nav-height: 5rem;      /* Space reserved for sticky header */
-  --content-width: 75rem;  /* Max width for readability (~1200px) */
-  --section-gap: 4rem;     /* Space between sections */
-  --gutter: 1.5rem;        /* Side padding for mobile */
+  /* --- 2. The "Fresh Emerald" Palette --- */
+  --color-primary: #059669; 
+  --color-primary-dark: #022c22; 
+  --color-primary-hover: #047857; 
+  --color-secondary: #334155;    
 
-  /* ==========================================================================
-     2. PAGE SCAFFOLDING
-     ========================================================================== */
-  & {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100%;
-    position: relative;
-    
-    /* Scroll Logic */
-    scroll-behavior: smooth;
-    scroll-padding-top: var(--nav-height);
-  }
+  /* --- 3. Typography --- */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
 
-  /* Main content takes remaining height */
-  main {
-    flex: 1; 
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  /* ==========================================================================
-     3. LAYOUT UTILITIES
-     ========================================================================== */
+  /* --- 4. Dimensions --- */
+  --nav-height: 5rem;
+  --content-width: 75rem;
+  --radius-pill: 50px;
+  --radius-card: 24px;
   
-  /* The Container: Centers content */
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* Layout Reset */
   .container {
     width: 100%;
     max-width: var(--content-width);
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--gutter);
-    padding-right: var(--gutter);
-    
-    /* Debug helper (Optional: helps see alignment) */
-    /* outline: 1px dashed rgba(0,0,0,0.1); */
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
-  /* Standard Section */
-  section {
-    width: 100%;
-    padding-top: var(--section-gap);
-    padding-bottom: var(--section-gap);
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Default center align */
-  }
-
-  /* Fullscreen Section (Hero) */
-  .section-fullscreen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  /* Split Layout (Left Text / Right Visual) */
-  .grid-split {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: center;
-
-    @media (min-width: 900px) {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  /* ==========================================================================
-     4. ADMIN COMPONENT ADAPTER (Keep this to prevent form breakage)
-     ========================================================================== */
-  & {
-    /* Map Admin Variables to Neutrals */
-    --bg-surface: #ffffff;
-    --bg-app: #f9f9f9;
-    --border-subtle: #e0e0e0;
-    --border-strong: #cccccc;
-    --text-muted: #666666;
-    --status-cancelled-text: #d32f2f;
-    --status-cancelled-bg: #d32f2f;
-    --primary-500: #000000; /* Default black for now */
-    --primary-100: #eeeeee;
-    --font-sans: 'Inter', sans-serif;
-    --radius-sm: 4px;
-  }
-
-  app-appointment-form {
+  /* --- GLOBAL FORM STYLING --- */
+  
+  label {
     display: block;
-    height: auto !important;
-    min-height: 0 !important;
-    overflow: visible !important;
+    font-family: var(--font-body); 
+    font-weight: 700; /* Bold to match the large size */
+    font-size: 1.25rem; /* 1.5rem is extremely large for labels, scaling to 1.25rem for balance, change to 1.5rem if strictly preferred */
+    color: var(--color-primary-dark); /* Using dark green for high contrast */
+    margin-bottom: 0.5rem; 
+  }
 
-    .appointment-form-container {
-      padding: 0 !important;
+  /* Inputs */
+  input, 
+  select, 
+  textarea {
+    width: 100%;
+    font-family: var(--font-body); 
+    font-size: 1.1rem; 
+    color: #1e293b; 
+    
+    /* Compact Padding as requested */
+    padding: 0.5rem 1rem; 
+    
+    background-color: #F8FAFC; 
+    border: 1px solid #CBD5E1; 
+    border-radius: 8px;        
+    
+    transition: all 0.2s ease-in-out;
+    outline: none;
+
+    &::placeholder {
+      color: #94A3B8; 
+      font-size: 1rem; 
     }
+
+    &:focus {
+      background-color: #ffffff;
+      border-color: var(--color-primary); 
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1); 
+    }
+    
+    &.ng-invalid.ng-touched {
+      border-color: #EF4444; 
+      background-color: #FEF2F2;
+    }
+  }
+
+  /* Spacing between groups */
+  .form-group {
+    margin-bottom: 1.25rem; 
   }
 }

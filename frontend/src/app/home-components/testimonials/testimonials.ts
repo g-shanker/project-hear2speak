@@ -17,7 +17,7 @@ export class Testimonials {
     {
       name: 'Mr. Potato Head',
       treatment: 'Balance (Rolling) Rehab',
-      text: 'I kept rolling off the kitchen counter uncontrollably. It was terrifying. The vestibular therapy helped me find my center of gravity. Now I am a stable, grounded mash. This is just padding to see how much text the testimonial card can actually handle and what it does if there is too much text. I am assuming tht it simply just makes the cards taller as opposed to making them wider but that is still to be seen.'
+      text: 'I kept rolling off the kitchen counter uncontrollably. It was terrifying. The vestibular therapy helped me find my center of gravity. Now I am a stable, grounded mash.'
     },
     {
       name: 'Brocc O. Lee',

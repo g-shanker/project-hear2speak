@@ -1,13 +1,14 @@
 <section id="appointment" class="appointment-section">
   <div class="container">
     
-    <!-- Title Area -->
-
+    <!-- External Section Title -->
     @if (!submitSuccess()) {
+      <div class="text-center mb-8">
         <h2 class="section-title">Request an Appointment</h2>
         <p class="section-subtitle">
-            Ready to start your journey? Fill out the form below and our team will contact you to confirm your slot.
+            Ready to start your journey? Fill out the form below.
         </p>
+      </div>
     }
 
     <!-- The Card Wrapper -->
@@ -28,25 +29,38 @@
       <!-- FORM STATE -->
       @else {
         
-        <!-- ERROR BANNER -->
-        @if (submitError()) {
-          <div class="error-banner">
-            <span class="material-icons">error_outline</span>
-            <div class="error-content">
-              <h4>Something went wrong</h4>
-              <p>We couldn't submit your request. Please check your connection and try again, or call us directly.</p>
+        <!-- 1. FORM HEADER -->
+        <div class="form-header">
+           
+           <!-- ERROR BANNER -->
+           @if (submitError()) {
+            <div class="error-banner">
+              <div class="banner-icon">
+                <span class="material-icons">error_outline</span>
+              </div>
+              <div class="error-content">
+                <h4>Something went wrong</h4>
+                <p>We couldn't submit your request. Please check your connection and try again.</p>
+                
+                <!-- New Action Area -->
+                <div class="error-actions">
+                  <span class="help-text">Issue persisting?</span>
+                  <a href="#contact" class="btn-error-small">Contact Us</a>
+                </div>
+              </div>
             </div>
-          </div>
-        }
+          } @else {
+             <p class="form-instruction">Please provide your details below.</p>
+          }
+        </div>
 
-        <!-- 
-          We use 'PATIENT' mode to hide the admin fields.
-          The styling is handled by the _home.scss overrides.
-        -->
-        <app-appointment-form [mode]="'PATIENT'"></app-appointment-form>
+        <!-- 2. SCROLLABLE BODY -->
+        <div class="form-scroll-body">
+           <app-appointment-form [mode]="'PATIENT'"></app-appointment-form>
+        </div>
 
-        <!-- Submit Button (External to the form component) -->
-        <div class="actions">
+        <!-- 3. FORM FOOTER -->
+        <div class="form-footer">
           <button 
             class="btn-cta full-width-btn" 
             (click)="onSubmit()"

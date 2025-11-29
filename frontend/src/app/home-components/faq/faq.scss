@@ -1,35 +1,64 @@
-/* Variables inherited from .home-layout */
+/* src/app/features/home/faq/faq.component.scss */
 
+/* 1. Section Layout */
 .faq-section {
-  background-color: #ffffff;
+  /* Light Slate background to alternate with the white Testimonials */
+  background-color: var(--bg-body); 
+  padding: 6rem 0;
   scroll-margin-top: var(--nav-height); 
 }
 
+/* 2. Typography */
 .header-group {
   text-align: center;
-  margin-bottom: 5rem;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: var(--font-heading); /* Montserrat */
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: var(--color-primary-dark); /* Dark Green-Black */
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-family: var(--font-body); /* DM Sans */
+  color: #475569; /* Slate 600 */
+  font-size: 1.1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 /* --- THE LIST CONTAINER --- */
 .faq-list {
-  max-width: 800px; /* Reading width */
+  max-width: 800px; /* Optimal reading width */
   margin: 0 auto;
-  border-top: 1px solid #e5e5e5; /* Start with a top border */
+  /* Use a slightly darker border for visibility on light grey bg */
+  border-top: 1px solid #CBD5E1; 
 }
 
 /* --- INDIVIDUAL ITEM --- */
 .faq-item {
-  border-bottom: 1px solid #e5e5e5; /* Separator lines */
-  transition: background-color 0.2s;
+  border-bottom: 1px solid #CBD5E1; /* Separator lines */
+  transition: all 0.3s ease;
 
-  /* State: Open */
+  /* State: Open/Active */
   &.active {
     .toggle-icon {
       transform: rotate(45deg); /* Turn '+' into 'x' */
+      color: var(--color-primary); /* Green 'x' */
     }
     
     .question-text {
-      font-weight: 700; /* Bold the question when open */
+      font-weight: 700; 
+      color: var(--color-primary-dark); /* Highlight the question */
+    }
+
+    .index {
+      color: var(--color-primary); /* Green Number */
+      opacity: 1;
     }
 
     .faq-body {
@@ -50,37 +79,43 @@
   border: none;
   cursor: pointer;
   text-align: left;
-  
-  /* Typography */
-  color: #333;
-  font-family: inherit;
-  font-size: 1.1rem;
+  transition: opacity 0.2s;
   
   &:hover {
-    opacity: 0.8;
+    .question-text {
+      color: var(--color-primary-hover);
+    }
   }
 }
 
 /* 01, 02, 03 Index */
 .index {
-  font-size: 0.9rem;
-  font-family: monospace; /* Technical feel */
-  color: #999;
+  font-size: 1rem;
+  font-family: var(--font-heading); /* Montserrat for structure */
+  font-weight: 700;
+  color: #94A3B8; /* Muted Slate */
   margin-right: 2rem;
   flex-shrink: 0;
   width: 2rem; /* Fixed width ensures alignment */
+  transition: color 0.3s ease;
 }
 
 .question-text {
   flex: 1; /* Pushes icon to the far right */
   margin-right: 1rem;
+  
+  font-family: var(--font-body);
+  font-size: 1.1rem;
   font-weight: 500;
+  color: #334155; /* Slate 800 */
   line-height: 1.4;
+  
+  transition: color 0.2s ease;
 }
 
 .toggle-icon {
-  color: #999;
-  transition: transform 0.3s ease;
+  color: #94A3B8; /* Muted Icon */
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), color 0.3s;
   font-size: 1.5rem;
 }
 
@@ -98,7 +133,10 @@
   /* Indent answer to align with question text (Index width + Margin) */
   padding-left: 4rem; 
   padding-right: 2rem;
-  color: #666;
+  
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: #475569; /* Slate 600 for readability */
   line-height: 1.6;
 }
 
@@ -115,5 +153,9 @@
   
   .faq-header {
     padding: 1.25rem 0;
+  }
+  
+  .question-text {
+    font-size: 1rem;
   }
 }

@@ -1,20 +1,53 @@
-/* Variables inherited from .home-layout */
+/* src/app/features/home/contact/contact.component.scss */
 
+/* 1. Section Layout */
 .contact-section {
-  background-color: #f9f9f9; /* Subtle grey to anchor the bottom of the page */
+  /* White background to alternate with the grey FAQ section */
+  background-color: #ffffff; 
+  padding: 6rem 0;
   scroll-margin-top: var(--nav-height); 
 }
 
+/* 2. Typography */
 .header-group {
   text-align: center;
   margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: var(--font-heading); /* Montserrat */
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: var(--color-primary-dark); /* Dark Green-Black */
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-family: var(--font-body); /* DM Sans */
+  color: #475569; /* Slate 600 */
+  font-size: 1.1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Grid Split */
+.grid-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+
+  @media (min-width: 900px) {
+    grid-template-columns: 1fr 1.2fr; /* Give map slightly more space */
+  }
 }
 
 /* --- LEFT COLUMN: DETAILS --- */
 .contact-details {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; /* Spacing between contact items */
+  gap: 2.5rem; 
 }
 
 .contact-item {
@@ -23,29 +56,33 @@
   gap: 1.5rem;
 }
 
+/* Branded Icon Box */
 .icon-box {
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  
+  /* Soft Emerald Background */
+  background-color: rgba(5, 150, 105, 0.1); 
+  color: var(--color-primary); 
+  
   border-radius: 50%;
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
-  color: #333; /* Dark Icon */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 
   .material-icons {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 }
 
 .item-content {
   h3 {
-    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
-    color: #000;
+    color: var(--color-primary-dark);
   }
 
   .lines {
@@ -55,15 +92,22 @@
     
     p, .info-link {
       margin: 0;
-      color: #666;
-      font-size: 1rem;
+      font-family: var(--font-body);
+      color: #334155; /* Slate 700 */
+      font-size: 1.05rem;
       line-height: 1.5;
     }
 
     .info-link {
       cursor: pointer;
-      text-decoration: underline;
-      &:hover { color: #000; }
+      text-decoration: none;
+      transition: color 0.2s;
+      
+      /* Hover Effect */
+      &:hover { 
+        color: var(--color-primary); 
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -71,12 +115,18 @@
 /* --- RIGHT COLUMN: MAP --- */
 .map-wrapper {
   height: 100%;
-  min-height: 400px; /* Force height so map is visible */
+  min-height: 450px; 
   width: 100%;
-  border-radius: 8px;
+  
+  border-radius: var(--radius-card); /* 24px */
   overflow: hidden;
-  border: 1px solid #e5e5e5;
-  background: #fff;
+  
+  /* Lifted Map Effect */
+  box-shadow: var(--shadow-float);
+  border: 6px solid #ffffff; /* White frame */
+  background: #F1F5F9;
+  
+  position: relative;
 }
 
 .map-placeholder {
@@ -86,26 +136,38 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #e5e5e5;
-  color: #666;
+  background-color: #F8FAFC;
+  color: #94A3B8;
   gap: 0.5rem;
 
   .map-icon {
-    font-size: 3rem;
-    opacity: 0.5;
+    font-size: 4rem;
+    color: var(--color-primary);
+    opacity: 0.4;
   }
   
-  span { font-weight: 600; }
-  small { font-size: 0.85rem; opacity: 0.7; }
+  span { 
+    font-family: var(--font-heading);
+    font-weight: 700; 
+    color: var(--color-primary-dark);
+  }
+  
+  small { 
+    font-family: var(--font-body);
+    font-size: 0.9rem; 
+  }
 }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-  /* On tablet/mobile, we want the map to sit BETWEEN the header and details?
-     Or just below. Let's keep it below for now. */
-  
+  .grid-split {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
   .map-wrapper {
-    min-height: 300px;
-    margin-top: 2rem;
+    min-height: 350px;
+    margin-top: 1rem;
+    order: -1; /* Optional: Move map to top on mobile? */
   }
 }

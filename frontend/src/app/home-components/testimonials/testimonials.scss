@@ -1,21 +1,44 @@
-/* Variables inherited from .home-layout */
+/* src/app/features/home/testimonials/testimonials.component.scss */
 
+/* 1. Section Layout */
 .testimonials-section {
-  background-color: #f9f9f9; 
+  /* White background to alternate with the grey About section */
+  background-color: #ffffff; 
+  padding: 6rem 0;
   scroll-margin-top: var(--nav-height); 
   overflow: hidden; 
 }
 
+/* 2. Typography */
 .header-group {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
-/* --- WRAPPER FOR BUTTONS + LIST --- */
+.section-title {
+  font-family: var(--font-heading); /* Montserrat */
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: var(--color-primary-dark); /* Dark Green-Black */
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-family: var(--font-body); /* DM Sans */
+  color: #475569; /* Slate 600 */
+  font-size: 1.1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* --- WRAPPER --- */
 .scroller-wrapper {
-  position: relative; /* Anchor for buttons */
+  position: relative; 
   display: flex;
   align-items: center;
+  /* Ensure wrapper doesn't exceed container width */
+  max-width: 100%; 
 }
 
 /* --- NAVIGATION BUTTONS --- */
@@ -25,13 +48,16 @@
   transform: translateY(-50%);
   z-index: 2;
   
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
-  border: 1px solid #e5e5e5;
+  
+  /* White button with subtle border */
   background-color: #ffffff;
-  color: #333;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border: 1px solid var(--bg-subtle);
+  color: var(--color-primary); /* Emerald Icon */
+  
+  box-shadow: var(--shadow-card);
   
   display: flex;
   align-items: center;
@@ -39,19 +65,21 @@
   cursor: pointer;
   transition: all 0.2s ease;
 
+  .material-icons { font-size: 1.5rem; }
+
   &:hover {
-    background-color: #f0f0f0;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    transform: translateY(-50%) scale(1.1); /* Slight grow */
+    background-color: var(--color-primary); /* Fill Emerald on hover */
+    border-color: var(--color-primary);
+    color: #ffffff;
+    box-shadow: var(--shadow-float);
+    transform: translateY(-50%) scale(1.1);
   }
 
-  &.prev { left: -1.5rem; } /* Hang off the left edge slightly */
-  &.next { right: -1.5rem; } /* Hang off the right edge slightly */
+  &.prev { left: -1rem; }
+  &.next { right: -1rem; }
   
-  /* On mobile, these buttons might get in the way of content, 
-     so we can hide them since touch users prefer swiping. */
-  @media (max-width: 768px) {
-    display: none;
+  @media (max-width: 900px) {
+    display: none; /* Hide on tablets/mobile, allow swipe */
   }
 }
 
@@ -61,7 +89,7 @@
   gap: 2rem;
   
   overflow-x: auto;
-  padding: 1rem 0 2rem 0; /* Vertical padding for shadows/focus rings */
+  padding: 2rem 0.5rem; /* Vertical padding for hover lift effects */
   scroll-snap-type: x mandatory;
   
   /* Hide Scrollbar */
@@ -72,52 +100,76 @@
   scroll-behavior: smooth;
 }
 
-/* --- ITEM STRUCTURE --- */
+/* --- REVIEW CARD --- */
 .review-item {
-  flex: 0 0 350px; 
-  scroll-snap-align: center; /* Center the card when stopping */
+  /* Fixed width for consistent cards */
+  flex: 0 0 400px; 
+  scroll-snap-align: center; 
   
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 8px; 
-  border: 1px solid #e5e5e5;
+  
+  /* Default State: Light Grey Card on White Background */
+  background: var(--bg-body); 
+  padding: 2.5rem;
+  border-radius: var(--radius-card); 
+  border: 1px solid transparent; /* Invisible border prevents layout shift on hover */
+  
   height: auto; 
+  transition: all 0.3s ease;
+  
+  /* Hover State: "Pop" to White with Green Border */
+  &:hover {
+    background: #ffffff;
+    border-color: rgba(5, 150, 105, 0.3);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-5px);
+  }
 }
 
 .quote-icon {
-  font-size: 2rem;
-  color: #ccc; 
+  font-size: 2.5rem;
+  color: var(--color-primary); 
+  opacity: 0.2; /* Watermark style */
   transform: scaleX(-1);
 }
 
 .review-text {
-  font-size: 1.1rem;
+  /* Use Lora (Serif) for the human voice */
+  font-family: 'Lora', serif; 
+  font-size: 1.15rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--color-secondary);
   margin: 0;
   font-style: italic;
+  font-weight: 500;
 }
 
 .reviewer-info {
   margin-top: auto; 
   display: flex;
   flex-direction: column;
+  
+  /* Subtle separator */
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 1rem;
 }
 
 .name {
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1rem;
-  color: #000;
+  color: var(--color-primary-dark);
 }
 
 .treatment {
+  font-family: var(--font-body);
   font-size: 0.85rem;
-  color: #666;
+  color: #64748B; /* Slate 500 */
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 600;
   margin-top: 0.25rem;
 }
 
@@ -125,13 +177,13 @@
 @media (max-width: 600px) {
   .reviews-scroller {
     gap: 1rem;
-    padding-left: 1rem; /* Add padding so first card isn't flush */
-    padding-right: 1rem;
+    padding-left: 1.5rem; /* Peeking effect */
+    padding-right: 1.5rem;
   }
   
   .review-item {
-    flex: 0 0 85%; /* Peek layout */
+    flex: 0 0 85%; /* Shows part of the next card to encourage swipe */
     padding: 1.5rem;
-    scroll-snap-align: start; /* Align to left on mobile */
+    scroll-snap-align: center;
   }
 }

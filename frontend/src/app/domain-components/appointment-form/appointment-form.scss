@@ -126,3 +126,67 @@ textarea.value {
   from { opacity: 0; transform: translateY(-0.25rem); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ========================================================================
+   PUBLIC HOME OVERRIDES 
+   These styles apply ONLY when the form is inside .home-layout 
+   ======================================================================== */
+
+:host-context(.home-layout) {
+  
+  .appointment-form-container {
+    /* Remove the bottom padding because the public card has an external footer */
+    padding: 0; 
+    padding-bottom: 1rem;
+    gap: 2rem; /* More breathing room */
+  }
+
+  /* Hide the "Patient Details" header in public view if redundant, 
+     OR style it to look like a sub-header */
+  .section-header {
+    display: none; /* Usually redundant with "Request Appointment" card title */
+  }
+
+  /* 1. PUBLIC LABELS: Large & Readable */
+  .key {
+    font-family: var(--font-body);
+    font-size: 1.1rem; /* Much larger than admin 0.75rem */
+    font-weight: 700;  /* Bold */
+    text-transform: none; /* Title Case, not Uppercase */
+    letter-spacing: normal;
+    color: var(--color-primary-dark); /* Dark Green/Black */
+    margin-bottom: 0.5rem;
+  }
+
+  /* 2. PUBLIC INPUTS: Matte & Chunky */
+  .value {
+    font-family: var(--font-body);
+    font-size: 1.1rem; /* Larger text for easy reading */
+    padding: 0.75rem 1rem; /* More comfortable padding */
+    
+    background-color: #F8FAFC; /* Matte Grey Background */
+    border: 1px solid #CBD5E1; /* Slate 300 */
+    border-radius: 8px; /* Softer corners */
+    
+    color: #1e293b;
+
+    &::placeholder {
+      font-size: 1rem;
+      color: #94A3B8;
+    }
+
+    &:focus {
+      background-color: #ffffff;
+      border-color: var(--color-primary); /* Emerald Green */
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); /* Soft Emerald Glow */
+    }
+  }
+
+  /* Error messages in public view */
+  .error {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #EF4444;
+    margin-top: 0.5rem;
+  }
+}

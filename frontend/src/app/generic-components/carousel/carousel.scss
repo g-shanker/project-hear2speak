@@ -1,80 +1,151 @@
+/* src/app/shared/components/carousel/carousel.component.scss */
+
 .carousel-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      border-radius: inherit; /* Inherit border radius from parent */
-    }
+  /* --- 1. Component Theming (Default: Light controls for Dark Backgrounds) --- */
+  /* We use local variables so we can override them easily in parent components */
+  --control-glass: rgba(255, 255, 255, 0.1);
+  --control-border: rgba(255, 255, 255, 0.2);
+  --control-icon: var(--color-primary-dark);
+  --control-hover: var(--grad-action); /* Use our brand gradient on hover */
+  
+  --dot-inactive: rgba(255, 255, 255, 0.4);
+  --dot-active: #ffffff; /* High contrast active state */
+  
+  /* Layout */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit; 
+  isolation: isolate; /* Creates a stacking context for backdrop filters */
 
-    .carousel-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 0.8s ease-in-out; /* Smooth Fade */
-      z-index: 0;
-      pointer-events: none; /* Prevent clicking hidden slides */
-      
-      /* Flexbox to center content by default */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  /* --- 2. Inverted Theme (Add class .theme-light to container for use on white backgrounds) --- */
+  &.theme-light {
+    --control-glass: rgba(0, 95, 115, 0.1); /* Dark Teal Glass */
+    --control-border: rgba(0, 95, 115, 0.2);
+    --control-icon: var(--color-primary-dark);
+    --dot-inactive: rgba(0, 95, 115, 0.3);
+    --dot-active: var(--color-primary-dark);
+  }
+}
 
-    .carousel-slide.active {
-      opacity: 1;
-      z-index: 1;
-      pointer-events: auto;
-    }
+.carousel-track {
+  width: 100%;
+  height: 100%;
+}
 
-    /* --- CONTROLS --- */
-    .dots-container {
-      position: absolute;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 0.75rem;
-      z-index: 2;
-    }
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* Vestibular Safe Transition */
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  
+  z-index: 0;
+  pointer-events: none;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.8);
-      background-color: transparent;
-      cursor: pointer;
-      padding: 0;
-      transition: all 0.3s;
-    }
+  &.active {
+    opacity: 1;
+    z-index: 1;
+    pointer-events: auto;
+  }
+}
 
-    .dot.active {
-      background-color: #fff;
-      transform: scale(1.2);
-    }
+/* --- 3. Glassmorphism Controls --- */
 
-    .nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.3);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 2.5rem;
-      height: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.2s;
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  
+  /* Glass Effect */
+  background: var(--control-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--control-border);
+  
+  color: var(--control-icon);
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  
+  /* Smooth Interaction */
+  transition: all 0.3s ease;
 
-      &:hover { background: rgba(0,0,0,0.6); }
-    }
+  /* Icon sizing */
+  .material-icons {
+    font-size: 1.5rem;
+  }
 
-    .prev { left: 1rem; }
-    .next { right: 1rem; }
+  &:hover {
+    background: var(--control-hover);
+    border-color: transparent;
+    // color: white;
+    box-shadow: 0 4px 15px rgba(10, 147, 150, 0.3); /* Teal glow */
+    transform: translateY(-50%) scale(1.05); /* Subtle lift */
+  }
+
+  /* Focus for accessibility */
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+}
+
+.prev { left: 1.5rem; }
+.next { right: 1.5rem; }
+
+/* --- 4. Pagination Dots --- */
+
+.dots-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 10;
+  
+  /* Optional: Add a subtle pill background behind dots for readability */
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.1); /* Very faint shade */
+  backdrop-filter: blur(4px);
+}
+
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  
+  background-color: var(--dot-inactive);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:hover {
+    background-color: var(--dot-active);
+    opacity: 0.7;
+  }
+
+  &.active {
+    background-color: var(--dot-active);
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+}
