@@ -1,0 +1,111 @@
+/* Variables inherited from .home-layout */
+
+.contact-section {
+  background-color: #f9f9f9; /* Subtle grey to anchor the bottom of the page */
+  scroll-margin-top: var(--nav-height); 
+}
+
+.header-group {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+/* --- LEFT COLUMN: DETAILS --- */
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; /* Spacing between contact items */
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.icon-box {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  color: #333; /* Dark Icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .material-icons {
+    font-size: 1.25rem;
+  }
+}
+
+.item-content {
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #000;
+  }
+
+  .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    
+    p, .info-link {
+      margin: 0;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .info-link {
+      cursor: pointer;
+      text-decoration: underline;
+      &:hover { color: #000; }
+    }
+  }
+}
+
+/* --- RIGHT COLUMN: MAP --- */
+.map-wrapper {
+  height: 100%;
+  min-height: 400px; /* Force height so map is visible */
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e5e5;
+  color: #666;
+  gap: 0.5rem;
+
+  .map-icon {
+    font-size: 3rem;
+    opacity: 0.5;
+  }
+  
+  span { font-weight: 600; }
+  small { font-size: 0.85rem; opacity: 0.7; }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  /* On tablet/mobile, we want the map to sit BETWEEN the header and details?
+     Or just below. Let's keep it below for now. */
+  
+  .map-wrapper {
+    min-height: 300px;
+    margin-top: 2rem;
+  }
+}

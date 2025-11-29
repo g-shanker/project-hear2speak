@@ -1,0 +1,125 @@
+/* Variables inherited from .home-layout */
+
+.footer-section {
+  background-color: #1a1a1a; 
+  color: #ffffff;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  margin-top: auto; 
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+/* --- COLUMNS --- */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    margin: 0 0 0.5rem 0;
+  }
+}
+
+/* --- BRAND COLUMN --- */
+.brand-col {
+  max-width: 400px;
+}
+
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo-img {
+  height: 2.5rem;
+  width: auto;
+  
+  /* UNCOMMENT IF YOUR LOGO IS BLACK TEXT: 
+     This inverts colors to make it white. */
+  /* filter: brightness(0) invert(1); */
+}
+
+.footer-text-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.footer-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* --- LINKS --- */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  li a {
+    text-decoration: none;
+    color: #ffffff;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    font-size: 0.95rem;
+
+    &:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  }
+}
+
+.admin-link {
+  font-size: 0.85rem;
+  opacity: 0.5 !important;
+  
+  &:hover {
+    opacity: 1 !important;
+  }
+}
+
+/* --- BOTTOM BAR --- */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.5;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr; 
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .brand-col {
+    margin: 0 auto;
+    align-items: center; /* Center flex items */
+  }
+  
+  .footer-brand-header {
+    justify-content: center;
+  }
+}

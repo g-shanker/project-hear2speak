@@ -1,0 +1,43 @@
+<section id="hero" class="hero section-fullscreen">
+    <div class="container">
+
+        <div class="grid-split">
+
+            <!-- LEFT COLUMN: Content -->
+            <div class="hero-content">
+                <h1>Reconnect with the Sounds of Life.</h1>
+
+                <p class="subtitle">
+                    Expert care for hearing, speech, and balance disorders in Bengaluru.
+                    We offer personalized diagnostics and rehabilitation plans.
+                </p>
+
+                <div class="actions">
+                    <a href="#appointment" class="btn btn-primary">Book Consultation</a>
+                    <a href="#services" class="btn btn-secondary">Our Services</a>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Carousel Placeholder -->
+            <div class="hero-visual">
+                <!-- 
+           We pass the array of numbers [1, 2, 3].
+           The carousel iterates over them and uses the template below for each one.
+        -->
+                <app-carousel [items]="heroSlides" [interval]="4000" [showArrows]=true>
+
+                    <ng-template #itemTemplate let-slideNum>
+                        <!-- Your existing placeholder style, reused for every slide -->
+                        <div class="placeholder-box">
+                            <span class="material-icons visual-icon">image</span>
+                            <span>[ Hero Image {{ slideNum }} / Illustration Area ]</span>
+                        </div>
+                    </ng-template>
+
+                </app-carousel>
+            </div>
+
+        </div>
+
+    </div>
+</section>

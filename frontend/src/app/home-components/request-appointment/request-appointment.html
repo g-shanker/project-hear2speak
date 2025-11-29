@@ -1,0 +1,70 @@
+<section id="appointment" class="appointment-section">
+  <div class="container">
+    
+    <!-- Title Area -->
+
+    @if (!submitSuccess()) {
+        <h2 class="section-title">Request an Appointment</h2>
+        <p class="section-subtitle">
+            Ready to start your journey? Fill out the form below and our team will contact you to confirm your slot.
+        </p>
+    }
+
+    <!-- The Card Wrapper -->
+    <div class="form-card">
+      
+      <!-- SUCCESS STATE -->
+      @if (submitSuccess()) {
+        <div class="success-message">
+          <div class="icon-circle">
+            <span class="material-icons">check</span>
+          </div>
+          <h3>Request Sent!</h3>
+          <p>We have received your details. We will call you shortly to confirm your time.</p>
+          <button class="btn-outline" (click)="resetView()">Book Another</button>
+        </div>
+      } 
+      
+      <!-- FORM STATE -->
+      @else {
+        
+        <!-- ERROR BANNER -->
+        @if (submitError()) {
+          <div class="error-banner">
+            <span class="material-icons">error_outline</span>
+            <div class="error-content">
+              <h4>Something went wrong</h4>
+              <p>We couldn't submit your request. Please check your connection and try again, or call us directly.</p>
+            </div>
+          </div>
+        }
+
+        <!-- 
+          We use 'PATIENT' mode to hide the admin fields.
+          The styling is handled by the _home.scss overrides.
+        -->
+        <app-appointment-form [mode]="'PATIENT'"></app-appointment-form>
+
+        <!-- Submit Button (External to the form component) -->
+        <div class="actions">
+          <button 
+            class="btn-cta full-width-btn" 
+            (click)="onSubmit()"
+            [disabled]="isSubmitting()">
+            
+            @if (isSubmitting()) {
+              Processing...
+            } @else {
+              @if (submitError()) {
+                Retry Request
+              } @else {
+                Submit Request
+              }
+            }
+          </button>
+        </div>
+      }
+
+    </div>
+  </div>
+</section>

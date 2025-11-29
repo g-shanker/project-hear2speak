@@ -1,0 +1,119 @@
+/* Variables inherited from .home-layout */
+
+.faq-section {
+  background-color: #ffffff;
+  scroll-margin-top: var(--nav-height); 
+}
+
+.header-group {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+/* --- THE LIST CONTAINER --- */
+.faq-list {
+  max-width: 800px; /* Reading width */
+  margin: 0 auto;
+  border-top: 1px solid #e5e5e5; /* Start with a top border */
+}
+
+/* --- INDIVIDUAL ITEM --- */
+.faq-item {
+  border-bottom: 1px solid #e5e5e5; /* Separator lines */
+  transition: background-color 0.2s;
+
+  /* State: Open */
+  &.active {
+    .toggle-icon {
+      transform: rotate(45deg); /* Turn '+' into 'x' */
+    }
+    
+    .question-text {
+      font-weight: 700; /* Bold the question when open */
+    }
+
+    .faq-body {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      padding-bottom: 1.5rem; /* Add breathing room below answer */
+    }
+  }
+}
+
+/* --- HEADER (BUTTON) --- */
+.faq-header {
+  width: 100%;
+  display: flex;
+  align-items: center; /* Vertically center everything */
+  padding: 1.5rem 0; /* Vertical breathing room */
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  
+  /* Typography */
+  color: #333;
+  font-family: inherit;
+  font-size: 1.1rem;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+/* 01, 02, 03 Index */
+.index {
+  font-size: 0.9rem;
+  font-family: monospace; /* Technical feel */
+  color: #999;
+  margin-right: 2rem;
+  flex-shrink: 0;
+  width: 2rem; /* Fixed width ensures alignment */
+}
+
+.question-text {
+  flex: 1; /* Pushes icon to the far right */
+  margin-right: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.toggle-icon {
+  color: #999;
+  transition: transform 0.3s ease;
+  font-size: 1.5rem;
+}
+
+/* --- BODY (ANIMATION) --- */
+.faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease, padding 0.3s ease;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.answer-content {
+  min-height: 0;
+  /* Indent answer to align with question text (Index width + Margin) */
+  padding-left: 4rem; 
+  padding-right: 2rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+  .index {
+    display: none; /* Hide numbers on mobile to save space */
+  }
+  
+  .answer-content {
+    padding-left: 0; /* Reset indentation on mobile */
+    padding-right: 0;
+  }
+  
+  .faq-header {
+    padding: 1.25rem 0;
+  }
+}

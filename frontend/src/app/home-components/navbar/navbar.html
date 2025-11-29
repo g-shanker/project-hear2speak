@@ -1,0 +1,38 @@
+<nav class="navbar" [class.scrolled]="isScrolled()">
+  <div class="container navbar-container">
+    
+    <!-- BRAND: Logo + Text -->
+    <a href="#hero" class="navbar-brand" (click)="closeMenu()">
+      <img src="assets/images/logo.png" alt="Hear2Speak Logo" class="brand-logo">
+      <span class="brand-text">Hear2Speak</span>
+    </a>
+
+    <!-- MATERIAL ICON TOGGLE -->
+    <button class="mobile-toggle" 
+            (click)="toggleMenu()"
+            [attr.aria-expanded]="isMenuOpen()"
+            aria-label="Toggle navigation menu">
+      <span class="material-icons">
+        {{ isMenuOpen() ? 'close' : 'menu' }}
+      </span>
+    </button>
+
+    <!-- MENU -->
+    <div class="nav-menu" [class.active]="isMenuOpen()">
+      <ul class="nav-list">
+        @for (link of navbarLinks; track link.label) {
+          <li>
+            <a [href]="link.section" (click)="closeMenu()">
+              {{ link.label }}
+            </a>
+          </li>
+        }
+      </ul>
+
+      <a href="#appointment" class="btn-cta" (click)="closeMenu()">
+        Request Appointment
+      </a>
+    </div>
+
+  </div>
+</nav>

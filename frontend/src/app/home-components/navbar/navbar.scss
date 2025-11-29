@@ -1,0 +1,142 @@
+/* Use structural variables from _home.scss */
+:host {
+  display: block;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  height: var(--nav-height); 
+  background-color: #ffffff;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+
+  &.scrolled {
+    border-bottom-color: #e5e5e5;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.navbar-container {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- BRAND --- */
+.navbar-brand {
+  display: flex;
+  align-items: center; /* Vertically center logo and text */
+  gap: 0.75rem;       /* Space between logo and text */
+  text-decoration: none;
+  color: #1a1a1a;
+  
+  .brand-logo {
+    height: 2.5rem; /* Adjust based on your logo's aspect ratio (~40px) */
+    width: auto;    /* Maintain aspect ratio */
+    object-fit: contain;
+  }
+
+  .brand-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    /* Optional: Hide text on very small screens if logo is wide */
+    /* display: none; @media(min-width: 400px) { display: block; } */
+  }
+}
+
+/* --- DESKTOP MENU --- */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+
+  a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #000;
+    }
+  }
+}
+
+/* --- CTA BUTTON --- */
+.btn-cta {
+  background-color: #000; 
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+/* --- MOBILE TOGGLE --- */
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #333;
+  align-items: center;
+  justify-content: center;
+
+  .material-icons {
+    font-size: 2rem;
+  }
+}
+
+/* --- RESPONSIVE BREAKPOINT --- */
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e5e5e5;
+    
+    transform: translateY(-150%);
+    transition: transform 0.3s ease-in-out;
+    z-index: -1;
+
+    &.active {
+      transform: translateY(0);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}

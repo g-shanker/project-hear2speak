@@ -1,0 +1,43 @@
+<div class="carousel-container">
+
+    <!-- Content Area -->
+    <div class="carousel-track">
+        @for (item of items(); track $index) {
+        <div class="carousel-slide" [class.active]="activeIndex() === $index"
+            [attr.aria-hidden]="activeIndex() !== $index">
+
+            <!-- This renders WHATEVER you pass into the component -->
+            <ng-container *ngTemplateOutlet="itemTemplate() || defaultTemplate; context: { $implicit: item }">
+            </ng-container>
+
+        </div>
+        }
+    </div>
+
+    <!-- Navigation Dots -->
+    @if (showDots()) {
+    <div class="dots-container">
+        @for (item of items(); track $index) {
+        <button class="dot" [class.active]="activeIndex() === $index" (click)="goTo($index)"
+            [attr.aria-label]="'Go to slide ' + ($index + 1)">
+        </button>
+        }
+    </div>
+    }
+
+    <!-- Navigation Arrows (Optional) -->
+    @if (showArrows()) {
+    <button class="nav-arrow prev" (click)="prev()" aria-label="Previous Slide">
+        <span class="material-icons">chevron_left</span>
+    </button>
+    <button class="nav-arrow next" (click)="next()" aria-label="Next Slide">
+        <span class="material-icons">chevron_right</span>
+    </button>
+    }
+
+</div>
+
+<!-- Fallback if no template provided -->
+<ng-template #defaultTemplate let-item>
+    {{ item }}
+</ng-template>

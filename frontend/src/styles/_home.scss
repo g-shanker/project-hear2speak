@@ -1,0 +1,116 @@
+html {
+  scroll-behavior: smooth;
+  /* CRITICAL: Stops the scroll 5rem (80px) above the target ID.
+     This ensures the section title is visible below the sticky header. */
+  scroll-padding-top: 5rem; 
+}
+
+.home-layout {
+
+  /* ==========================================================================
+     1. DIMENSIONS & SPACING
+     ========================================================================== */
+  --nav-height: 5rem;      /* Space reserved for sticky header */
+  --content-width: 75rem;  /* Max width for readability (~1200px) */
+  --section-gap: 4rem;     /* Space between sections */
+  --gutter: 1.5rem;        /* Side padding for mobile */
+
+  /* ==========================================================================
+     2. PAGE SCAFFOLDING
+     ========================================================================== */
+  & {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    
+    /* Scroll Logic */
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-height);
+  }
+
+  /* Main content takes remaining height */
+  main {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* ==========================================================================
+     3. LAYOUT UTILITIES
+     ========================================================================== */
+  
+  /* The Container: Centers content */
+  .container {
+    width: 100%;
+    max-width: var(--content-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+    
+    /* Debug helper (Optional: helps see alignment) */
+    /* outline: 1px dashed rgba(0,0,0,0.1); */
+  }
+
+  /* Standard Section */
+  section {
+    width: 100%;
+    padding-top: var(--section-gap);
+    padding-bottom: var(--section-gap);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Default center align */
+  }
+
+  /* Fullscreen Section (Hero) */
+  .section-fullscreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Split Layout (Left Text / Right Visual) */
+  .grid-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+
+    @media (min-width: 900px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ==========================================================================
+     4. ADMIN COMPONENT ADAPTER (Keep this to prevent form breakage)
+     ========================================================================== */
+  & {
+    /* Map Admin Variables to Neutrals */
+    --bg-surface: #ffffff;
+    --bg-app: #f9f9f9;
+    --border-subtle: #e0e0e0;
+    --border-strong: #cccccc;
+    --text-muted: #666666;
+    --status-cancelled-text: #d32f2f;
+    --status-cancelled-bg: #d32f2f;
+    --primary-500: #000000; /* Default black for now */
+    --primary-100: #eeeeee;
+    --font-sans: 'Inter', sans-serif;
+    --radius-sm: 4px;
+  }
+
+  app-appointment-form {
+    display: block;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+
+    .appointment-form-container {
+      padding: 0 !important;
+    }
+  }
+}

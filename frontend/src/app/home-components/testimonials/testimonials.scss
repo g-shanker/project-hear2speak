@@ -1,0 +1,137 @@
+/* Variables inherited from .home-layout */
+
+.testimonials-section {
+  background-color: #f9f9f9; 
+  scroll-margin-top: var(--nav-height); 
+  overflow: hidden; 
+}
+
+.header-group {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* --- WRAPPER FOR BUTTONS + LIST --- */
+.scroller-wrapper {
+  position: relative; /* Anchor for buttons */
+  display: flex;
+  align-items: center;
+}
+
+/* --- NAVIGATION BUTTONS --- */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid #e5e5e5;
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transform: translateY(-50%) scale(1.1); /* Slight grow */
+  }
+
+  &.prev { left: -1.5rem; } /* Hang off the left edge slightly */
+  &.next { right: -1.5rem; } /* Hang off the right edge slightly */
+  
+  /* On mobile, these buttons might get in the way of content, 
+     so we can hide them since touch users prefer swiping. */
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/* --- THE HORIZONTAL SCROLLER --- */
+.reviews-scroller {
+  display: flex;
+  gap: 2rem;
+  
+  overflow-x: auto;
+  padding: 1rem 0 2rem 0; /* Vertical padding for shadows/focus rings */
+  scroll-snap-type: x mandatory;
+  
+  /* Hide Scrollbar */
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+/* --- ITEM STRUCTURE --- */
+.review-item {
+  flex: 0 0 350px; 
+  scroll-snap-align: center; /* Center the card when stopping */
+  
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px; 
+  border: 1px solid #e5e5e5;
+  height: auto; 
+}
+
+.quote-icon {
+  font-size: 2rem;
+  color: #ccc; 
+  transform: scaleX(-1);
+}
+
+.review-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  font-style: italic;
+}
+
+.reviewer-info {
+  margin-top: auto; 
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #000;
+}
+
+.treatment {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+  .reviews-scroller {
+    gap: 1rem;
+    padding-left: 1rem; /* Add padding so first card isn't flush */
+    padding-right: 1rem;
+  }
+  
+  .review-item {
+    flex: 0 0 85%; /* Peek layout */
+    padding: 1.5rem;
+    scroll-snap-align: start; /* Align to left on mobile */
+  }
+}

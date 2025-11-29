@@ -4,6 +4,7 @@ import { inject, Injectable, signal, Signal } from '@angular/core';
 import { AppointmentResponse } from '../interfaces/appointment-response';
 import { AppointmentSearchRequest } from '../interfaces/appointment-search-request';
 import { ClinicianAppointmentRequest } from '../interfaces/clinician-appointment-request';
+import { PatientAppointmentRequest } from '../interfaces/patient-appointment-request';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +17,22 @@ export class AppointmentService {
     private _errorMessage = signal<string | null>(null);
     private _searchResults = signal<AppointmentResponse[]>([]);
     private _selectedAppointment = signal<AppointmentResponse | null>(null);
+
+    private _currentSearchRequest = signal<AppointmentSearchRequest>({
+        globalText: null,
+        appointmentStatus: null,
+        startDateFrom: null,
+        startDateTo: null,
+        sortField: 'createdAt',
+        ascending: false
+    });
     
     readonly searchResults = this._searchResults.asReadonly();
     readonly isLoading = this._isLoading.asReadonly();
     readonly errorMessage = this._errorMessage.asReadonly();
     readonly selectedAppointment = this._selectedAppointment.asReadonly();
+
+    readonly currentSearchRequest = this._currentSearchRequest.asReadonly();
 
     selectAppointment(appointment: AppointmentResponse | null): void {
         if(appointment && !appointment.isAcknowledged) {
@@ -43,11 +55,18 @@ export class AppointmentService {
         })
     }
     
-    searchAppointments(searchRequest: AppointmentSearchRequest): void {
+    searchAppointments(partialSearchRequest: Partial<AppointmentSearchRequest>): void {
         this._isLoading.set(true);
         this._errorMessage.set(null);
+
+        this._currentSearchRequest.update(current => ({
+            ...current,
+            ...partialSearchRequest
+        }));
+
+        const finalRequest = this._currentSearchRequest();
         
-        this.api.search(searchRequest).subscribe({
+        this.api.search(finalRequest).subscribe({
             next: (searchResults) => {
                 this._searchResults.set(searchResults);
                 this._isLoading.set(false);
@@ -75,8 +94,18 @@ export class AppointmentService {
         );
     }
 
-    createAppointment(appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
-        return this.api.create(appointment).pipe(
+    createClinicianAppointment(appointment: ClinicianAppointmentRequest): Observable<AppointmentResponse> {
+        return this.api.clinicianCreate(appointment).pipe(
+            tap((createdAppointment: AppointmentResponse) => {
+                this._searchResults.update(currentList => {
+                    return [...currentList, createdAppointment];
+                });
+            })
+        );
+    }
+
+    createPatientAppointment(appointment: PatientAppointmentRequest): Observable<AppointmentResponse> {
+        return this.api.patientCreate(appointment).pipe(
             tap((createdAppointment: AppointmentResponse) => {
                 this._searchResults.update(currentList => {
                     return [...currentList, createdAppointment];

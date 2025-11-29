@@ -1,0 +1,57 @@
+<section id="contact" class="contact-section">
+  <div class="container">
+    
+    <div class="header-group">
+      <h2 class="section-title">Contact Us</h2>
+      <p class="section-subtitle">
+        We're here to help with your hearing, speech, and vestibular needs.
+      </p>
+    </div>
+
+    <div class="grid-split contact-container">
+      
+      <!-- LEFT: Contact Details -->
+      <div class="contact-details">
+        
+        @for (item of contactInfo; track item.label) {
+          <div class="contact-item">
+            <div class="icon-box">
+              <span class="material-icons">{{ item.icon }}</span>
+            </div>
+            
+            <div class="item-content">
+              <h3>{{ item.label }}</h3>
+              
+              <div class="lines">
+                @for (line of item.lines; track line) {
+                  @if (item.isLink) {
+                    <!-- Render as clickable link if needed (simplified logic) -->
+                    <span class="info-link">{{ line }}</span>
+                  } @else {
+                    <p>{{ line }}</p>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- RIGHT: Map Placeholder -->
+      <div class="map-wrapper">
+        <!-- 
+           This is where you would embed a Google Map iframe.
+           For now, it's a structural placeholder.
+        -->
+        <div class="map-placeholder">
+          <span class="material-icons map-icon">map</span>
+          <span>Google Map Embed</span>
+          <small>2nd and 3rd floor TMR Towers</small>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
