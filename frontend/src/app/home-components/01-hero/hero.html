@@ -1,0 +1,42 @@
+<section id="hero" class="hero section-fullscreen">
+    <div class="container">
+
+        <div class="grid-split">
+
+            <!-- LEFT COLUMN: Content -->
+            <div class="hero-content">
+                <h1>Reconnect with the Sounds of Life.</h1>
+
+                <p class="subtitle">
+                    Expert care for hearing, speech, and balance disorders in Bengaluru.
+                    We offer personalized diagnostics and rehabilitation plans.
+                </p>
+
+                <div class="actions">
+                    <a href="#appointment" class="btn btn-primary">Book Consultation</a>
+                    <a href="#services" class="btn btn-secondary">Our Services</a>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Carousel Placeholder -->
+            <div class="hero-visual">
+                <app-carousel [items]="heroSlides" [interval]="4000" [showArrows]="true" class="theme-light">
+
+                    <ng-template #itemTemplate let-slideIdx>
+                        <!-- Your existing placeholder style, reused for every slide -->
+                        <!-- <div class="placeholder-box">
+                            <span class="material-icons visual-icon">image</span>
+                            <span>[ Hero Image {{ slideNum }} / Illustration Area ]</span>
+                        </div> -->
+                        <div class="image-wrapper">
+                            <img [src]="slideIdx" class="carousel-img" alt="slideIdx">
+                        </div>
+                    </ng-template>
+
+                </app-carousel>
+            </div>
+
+        </div>
+
+    </div>
+</section>
