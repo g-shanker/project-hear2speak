@@ -1,0 +1,194 @@
+/* src/app/layout/navbar/navbar.component.scss */
+
+:host {
+  display: block;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  height: var(--nav-height); 
+  background-color: rgba(255, 255, 255, 0.85); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+
+  &.scrolled {
+    background-color: rgba(255, 255, 255, 0.98); 
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.navbar-container {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- BRAND --- */
+.navbar-brand {
+  display: flex;
+  align-items: center; 
+  gap: 0.85rem;     
+  text-decoration: none;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+
+  &:hover { opacity: 0.8; }
+  
+  .brand-logo { height: 3.25rem; width: auto; object-fit: contain; }
+
+  .brand-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: -2px; 
+  }
+
+  .brand-text {
+    font-family: var(--font-heading);
+    font-size: 1.8rem; 
+    font-weight: 800;
+    color: var(--color-primary-dark); /* Deep Forest Green */
+    letter-spacing: -0.03em; 
+    line-height: 1;
+    margin-bottom: 4px; 
+  }
+
+  .brand-subtext {
+    font-family: var(--font-body);
+    font-size: 0.6rem; 
+    text-transform: uppercase; 
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    opacity: 0.8; 
+    letter-spacing: 0.05em; 
+    line-height: 1.1;
+    
+    @media (max-width: 450px) { display: none; }
+  }
+}
+
+/* --- DESKTOP MENU --- */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; 
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+
+  a {
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-secondary); 
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.2s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%; 
+      height: 2px;
+      background-color: var(--color-primary); /* Forest Green Line */
+      transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border-radius: 2px;
+    }
+
+    &:hover {
+      color: var(--color-primary-dark);
+      &::after { width: 100%; }
+    }
+  }
+}
+
+/* --- CTA BUTTON (Matte Forest Green) --- */
+.btn-cta {
+  background-color: var(--color-primary); 
+  color: #ffffff;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+/* --- RESPONSIVE / MOBILE TOGGLE (No Change in Logic) --- */
+.mobile-toggle {
+  display: none; 
+  width: 2.75rem;
+  height: 2.75rem;
+  background: rgba(4, 120, 87, 0.05); /* Faint Green */
+  border: 1px solid rgba(4, 120, 87, 0.1);
+  border-radius: 50%;
+  color: var(--color-primary);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  .material-icons { font-size: 1.5rem; }
+
+  &:hover {
+    background: rgba(4, 120, 87, 0.1);
+    transform: scale(1.05);
+  }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) { 
+  .mobile-toggle { display: flex; }
+
+  .nav-menu {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background: var(--bg-surface);
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0 3rem 0;
+    border-bottom: 1px solid var(--bg-subtle);
+    transform: translateY(-150%);
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: -1;
+
+    &.active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-float); 
+    }
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    
+    a { font-size: 1.25rem; font-weight: 600; }
+  }
+}
