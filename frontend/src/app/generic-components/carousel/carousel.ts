@@ -25,32 +25,32 @@ export class Carousel<T> {
         this.destroyRef.onDestroy(() => this.stopTimer());
     }
 
-    next() {
+    next(): void {
         const length = this.items().length;
         this.activeIndex.update(i => (i + 1) % length);
     }
 
-    prev() {
+    prev(): void {
         const length = this.items().length;
         this.activeIndex.update(i => (i - 1 + length) % length);
     }
 
-    goTo(index: number) {
+    goTo(index: number): void {
         this.activeIndex.set(index);
         this.resetTimer();
     }
 
-    startTimer() {
+    startTimer(): void {
         if(this.autoPlay()) {
             this.timerId = setInterval(() => this.next(), this.interval());
         }
     }
 
-    stopTimer() {
+    stopTimer(): void {
         if(this.timerId) clearInterval(this.timerId);
     }
 
-    resetTimer() {
+    resetTimer(): void {
         this.stopTimer();
         this.startTimer();
     }
