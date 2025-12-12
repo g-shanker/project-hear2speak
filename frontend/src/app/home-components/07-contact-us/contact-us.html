@@ -1,0 +1,70 @@
+<section id="contact" class="contact-section">
+  <div class="container">
+    
+    <div class="header-group">
+      <h2 class="section-title">Contact Us</h2>
+      <p class="section-subtitle">
+        We're here to help with your hearing, speech, and vestibular needs.
+      </p>
+    </div>
+
+    <div class="grid-split contact-container">
+      
+      <!-- LEFT: Contact Details -->
+      <div class="contact-details">
+        
+        @for (item of contactInfo; track item.label) {
+          <div class="contact-item">
+            <div class="icon-box">
+              <span class="material-icons">{{ item.icon }}</span>
+            </div>
+            
+            <div class="item-content">
+              <h3>{{ item.label }}</h3>
+              
+              <div class="lines">
+                @for (line of item.lines; track line) {
+                  
+                  <!-- PHONE NUMBERS (Click to Call) -->
+                  @if (item.type === 'PHONE') {
+                    <a [href]="'tel:' + formatPhone(line)" class="info-link">
+                      {{ line }}
+                    </a>
+                  } 
+                  
+                  <!-- EMAILS (Click to Compose) -->
+                  @else if (item.type === 'EMAIL') {
+                    <a [href]="'https://mail.google.com/mail/?view=cm&fs=1&to=' + line" 
+                       class="info-link" 
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                      {{ line }}
+                    </a>
+                  }
+                  
+                  <!-- REGULAR TEXT (Address / Hours) -->
+                  @else {
+                    <p>{{ line }}</p>
+                  }
+
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- RIGHT: Map Placeholder -->
+      <div class="map-wrapper">
+        <div class="map-placeholder">
+          <span class="material-icons map-icon">map</span>
+          <span>Google Map Embed</span>
+          <small>2nd and 3rd floor TMR Towers</small>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
