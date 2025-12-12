@@ -1,0 +1,44 @@
+<section id="faq" class="faq-section">
+  <div class="container">
+    
+    <div class="header-group">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-subtitle">
+        Common questions about our services and what to expect during your visit.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      @for (item of faqs; track item.question; let i = $index) {
+        
+        <!-- 
+           We move the border to the wrapper div. 
+           Added 'active' class for styling the open state. 
+        -->
+        <div class="faq-item" [class.active]="openIndex() === i">
+          
+          <button class="faq-header" 
+                  (click)="toggle(i)"
+                  [attr.aria-expanded]="openIndex() === i">
+            
+            <!-- Structural Index (01, 02...) -->
+            <span class="index">0{{ i + 1 }}</span>
+            
+            <span class="question-text">{{ item.question }}</span>
+            
+            <!-- Icon changes rotation in CSS -->
+            <span class="material-icons toggle-icon">add</span>
+          </button>
+          
+          <div class="faq-body">
+            <div class="answer-content">
+              {{ item.answer }}
+            </div>
+          </div>
+
+        </div>
+      }
+    </div>
+
+  </div>
+</section>
