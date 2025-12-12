@@ -1,0 +1,143 @@
+/* src/app/layout/footer/footer.component.scss */
+
+/* 1. Section Layout */
+.footer-section {
+  /* Background: Using the 'Primary Dark' variable (#022c22).
+    This creates a rich, deep "Jungle Night" background that matches 
+    your brand better than standard #000 or #1a1a1a.
+  */
+  background-color: #1a1a1a; 
+  color: #ffffff;
+  padding-top: 5rem;
+  padding-bottom: 2rem;
+  margin-top: auto; 
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+/* --- COLUMNS --- */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  h4 {
+    font-family: var(--font-heading); /* Montserrat */
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #94A3B8; /* Slate 400 (Muted) */
+    margin: 0 0 0.5rem 0;
+  }
+}
+
+/* --- BRAND COLUMN --- */
+.brand-col {
+  max-width: 380px;
+}
+
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-logo-img {
+  height: 2.25rem;
+  width: auto;
+  /* Ensure logo is visible on dark bg. If it's black, invert it: */
+  /* filter: brightness(0) invert(1); */
+}
+
+.footer-text-logo {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.footer-desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #CBD5E1; /* Slate 300 */
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* --- LINKS --- */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  li a {
+    text-decoration: none;
+    font-family: var(--font-body);
+    color: #E2E8F0; /* Slate 200 */
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+
+    &:hover {
+      opacity: 1;
+      color: var(--color-primary); /* Glow Emerald on hover */
+      transform: translateX(4px); /* Subtle slide hint */
+    }
+  }
+}
+
+.admin-link {
+  font-size: 0.85rem !important;
+  opacity: 0.4 !important;
+  font-family: monospace; /* Distinguish it as a technical link */
+  
+  &:hover {
+    opacity: 1 !important;
+    color: #ffffff !important; /* White glow for admin */
+  }
+}
+
+/* --- BOTTOM BAR --- */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 2rem;
+  text-align: center;
+  
+  p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #64748B; /* Darker Slate for copyright */
+    margin: 0;
+  }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr; 
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .brand-col {
+    margin: 0 auto;
+    align-items: center; 
+  }
+  
+  .footer-brand-header {
+    justify-content: center;
+  }
+}
