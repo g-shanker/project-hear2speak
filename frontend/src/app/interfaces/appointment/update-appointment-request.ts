@@ -1,12 +1,12 @@
 import { AppointmentStatus } from "./appointment-status";
 
-export interface ClinicianAppointmentRequest {
+export interface UpdateAppointmentRequest {
 
     // Appointment details
 
     startDateTime: string;
-    durationInSeconds: number;
-    appointmentStatus: AppointmentStatus;
+    durationInSeconds: number | null;
+    appointmentStatus: AppointmentStatus | null;
 
     // Patient details
 
@@ -14,9 +14,10 @@ export interface ClinicianAppointmentRequest {
     patientEmail: string;
     patientPhoneNumber: string;
     patientReason: string;
-    clinicianNotes: string;
+    clinicianNotes: string | null;
 
     // Audit details
-    
-    isAcknowledged: boolean;
+
+    isAcknowledged: boolean | null;
+
 }
