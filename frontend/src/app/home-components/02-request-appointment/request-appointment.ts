@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, viewChild } from '@angular/core';
-import { AppointmentForm } from '../../domain-components/appointment-form/appointment-form';
 import { AppointmentService } from '../../services/component/appointment-service';
+import { AppointmentForm } from '../../domain-components/appointment-form/appointment-form';
 import { CreateAppointmentRequest } from '../../interfaces/appointment/create-appointment-request';
 
 @Component({

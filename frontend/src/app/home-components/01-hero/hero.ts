@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Carousel } from '../../generic-components/carousel/carousel';
 
 @Component({
