@@ -1,0 +1,41 @@
+<section id="testimonials" class="testimonials-section">
+  <div class="container">
+    
+    <div class="header-group">
+      <h2 class="section-title">Patient Success Stories</h2>
+      <p class="section-subtitle">
+        Real feedback from the clinic.
+      </p>
+    </div>
+
+    <!-- Wrapper to hold the buttons and list together -->
+    <div class="scroller-wrapper">
+      
+      <!-- Left Button -->
+      <button class="nav-btn prev" (click)="scroll('left')" aria-label="Scroll Left">
+        <span class="material-icons">chevron_left</span>
+      </button>
+
+      <!-- The List (Native Scroll) -->
+      <div class="reviews-scroller" #scroller>
+        @for (review of reviews; track review.name) {
+          <div class="review-item">
+            <span class="material-icons quote-icon">format_quote</span>
+            <blockquote class="review-text">"{{ review.text }}"</blockquote>
+            <div class="reviewer-info">
+              <span class="name">{{ review.name }}</span>
+              <span class="treatment">{{ review.treatment }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Right Button -->
+      <button class="nav-btn next" (click)="scroll('right')" aria-label="Scroll Right">
+        <span class="material-icons">chevron_right</span>
+      </button>
+
+    </div>
+
+  </div>
+</section>
