@@ -1,6 +1,6 @@
+import { Identifiable } from './identifiable';
 import { CommonModule } from '@angular/common';
 import { Component, input, output, TemplateRef } from '@angular/core';
-import { Identifiable } from '../../interfaces/identifiable';
 
 @Component({
     selector: 'app-summary-list',
