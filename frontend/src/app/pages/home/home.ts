@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { Navbar } from '../../home-components/navbar/navbar';
-import { Hero } from '../../home-components/hero/hero';
-import { RequestAppointment } from '../../home-components/request-appointment/request-appointment';
-import { ServicesSection } from '../../home-components/services-section/services-section';
-import { AboutUs } from '../../home-components/about-us/about-us';
-import { Faq } from '../../home-components/faq/faq';
-import { ContactUs } from '../../home-components/contact-us/contact-us';
-import { Footer } from '../../home-components/footer/footer';
-import { Testimonials } from '../../home-components/testimonials/testimonials';
+import { Navbar } from '../../home-components/00-navbar/navbar';
+import { Hero } from '../../home-components/01-hero/hero';
+import { RequestAppointment } from '../../home-components/02-request-appointment/request-appointment';
+import { ServicesSection } from '../../home-components/03-services/services-section';
+import { AboutUs } from '../../home-components/04-about-us/about-us';
+import { Testimonials } from '../../home-components/05-testimonials/testimonials';
+import { Faq } from '../../home-components/06-faq/faq';
+import { ContactUs } from '../../home-components/07-contact-us/contact-us';
+import { Footer } from '../../home-components/08-footer/footer';
 
 @Component({
     selector: 'app-home',
