@@ -1,0 +1,85 @@
+<section id="about" class="about-section">
+  <div class="container">
+    
+    <div class="grid-split">
+      
+      <!-- LEFT: Text Content -->
+      <div class="about-content">
+        
+        <span class="eyebrow">About Us</span>
+        
+        <h2 class="section-title text-left">Restoring Connection, One Sense at a Time.</h2>
+        
+        <p class="lead">
+          Hear2Speak is Bengaluru's premier center for integrated hearing, speech, and balance care.
+        </p>
+        
+        <p class="description">
+          We understand that hearing loss or balance disorders can feel isolating. That's why we combine clinical expertise with a deeply personal approach. Whether it's helping a child say their first words or helping an adult regain their balance, we are with you every step of the way.
+        </p>
+
+        <!-- Icon List -->
+        <div class="highlights-grid">
+          
+          <div class="highlight-item">
+            <div class="icon-box">
+              <span class="material-icons">psychology</span>
+            </div>
+            <div class="highlight-text">
+              <strong>Expert Team</strong>
+              <p>Certified Audiologists & Speech Pathologists</p>
+            </div>
+          </div>
+
+          <div class="highlight-item">
+            <div class="icon-box">
+              <span class="material-icons">biotech</span>
+            </div>
+            <div class="highlight-text">
+              <strong>Advanced Technology</strong>
+              <p>State-of-the-art VNG & Digital Audiometry</p>
+            </div>
+          </div>
+
+          <div class="highlight-item">
+            <div class="icon-box">
+              <span class="material-icons">favorite_border</span>
+            </div>
+            <div class="highlight-text">
+              <strong>Holistic Care</strong>
+              <p>Personalized plans tailored to your lifestyle</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Carousel Area -->
+      <div class="image-wrapper">
+        
+        <app-carousel
+            [items]="aboutSlides"
+            [interval]="4000"
+            [showArrows]="true"
+        >
+          
+          <!-- Template for each slide -->
+          <ng-template #itemTemplate let-slideNum>
+            <!-- <div class="img-placeholder">
+              <span class="material-icons">image</span>
+              <span>[ Team / Clinic Photo {{ slideNum }} ]</span>
+            </div> -->
+            <div class="image-wrapper">
+                <img [src]="slideNum" class="carousel-img" alt="slideNum">
+            </div>
+          </ng-template>
+
+        </app-carousel>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
