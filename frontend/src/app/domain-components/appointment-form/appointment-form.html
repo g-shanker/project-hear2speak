@@ -50,9 +50,13 @@
             placeholder="(555) 000-0000"
         >
 
-        @if (form.get('patientPhoneNumber')?.touched && 
-             form.get('patientPhoneNumber')?.hasError('required')) {
-            <div class="error">Phone number is required.</div>
+        @if (form.get('patientPhoneNumber')?.touched) {
+            @if (form.get('patientPhoneNumber')?.hasError('required')) {
+                <div class="error">Phone number is required.</div>
+            }
+            @if (form.get('patientPhoneNumber')?.hasError('pattern')) {
+                <div class="error">Please enter a valid phone number.</div>
+            }
         }
     </div>
 
