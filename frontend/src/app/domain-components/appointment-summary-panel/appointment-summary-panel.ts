@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { SummaryList } from '../../generic-components/summary-list/summary-list';
-import { AppointmentResponse } from '../../interfaces/appointment-response';
+import { AppointmentResponse } from '../../interfaces/appointment/appointment-response';
 
 @Component({
     selector: 'app-appointment-summary-panel',

@@ -1,7 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core';
-import { AppointmentResponse } from '../../interfaces/appointment/appointment-response';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppointmentStatus } from '../../interfaces/appointment/appointment-status';
+import { AppointmentResponse } from '../../interfaces/appointment/appointment-response';
 import { CreateAppointmentRequest } from '../../interfaces/appointment/create-appointment-request';
 import { UpdateAppointmentRequest } from '../../interfaces/appointment/update-appointment-request';
 

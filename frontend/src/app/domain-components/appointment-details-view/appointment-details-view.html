@@ -37,7 +37,7 @@
         </div>
         <div class="details-item fill-row">
             <span class="key">Clinician Notes:</span>
-            <span class="value">{{ appointment.clinicianNotes ? appointment.clinicianNotes : 'No notes.' }}</span>
+            <span class="value">{{ appointment.clinicianNotes || 'No notes.' }}</span>
         </div>
     </div>
 }

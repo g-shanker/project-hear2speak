@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { AppointmentResponse } from '../../interfaces/appointment-response';
+import { AppointmentResponse } from '../../interfaces/appointment/appointment-response';
 
 @Component({
     selector: 'app-appointment-details-view',
