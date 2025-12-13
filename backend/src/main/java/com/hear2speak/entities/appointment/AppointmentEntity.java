@@ -1,4 +1,4 @@
-package com.hear2speak.entities;
+package com.hear2speak.entities.appointment;
 
 import java.time.LocalDateTime;
 
@@ -51,20 +51,13 @@ public class AppointmentEntity {
     // Audit fields
 
     @Column(name = "is_acknowledged")
-    public Boolean isAcknowledged;
+    public Boolean isAcknowledged = false;
 
     @Column(name = "created_at", updatable = false)
     public LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     public LocalDateTime updatedAt;
-
-    public AppointmentEntity() {
-        this.durationInSeconds = 1800;
-        this.appointmentStatus = AppointmentStatus.REQUESTED;
-        this.clinicianNotes = "";
-        this.isAcknowledged = false;
-    }
 
     @PrePersist
     protected void onCreate() {

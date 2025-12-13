@@ -1,4 +1,4 @@
-package com.hear2speak.dtos;
+package com.hear2speak.dtos.auth;
 
 import jakarta.validation.constraints.NotBlank;
 

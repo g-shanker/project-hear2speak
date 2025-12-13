@@ -1,8 +1,8 @@
-package com.hear2speak.dtos;
+package com.hear2speak.dtos.appointment;
 
 import java.time.LocalDateTime;
 
-import com.hear2speak.entities.AppointmentStatus;
+import com.hear2speak.entities.appointment.AppointmentStatus;
 
 public class AppointmentSearchRequest {
 
@@ -21,5 +21,11 @@ public class AppointmentSearchRequest {
     public LocalDateTime startDateTo;
     
     public AppointmentStatus appointmentStatus;
+
+    // pagination
+
+    public Integer page = 0;
+
+    public Integer size = 20;
 
 }

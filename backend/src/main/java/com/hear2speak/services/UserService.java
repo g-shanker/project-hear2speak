@@ -2,12 +2,16 @@ package com.hear2speak.services;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.logging.Logger;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import com.hear2speak.dtos.ChangePasswordRequest;
-import com.hear2speak.dtos.LoginRequest;
-import com.hear2speak.dtos.RegisterRequest;
-import com.hear2speak.entities.UserEntity;
+import com.hear2speak.dtos.auth.LoginRequest;
+import com.hear2speak.dtos.auth.TokenResponse;
+import com.hear2speak.dtos.user.ChangePasswordRequest;
+import com.hear2speak.dtos.user.RegisterRequest;
+import com.hear2speak.dtos.user.UserResponse;
+import com.hear2speak.entities.user.UserEntity;
+import com.hear2speak.mappers.UserMapper;
 import com.hear2speak.repositories.UserRepository;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -17,96 +21,126 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class UserService {
+
+    @ConfigProperty(name = "app.constants.users.jwt-lifetime", defaultValue = "300")
+    int JWT_LIFETIME;
+
+    @ConfigProperty(name = "mp.jwt.verify.issuer")
+    String ISSUER;
     
     private final UserRepository userRepository;
 
     private final SecurityIdentity securityIdentity;
 
-    @ConfigProperty(name = "mp.jwt.verify.issuer")
-    String issuer;
-
-    private static final Logger LOG = Logger.getLogger(UserService.class.getName());
+    private final UserMapper userMapper;
 
     @Inject
     public UserService(
         UserRepository userRepository,
-        SecurityIdentity securityIdentity
+        SecurityIdentity securityIdentity,
+        UserMapper userMapper
     ) {
         this.userRepository = userRepository;
         this.securityIdentity = securityIdentity;
+        this.userMapper = userMapper;
     }
 
     public UserEntity findByUsername(String username) {
         return userRepository.find("username", username).firstResult();
     }
 
-    @Transactional
-    public boolean registerUser(RegisterRequest registerRequest) {
-        
-        if(findByUsername(registerRequest.username) != null) {
-            return false;
-        }
-        
-        UserEntity user = new UserEntity();
-        user.username = registerRequest.username;
-        user.password = BcryptUtil.bcryptHash(registerRequest.password);
-        user.role = registerRequest.role;
-        userRepository.persist(user);
+    public TokenResponse authenticate(LoginRequest loginRequest) {
+        UserEntity userEntity = findByUsername(loginRequest.username);
 
-        return true;
+        if(userEntity == null) {
+            throw new WebApplicationException("Username or password is incorrect", Response.Status.UNAUTHORIZED.getStatusCode());
+        }
+
+        if(!BcryptUtil.matches(loginRequest.password, userEntity.password)) {
+            throw new WebApplicationException("Username or password is incorrect", Response.Status.UNAUTHORIZED.getStatusCode());
+        }
+
+        TokenResponse tokenResponse = new TokenResponse();
+        tokenResponse.token = Jwt.issuer(ISSUER)
+                                .upn(userEntity.username)
+                                .groups(new HashSet<>(Arrays.asList(userEntity.role.toString())))
+                                .expiresIn(JWT_LIFETIME)
+                                .sign();
+
+        return tokenResponse;
     }
 
-    public boolean isValidUser(String username, String password) {
-        UserEntity user = findByUsername(username);
-        return user != null && BcryptUtil.matches(password, user.password);
-    }
-
-    public String authenticate(LoginRequest loginRequest) {
-        UserEntity user = findByUsername(loginRequest.username);
-
-        if(user == null) {
-            LOG.info(">>> LOGIN FAILED: User '" + loginRequest.username + "' not found in Database.");
-            return null;
-        }
-
-        if(!BcryptUtil.matches(loginRequest.password, user.password)) {
-            LOG.info(">>> LOGIN FAILED: Password mismatch for user '" + loginRequest.username + "'.");
-            LOG.info(">>> Input: " + loginRequest.password); // Be careful with this in prod!
-            LOG.info(">>> Stored Hash: " + user.password);
-            return null;
-        }
-
-        return Jwt.issuer(issuer)
-                .upn(user.username)
-                .groups(new HashSet<>(Arrays.asList(user.role)))
-                .expiresIn(3600)
-                .sign();
-    }
-
-    @Transactional
-    public boolean changePassword(ChangePasswordRequest changePasswordRequest) {
-        UserEntity user = getCurrentUser();
-
-        if(user == null) {
-            return false;
-        }
-
-        if(!BcryptUtil.matches(changePasswordRequest.oldPassword, user.password)) {
-            return false;
-        }
-
-        user.password = BcryptUtil.bcryptHash(changePasswordRequest.newPassword);
-        
-        return true;
-    }
-
-    public UserEntity getCurrentUser() {
+    public UserEntity getCurrentUserEntity() {
         String username = securityIdentity.getPrincipal().getName();
         UserEntity user = findByUsername(username);
         return user;
+    }
+
+    public UserResponse getCurrentUser() {
+        UserEntity userEntity = getCurrentUserEntity();
+        UserResponse userResponse = userMapper.toResponse(userEntity);
+        return userResponse;
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordRequest request) {
+        UserEntity userEntity = getCurrentUserEntity();
+
+        if (userEntity == null) {
+            throw new WebApplicationException("User does not exist", Response.Status.NOT_FOUND.getStatusCode());
+        }
+
+        if (!BcryptUtil.matches(request.oldPassword, userEntity.password)) {
+            throw new WebApplicationException("Old password is incorrect", Response.Status.BAD_REQUEST.getStatusCode());
+        }
+
+        userEntity.password = BcryptUtil.bcryptHash(request.newPassword);
+    }
+
+    public List<UserResponse> listAllUsers() {
+        List<UserEntity> userEntities = userRepository.listAll();
+        List<UserResponse> userResponses = userEntities.stream()
+            .map(userMapper::toResponse)
+            .collect(Collectors.toList());
+        return userResponses;
+    }
+
+    @Transactional
+    public void registerUser(RegisterRequest registerRequest) {
+        
+        if(findByUsername(registerRequest.username) != null) {
+            throw new WebApplicationException("User with username " + registerRequest.username + " already exists", Response.Status.CONFLICT.getStatusCode());
+        }
+        
+        UserEntity userEntity = new UserEntity();
+        userEntity.username = registerRequest.username;
+        userEntity.password = BcryptUtil.bcryptHash(registerRequest.password);
+        userEntity.role = registerRequest.role;
+        userRepository.persist(userEntity);
+    }
+
+    @Transactional
+    public void deleteUser(String username) {
+        boolean isDeleted = userRepository.delete("username", username) > 0;
+        if(!isDeleted) {
+            throw new WebApplicationException("User with username " + username + " not found.", Response.Status.NOT_FOUND.getStatusCode());
+        }
+        return;
+    }
+
+    @Transactional
+    public void forceResetPassword(String username, String newPassword) {
+        UserEntity userEntity = findByUsername(username);
+        if(userEntity == null) {
+            throw new WebApplicationException("User with username " + username + " not found.", Response.Status.NOT_FOUND.getStatusCode());
+        }
+        userEntity.password = BcryptUtil.bcryptHash(newPassword);
+        return;
     }
 
 }

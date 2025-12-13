@@ -1,8 +1,8 @@
-package com.hear2speak.dtos;
+package com.hear2speak.dtos.appointment;
 
 import java.time.LocalDateTime;
 
-import com.hear2speak.entities.AppointmentStatus;
+import com.hear2speak.entities.appointment.AppointmentStatus;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class ClinicianAppointmentRequest {
+public class UpdateAppointmentRequest {
 
     // Appointment details
     
@@ -45,5 +45,5 @@ public class ClinicianAppointmentRequest {
     // Audit details
 
     public Boolean isAcknowledged;
-
+    
 }

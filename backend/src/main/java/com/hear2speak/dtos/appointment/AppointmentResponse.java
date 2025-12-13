@@ -1,6 +1,6 @@
-package com.hear2speak.dtos;
+package com.hear2speak.dtos.appointment;
 
-import com.hear2speak.entities.AppointmentStatus;
+import com.hear2speak.entities.appointment.AppointmentStatus;
 
 public class AppointmentResponse {
 

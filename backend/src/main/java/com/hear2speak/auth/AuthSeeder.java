@@ -2,7 +2,8 @@ package com.hear2speak.auth;
 
 import java.util.logging.Logger;
 
-import com.hear2speak.dtos.RegisterRequest;
+import com.hear2speak.dtos.user.RegisterRequest;
+import com.hear2speak.entities.user.UserRole;
 import com.hear2speak.services.UserService;
 
 import io.quarkus.runtime.StartupEvent;
@@ -15,15 +16,15 @@ import jakarta.transaction.Transactional;
 @ApplicationScoped
 public class AuthSeeder {
 
-    private static final Logger LOG = Logger.getLogger(AuthSeeder.class.getName());
-
-    private final UserService userService;
-
-    @ConfigProperty(name = "app.admin.initial-password", defaultValue = "password")
+    @ConfigProperty(name = "app.admin.initial-password", defaultValue = "admin")
     String initialPassword;
 
     @ConfigProperty(name = "app.admin.seeding-enabled", defaultValue = "false")
     boolean seedingEnabled;
+
+    private static final Logger LOG = Logger.getLogger(AuthSeeder.class.getName());
+
+    private final UserService userService;
 
     @Inject
     public AuthSeeder(UserService userService) {
@@ -34,16 +35,15 @@ public class AuthSeeder {
     public void loadUsers(@Observes StartupEvent event) {
         if (!seedingEnabled) return;
 
-        RegisterRequest request = new RegisterRequest();
-        request.username = "admin";
-        request.password = initialPassword;
-        request.role = "admin";
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.username = "admin";
+        registerRequest.password = initialPassword;
+        registerRequest.role = UserRole.ADMIN;
 
-        if(userService.registerUser(request)) {
-            LOG.info("--- Initial Admin User Created. ---");
-            LOG.info("Username: admin, Password: " + initialPassword);
-            LOG.info("-----------------------------------");
-        }
+        userService.registerUser(registerRequest);
+        LOG.info("--- Initial Admin User Created. ---");
+        LOG.info("Username: admin, Password: " + initialPassword);
+        LOG.info("-----------------------------------");
     }
     
 }
