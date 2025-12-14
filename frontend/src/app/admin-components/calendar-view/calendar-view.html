@@ -23,6 +23,7 @@
                     <app-create-appointment
                         [defaultStartTime]="draftStartTime()"
                         [defaultDurationInMinutes]="draftDurationInMinutes()"
+                        [defaultAppointmentStatus]="draftAppointmentStatus()"
                         (created)="onSearchCreateSuccess()"
                         (cancel)="closePanel()"
                     ></app-create-appointment>

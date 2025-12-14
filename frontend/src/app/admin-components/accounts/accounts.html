@@ -1,0 +1,273 @@
+<div class="page-container">
+
+    <header class="content-header">
+        <div>
+            <h1>Accounts & Access</h1>
+            <p class="subtitle">Manage system administrators and staff access.</p>
+        </div>
+    </header>
+
+    @if (currentUser(); as me) {
+    <div class="panel profile-panel">
+        <div class="profile-left">
+            <div class="avatar large">{{ me.username.charAt(0) | uppercase }}</div>
+            <div class="profile-details">
+                <span class="label">Current Session</span>
+                <h2 class="username">{{ me.username }}</h2>
+                <div class="role-badge">
+                    <span class="dot" [class.admin]="me.role === 'ADMIN'"></span>
+                    {{ me.role }} Account
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="btn btn-primary" (click)="openChangePassword()">
+                <span class="material-icons">key</span>
+                Change Password
+            </button>
+            <button class="btn btn-primary" (click)="logout()">
+                <span class="material-icons">logout</span>
+                Sign Out
+            </button>
+        </div>
+    </div>
+    @if (isChangePasswordOpen()) {
+        <div class="modal-backdrop" (click)="closeChangePassword()">
+            <div class="panel modal-card" (click)="$event.stopPropagation()">
+
+                <div class="modal-header">
+                    <h2>Change Password</h2>
+                    <button class="btn-icon" (click)="closeChangePassword()">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+
+                <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePasswordSubmit()">
+                    <div class="modal-body">
+
+                        @if (modalError()) {
+                        <div class="status-banner status-cancelled">
+                            <span class="material-icons">error</span>
+                            {{ modalError() }}
+                        </div>
+                        }
+
+                        <div class="form-group">
+                            <label>Old Password</label>
+                            <input class="form-input" type="password" formControlName="oldPassword"
+                                placeholder="••••••••">
+                        </div>
+
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input class="form-input" type="password" formControlName="newPassword" placeholder="••••••••">
+                            <small>Must be 8+ chars with 1 uppercase, 1 lowercase, 1 number.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input class="form-input" type="password" formControlName="confirmPassword"
+                                placeholder="••••••••">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-ghost" (click)="closeChangePassword()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="changePasswordForm.invalid">
+                            Update Password
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    }
+    }
+
+    @if (isAdmin()) {
+    <div class="admin-section">
+        <div class="section-actions">
+            <h3>System Users</h3>
+            <button class="btn btn-primary" (click)="openModal()">
+                <span class="material-icons">add</span>
+                Create Account
+            </button>
+        </div>
+
+        <div class="panel table-container">
+            @if (isLoading()) {
+            <div class="loading-state">
+                <span class="spinner"></span> Loading accounts...
+            </div>
+            } @else {
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (user of users(); track user.username) {
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <div class="avatar small">{{ user.username.charAt(0) | uppercase }}</div>
+                                <span class="username-text">{{ user.username }}</span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="badge" [class.status-scheduled]="user.role === 'ADMIN'"
+                                [class.status-noshow]="user.role !== 'ADMIN'">
+                                {{ user.role }}
+                            </span>
+                        </td>
+
+                        <td class="text-right">
+                            @if(user.username !== currentUser()?.username) {
+                            <div class="action-group">
+                                <button class="btn-icon" (click)="initiateReset(user.username)" title="Reset Password">
+                                    <span class="material-icons">lock_reset</span>
+                                </button>
+                                <button class="btn-icon danger" (click)="initiateDelete(user.username)"
+                                    title="Delete User">
+                                    <span class="material-icons">delete</span>
+                                </button>
+                            </div>
+                            } @else {
+                            <span class="current-user-tag">You</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            }
+        </div>
+    </div>
+    } @else {
+    <div class="panel empty-state">
+        <span class="material-icons">lock_person</span>
+        <h3>Access Restricted</h3>
+        <p>You do not have permission to manage other accounts.</p>
+    </div>
+    }
+
+</div>
+
+@if (isModalOpen()) {
+<div class="modal-backdrop" (click)="closeModal()">
+    <div class="panel modal-card" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h2>Create New Account</h2>
+            <button class="btn-icon" (click)="closeModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+
+        <form [formGroup]="createAccountForm" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+
+                @if (modalError()) {
+                <div class="status-banner status-cancelled">
+                    <span class="material-icons">error</span>
+                    {{ modalError() }}
+                </div>
+                }
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input class="form-input" formControlName="username" placeholder="e.g. receptionist">
+                </div>
+
+                <div class="form-group">
+                    <label>Temporary Password</label>
+                    <input class="form-input" type="password" formControlName="password" placeholder="••••••••">
+                    <small>Must be 8+ chars with 1 uppercase, 1 lowercase, 1 number.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Role</label>
+                    <select class="form-input" formControlName="role">
+                        <option value="CLINICIAN">Clinician</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ghost" (click)="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="createAccountForm.invalid">Create
+                    Account</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+}
+
+@if (userToDelete()) {
+<div class="modal-backdrop" (click)="cancelDelete()">
+    <div class="panel modal-card modal-alert" (click)="$event.stopPropagation()">
+
+        <div class="alert-content">
+            <div class="icon-circle danger">
+                <span class="material-icons">warning</span>
+            </div>
+
+            <h2>Delete Account?</h2>
+
+            <p>
+                You are about to delete <strong>{{ userToDelete() }}</strong>.
+                This action will remove their access immediately and cannot be undone.
+            </p>
+        </div>
+
+        <div class="modal-footer centered">
+            <button class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+            <button class="btn btn-danger" (click)="confirmDelete()">Delete Account</button>
+        </div>
+
+    </div>
+</div>
+}
+
+@if (userToReset()) {
+<div class="modal-backdrop" (click)="cancelReset()">
+    <div class="panel modal-card" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h2>Reset Password</h2>
+            <button class="btn-icon" (click)="cancelReset()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <p class="helper-text">
+                Set a temporary password for <strong>{{ userToReset() }}</strong>.
+                They should change this immediately after logging in.
+            </p>
+
+            <div class="form-group">
+                <label>New Temporary Password</label>
+                <input class="form-input" type="password" [formControl]="resetPasswordControl" placeholder="••••••••">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-ghost" (click)="cancelReset()">Cancel</button>
+            <button class="btn btn-primary" (click)="confirmReset()" [disabled]="resetPasswordControl.invalid">
+                Set Password
+            </button>
+        </div>
+
+    </div>
+</div>
+}

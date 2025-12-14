@@ -1,0 +1,387 @@
+/* ==========================================================================
+   ACCOUNTS COMPONENT STYLES
+   Adopting the ".admin-layout" variables (Stone/Indigo Theme)
+   ========================================================================== */
+
+.page-container {
+  max-width: 64rem; /* approx 1000px, matches typical panel width */
+  margin: 0 auto;
+  padding: var(--space-8);
+}
+
+/* --- Header --- */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-6);
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    margin-top: var(--space-2);
+    font-size: 1rem;
+  }
+}
+
+/* --- Profile Panel --- */
+.profile-panel {
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  
+  /* Slight hover lift */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.profile-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+
+  .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+
+  .username {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--status-noshow-bg); /* Grey for normal */
+    
+    &.admin {
+      background-color: var(--primary-600); /* Indigo for Admin */
+    }
+  }
+}
+
+.profile-actions {
+  display: flex;
+  gap: var(--space-2); /* Adds spacing between 'Change Password' and 'Sign Out' */
+}
+
+/* --- Avatars --- */
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-100);
+  color: var(--primary-700);
+  font-weight: 700;
+  border-radius: 50%;
+  
+  &.large {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.5rem;
+  }
+
+  &.small {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* --- Admin Section --- */
+.admin-section {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+
+  h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+}
+
+/* --- Table Styles --- */
+.table-container {
+  overflow: hidden; /* Contains the rounded corners */
+  padding: 0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: var(--space-3) var(--space-6);
+    background-color: var(--bg-app); /* Stone 200/100ish */
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  td {
+    padding: var(--space-3) var(--space-6);
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: middle;
+    color: var(--text-secondary);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  
+  tbody tr:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  
+  .username-text {
+    font-weight: 500;
+    color: var(--text-main);
+  }
+}
+
+.action-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-1);
+}
+
+.current-user-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding-right: var(--space-2);
+}
+
+.text-right { text-align: right; }
+
+/* --- Action Icons --- */
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  .material-icons { font-size: 18px; }
+
+  &:hover {
+    background-color: var(--bg-hover);
+    color: var(--primary-600);
+  }
+
+  &.danger:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--text-muted);
+  
+  .material-icons {
+    font-size: 48px;
+    margin-bottom: var(--space-2);
+    color: var(--border-strong);
+  }
+  
+  h3 { margin: 0 0 var(--space-1) 0; color: var(--text-main); }
+  p { margin: 0; font-size: 0.95rem; }
+}
+
+/* --- Modals (Consistent with Admin Layout) --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(28, 25, 23, 0.4); /* Stone 900 transparent */
+  backdrop-filter: blur(2px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+}
+
+.modal-header {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h2 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+}
+
+.modal-body {
+  padding: var(--space-6);
+}
+
+.form-group {
+  margin: var(--space-4) 0;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+  }
+
+  small {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+}
+
+.status-banner {
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem;
+  
+  &.status-cancelled {
+    background-color: #fef2f2; 
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+  }
+  
+  .material-icons { font-size: 18px; }
+}
+
+.modal-footer {
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--bg-app);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  
+  &.centered { justify-content: center; }
+}
+
+/* Alert Variant */
+.modal-alert {
+  max-width: 400px;
+  text-align: center;
+  
+  .alert-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    h2 { margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.25rem; }
+    p { color: var(--text-secondary); line-height: 1.5; margin: 0; }
+  }
+
+  .icon-circle {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &.danger {
+      background-color: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+    .material-icons { font-size: 24px; }
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.loading-state {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--text-muted);
+}

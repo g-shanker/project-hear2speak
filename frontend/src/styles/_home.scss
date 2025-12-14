@@ -1,7 +1,7 @@
 /* src/styles/_home.scss */
 
 /* Import Fonts: Montserrat (Headings) + DM Sans (Body/UI) */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Montserrat:wght@600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@600;700;800&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -13,6 +13,8 @@ html {
   --bg-body: #EEF2F6;      /* Crisp, cool white (Slate 50) */
   --bg-surface: #FDFDFD;   
   --bg-subtle: #E2E8F0;    
+
+  --bg-body-alternate: #ffffff;
 
   /* --- 2. The "Fresh Emerald" Palette --- */
   --color-primary: #059669; 

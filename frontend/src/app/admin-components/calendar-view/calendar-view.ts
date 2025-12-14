@@ -7,17 +7,18 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin, { EventResizeDoneArg } from '@fullcalendar/interaction';
 
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular'
-import { AppointmentService } from '../../services/appointment-service';
+import { AppointmentService } from '../../services/component/appointment-service';
 import { CalendarOptions, DateSelectArg, DatesSetArg, EventClickArg, EventDropArg } from '@fullcalendar/core/index.js';
 import { mapAppointmentsToEvents } from './calendar-utils';
-import { AppointmentSearchRequest } from '../../interfaces/appointment-search-request';
+import { AppointmentSearchRequest } from '../../interfaces/appointment/appointment-search-request';
 import { AppointmentSearchBar } from '../../domain-components/appointment-search-bar/appointment-search-bar';
 import { closestTo, differenceInMinutes, differenceInSeconds, format, isAfter, parseISO } from 'date-fns';
-import { AppointmentResponse } from '../../interfaces/appointment-response';
-import { ClinicianAppointmentRequest } from '../../interfaces/clinician-appointment-request';
-import { AppointmentStatus } from '../../interfaces/appointment-status';
+import { AppointmentResponse } from '../../interfaces/appointment/appointment-response';
+import { AppointmentStatus } from '../../interfaces/appointment/appointment-status';
 
 import { CreateAppointment } from '../create-appointment/create-appointment';
+import { UpdateAppointmentRequest } from '../../interfaces/appointment/update-appointment-request';
+import { ToastService } from '../../services/component/toast-service';
 
 @Component({
     selector: 'app-calendar-view',
@@ -47,13 +48,15 @@ import { CreateAppointment } from '../create-appointment/create-appointment';
 
 export class CalendarView implements AfterViewInit, OnDestroy {
     private appointmentService = inject(AppointmentService);
+    private toastService = inject(ToastService);
     appointments = this.appointmentService.searchResults;
     selectedAppointment = this.appointmentService.selectedAppointment;
     calendarComponent = viewChild(FullCalendarComponent);
 
     isCreating = signal(false);
-    draftStartTime = signal<string | null>(null);
-    draftDurationInMinutes = signal<number>(30);
+    draftStartTime = signal<string>('');
+    draftDurationInMinutes = signal<number>(45);
+    draftAppointmentStatus = signal<AppointmentStatus>('SCHEDULED' as AppointmentStatus);
 
     private resizeObserver: ResizeObserver | null = null;
     calendarContainer = viewChild<ElementRef>('calendarContainer');
@@ -137,7 +140,7 @@ export class CalendarView implements AfterViewInit, OnDestroy {
     closePanel() {
         this.appointmentService.selectAppointment(null);
         this.isCreating.set(false);
-        this.draftStartTime.set(null);
+        this.draftStartTime.set('');
         this.draftDurationInMinutes.set(30);
     }
 
@@ -156,7 +159,7 @@ export class CalendarView implements AfterViewInit, OnDestroy {
             return;
         }
 
-        const payload: ClinicianAppointmentRequest = {
+        const payload: UpdateAppointmentRequest = {
             patientFullName: originalAppointment.patientFullName,
             patientEmail: originalAppointment.patientEmail,
             patientPhoneNumber: originalAppointment.patientPhoneNumber,
@@ -171,25 +174,40 @@ export class CalendarView implements AfterViewInit, OnDestroy {
 
         this.appointmentService.updateAppointment(originalAppointment.id, payload).subscribe({
             next: (updatedAppointment) => {
-                console.log('Rescheduled successfully');
+                console.log('Rescheduled appointment successfully.');
+                this.toastService.show('Rescheduled appointment successfully!', 'success');
             },  
             error: (err) => {
-                console.error('Reschedule failed:', err);
+                console.error('Reschedule appointment failed:', err);
+                this.toastService.show('Rescheduled appointment failed.', 'error');
                 arg.revert();
             }
         });
     }
 
     handleDateRangeChange(dateInfo: DatesSetArg) {
-        this.appointmentService.searchAppointments({
+
+        const originalSearchRequest = this.appointmentService.searchRequest();
+        const updatedSearchRequest: AppointmentSearchRequest = {
+            sortField: originalSearchRequest?.sortField ?? null,
+            ascending: originalSearchRequest?.ascending ?? null,
+            globalText: originalSearchRequest?.globalText ?? null,
+            appointmentStatus: originalSearchRequest?.appointmentStatus ?? null,
+
             startDateFrom: format(dateInfo.start, "yyyy-MM-dd'T'HH:mm:ss"),
             startDateTo: format(dateInfo.end, "yyyy-MM-dd'T'HH:mm:ss"),
-        })
+            page: null,
+            size: null
+        };
+
+        this.appointmentService.setSearchRequest(updatedSearchRequest);
+        this.appointmentService.triggerSearchRequest();
     }
 
     onSearch(searchRequest: AppointmentSearchRequest) {
         this.isSearchJumpPending.set(true);
-        this.appointmentService.searchAppointments(searchRequest);
+        this.appointmentService.setSearchRequest(searchRequest);
+        this.appointmentService.triggerSearchRequest();
     }
 
     private jumpToBestResult(appointments: AppointmentResponse[]) {

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { AppointmentService } from '../../services/component/appointment-service';
-import { AppointmentForm } from '../../domain-components/appointment-form/appointment-form';
+import { AppointmentForm, FormMode } from '../../domain-components/appointment-form/appointment-form';
 import { CreateAppointmentRequest } from '../../interfaces/appointment/create-appointment-request';
+import { AppointmentStatus } from '../../interfaces/appointment/appointment-status';
 
 @Component({
   selector: 'app-request-appointment',
@@ -22,7 +23,12 @@ export class RequestAppointment {
     submitSuccess = signal(false);
     submitError = signal(false);
 
+    mode = "PATIENT" as FormMode;
+    defaultDurationInMinutes = 45;
+    defaultAppointmentStatus = 'REQUESTED' as AppointmentStatus;
+
     async onSubmit(): Promise<void> {
+
         this.isSubmitting.set(true);
         this.submitError.set(false);
         const formState = this.appointmentForm();
@@ -32,18 +38,16 @@ export class RequestAppointment {
             return;
         }
 
-        const payload: CreateAppointmentRequest | null = formState.getPatientPayload();
+        const payload: CreateAppointmentRequest | null = formState.getFormContents();
 
         if(!payload) {
             this.isSubmitting.set(false);
             return;
         }
 
-        console.log('Submitting Patient Request:', payload);
-
         this.appointmentService.createAppointment(payload).subscribe({
             next: (createdAppointment) => {
-                console.log('Created patient appointment successfully:', createdAppointment);
+                console.log('Created appointment successfully:', createdAppointment);
                 this.isSubmitting.set(false);
                 this.submitSuccess.set(true);
             },

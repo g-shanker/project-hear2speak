@@ -8,55 +8,62 @@ import { UpdateAppointmentRequest } from '../../interfaces/appointment/update-ap
 export type FormMode = 'CLINICIAN' | 'PATIENT';
 
 @Component({
-  selector: 'app-appointment-form',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './appointment-form.html',
+    selector: 'app-appointment-form',
+    standalone: true,
+    imports: [ReactiveFormsModule],
+    templateUrl: './appointment-form.html',
     styleUrls: ['./appointment-form.scss'],
 })
 
 export class AppointmentForm {
-    private formBuilder = inject(FormBuilder);
-
-    mode = input<FormMode>('CLINICIAN');
+    private formBuilder = inject(FormBuilder).nonNullable;
 
     originalData = input<AppointmentResponse | null>(null);
-
+    
+    mode = input<FormMode>('CLINICIAN');
     defaultStartTime = input<string>('');
-    defaultDurationInMinutes = input.required<number>();
-    defaultAppointmentStatus = input.required<AppointmentStatus>();
+    defaultDurationInMinutes = input<number>(45);
+    defaultAppointmentStatus = input<AppointmentStatus>('SCHEDULED' as AppointmentStatus);
 
     form = this.formBuilder.group({
-
-        // Common fields
-
         patientFullName: ['', Validators.required],
         patientEmail: ['', [Validators.required, Validators.email]],
         patientPhoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         patientReason: ['', Validators.required],
-        startDateTime: [this.defaultStartTime(), Validators.required],
-
-        // Clinician-specific fields
-        
-        appointmentStatus: [this.defaultAppointmentStatus(), Validators.required],
-        durationInMinutes: [this.defaultDurationInMinutes(), Validators.required],
+        startDateTime: ['', Validators.required],
+        appointmentStatus: ['' as unknown as AppointmentStatus, Validators.required],
+        durationInMinutes: [0, [Validators.required, Validators.min(1)]],
         clinicianNotes: ['']
     });
 
     constructor() {
         effect(() => {
-            const originalData = this.originalData();
-            if (originalData) {
-                this.form.patchValue({
-                    ...originalData,
-                    durationInMinutes: Math.floor(originalData.durationInSeconds / 60)
-                });
+            const mode = this.mode();
+            const clinicianControls = [
+                this.form.controls.appointmentStatus,
+                this.form.controls.durationInMinutes,
+                this.form.controls.clinicianNotes
+            ];
+
+            if (mode === 'PATIENT') {
+                clinicianControls.forEach(c => c.disable());
+            } else {
+                clinicianControls.forEach(c => c.enable());
             }
+        });
+
+        effect(() => {
+            this.originalData();
+            this.defaultStartTime();
+            this.defaultDurationInMinutes();
+            this.defaultAppointmentStatus();
+            this.reset();
         });
     }
 
     getFormContents(): CreateAppointmentRequest | UpdateAppointmentRequest | null {
-        if(this.form.invalid) {
+        if (this.form.invalid) {
+            console.log('Form is invalid.');
             this.form.markAllAsTouched();
             return null;
         }
@@ -65,18 +72,13 @@ export class AppointmentForm {
         const originalData = this.originalData();
 
         return {
+            patientFullName: raw.patientFullName,
+            patientEmail: raw.patientEmail,
+            patientPhoneNumber: raw.patientPhoneNumber,
+            patientReason: raw.patientReason,
+            startDateTime: raw.startDateTime,
 
-            // Common fields
-
-            patientFullName: raw.patientFullName!,
-            patientEmail: raw.patientEmail!,
-            patientPhoneNumber: raw.patientPhoneNumber!,
-            patientReason: raw.patientReason!,
-            startDateTime: raw.startDateTime!,
-
-            // Clinician-specific fields
-
-            durationInSeconds: Number(raw.durationInMinutes) * 60,
+            durationInSeconds: raw.durationInMinutes * 60,
             appointmentStatus: raw.appointmentStatus as AppointmentStatus,
             clinicianNotes: raw.clinicianNotes || null,
             isAcknowledged: originalData?.isAcknowledged || false
@@ -84,16 +86,33 @@ export class AppointmentForm {
     }
 
     reset() {
-        this.form.reset({
-            appointmentStatus: this.defaultAppointmentStatus(),
-            durationInMinutes: this.defaultDurationInMinutes(),
-            startDateTime: this.defaultStartTime(),
-            patientFullName: '',
-            patientEmail: '',
-            patientPhoneNumber: '',
-            patientReason: '',
-            clinicianNotes: ''
-        })
+        const originalData = this.originalData();
+        if (originalData) {
+            this.form.reset({
+                patientFullName: originalData.patientFullName,
+                patientEmail: originalData.patientEmail,
+                patientPhoneNumber: originalData.patientPhoneNumber,
+                patientReason: originalData.patientReason,
+                startDateTime: originalData.startDateTime,
+                appointmentStatus: originalData.appointmentStatus,
+                clinicianNotes: originalData.clinicianNotes || '',
+                durationInMinutes: Math.floor(originalData.durationInSeconds / 60)
+            });
+        } else {
+            this.form.reset({
+                // Set defaults from signals
+                startDateTime: this.defaultStartTime(),
+                durationInMinutes: this.defaultDurationInMinutes(),
+                appointmentStatus: this.defaultAppointmentStatus(),
+
+                // Explicitly clear text fields
+                patientFullName: '',
+                patientEmail: '',
+                patientPhoneNumber: '',
+                patientReason: '',
+                clinicianNotes: ''
+            });
+        }
     }
 
 }

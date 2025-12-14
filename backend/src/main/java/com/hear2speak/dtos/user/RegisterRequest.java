@@ -3,6 +3,7 @@ package com.hear2speak.dtos.user;
 import com.hear2speak.entities.user.UserRole;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -20,7 +21,7 @@ public class RegisterRequest {
     @Pattern(regexp = ".*[^a-zA-Z0-9].*", message = "Password must contain at least one symbol")
     public String password;
 
-    @NotBlank(message = "Role is required")
+    @NotNull(message = "Role is required")
     public UserRole role;
     
 }

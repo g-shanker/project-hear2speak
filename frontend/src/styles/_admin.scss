@@ -173,6 +173,23 @@
       &:hover { background-color: var(--bg-hover); color: var(--text-main); }
     }
 
+    .btn-danger {
+      background-color: var(--status-cancelled-bg); /* #ca3521 (Red) */
+      color: var(--status-cancelled-text); /* #ffffff */
+      border: 1px solid var(--status-cancelled-bg);
+        
+      &:hover { 
+        /* A custom, slightly darker red for hover */
+        background-color: #a32b1a;
+        border-color: #a32b1a;
+      }
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+
     /* --- FORM INPUTS --- */
     .form-input, input, select, textarea {
       width: 100%;

@@ -1,6 +1,6 @@
 import { EventInput } from '@fullcalendar/core';
 import { addSeconds, format, parse, parseISO } from 'date-fns';
-import { AppointmentResponse } from "../../interfaces/appointment-response";
+import { AppointmentResponse } from "../../interfaces/appointment/appointment-response";
 
 export function mapAppointmentsToEvents(appointments: AppointmentResponse[]): EventInput[] {
     return appointments.map(appointment => {

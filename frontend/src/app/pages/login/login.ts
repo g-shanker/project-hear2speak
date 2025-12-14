@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginRequest } from '../../interfaces/login-request';
+import { AuthService } from '../../services/component/auth-service';
+import { LoginRequest } from '../../interfaces/auth/login-request';
+import { UserService } from '../../services/component/user-service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ import { LoginRequest } from '../../interfaces/login-request';
 export class Login {
     private formBuilder = inject(FormBuilder);
     private authService = inject(AuthService);
+    private userService = inject(UserService);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
 
@@ -46,6 +48,14 @@ export class Login {
             next: () => {
                 this.isLoading.set(false);
                 const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin';
+                this.userService.getCurrentUser().subscribe({
+                    next: (user) => {
+                        console.log('Got current user details successfully!');
+                    },
+                    error: (error) => {
+                        console.error('Error while fetching current user details.');
+                    }
+                })
                 this.router.navigateByUrl(returnUrl);
             },
             error: (error) => {

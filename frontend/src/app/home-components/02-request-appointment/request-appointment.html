@@ -45,7 +45,7 @@
                 <!-- New Action Area -->
                 <div class="error-actions">
                   <span class="help-text">Issue persisting?</span>
-                  <a href="#contact" class="btn-error-small">Contact Us</a>
+                  <a href="#contact" class="btn-error-small">Contact Us Directly</a>
                 </div>
               </div>
             </div>
@@ -58,7 +58,11 @@
 
         <!-- 2. SCROLLABLE BODY -->
         <div class="form-scroll-body">
-           <app-appointment-form [mode]="PATIENT"></app-appointment-form>
+           <app-appointment-form
+                [mode]="mode"
+                [defaultDurationInMinutes]="defaultDurationInMinutes"
+                [defaultAppointmentStatus]="defaultAppointmentStatus"
+            ></app-appointment-form>
         </div>
 
         <!-- 3. FORM FOOTER -->

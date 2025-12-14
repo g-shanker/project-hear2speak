@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { StatCard } from '../../generic-components/stat-card/stat-card';
 import { BaseChartDirective } from 'ng2-charts';
-import { AppointmentService } from '../../services/appointment-service';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { format, getHours, isFuture, isToday, parseISO } from 'date-fns';
 import { DatePipe } from '@angular/common';
+import { AppointmentService } from '../../services/component/appointment-service';
 
 @Component({
     selector: 'app-dashboards',
@@ -178,7 +178,10 @@ export class Dashboards {
             globalText: null,
             startDateFrom: null,
             startDateTo: null,
-            appointmentStatus: null
+            appointmentStatus: null,
+
+            page: null,
+            size: null
         });
     }
 }

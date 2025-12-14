@@ -1,8 +1,31 @@
 <div class="admin-layout">
     <div class="admin-container">
         <div class="admin-banner">
-            Hear2Speak Balance : Administrator Panel
+            Hear2Speak Balance : Clinician Panel
         </div>
         <app-slicer [items]="slicerItems"></app-slicer>
+    </div>
+
+    <div class="toast-container">
+        @for (toast of toastService.toasts(); track toast.id) {
+            <div class="toast-card" [class.is-error]="toast.type === 'error'">
+            
+                <div class="toast-icon">
+                    <span class="material-icons">
+                        {{ toast.type === 'error' ? 'error_outline' : 'check_circle' }}
+                    </span>
+                </div>
+            
+                <div class="toast-content">
+                    <span class="toast-title">{{ toast.type === 'error' ? 'Error' : 'Success' }}</span>
+                    <span class="toast-message">{{ toast.message }}</span>
+                </div>
+            
+                <button class="toast-close" (click)="toastService.remove(toast.id)">
+                    <span class="material-icons">close</span>
+                </button>
+            
+            </div>
+        }
     </div>
 </div>

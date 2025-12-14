@@ -20,8 +20,8 @@
 
 /* 2. The Sticky Toolbar */
 .view-panel-toolbar {
-  flex-shrink: 0; /* Never collapse */
-  height: 3.5rem; /* Fixed height (56px) */
+  flex-shrink: 0; 
+  height: 3.5rem; 
   
   display: flex;
   align-items: center;
@@ -31,7 +31,20 @@
   background-color: var(--bg-surface);
   border-bottom: 0.0625rem solid var(--border-subtle);
   
-  z-index: 10; /* Ensure it stays above content */
+  z-index: 10;
+  
+  /* --- NEW SCROLLING PROPERTIES --- */
+  overflow-x: auto;          /* Allow horizontal scrolling */
+  overflow-y: hidden;        /* Prevent vertical scroll triggers */
+  white-space: nowrap;       /* Keep items in a single line */
+  
+  /* Optional: Hide the scrollbar for a cleaner "touch" look */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+  
+  &::-webkit-scrollbar {
+    display: none;           /* Chrome, Safari, Opera */
+  }
 }
 
 /* 3. Toolbar Buttons (Interactive Tools) */
@@ -45,6 +58,10 @@
   cursor: pointer;
   transition: all 0.15s ease;
   
+  /* --- NEW PROPERTIES --- */
+  flex-shrink: 0;       /* CRITICAL: Prevents buttons from squishing */
+  white-space: nowrap;  /* Prevents text inside button from wrapping */
+  
   /* Typography */
   color: var(--text-secondary);
   font-size: 0.875rem;
@@ -52,7 +69,7 @@
   
   /* Icons */
   i.material-icons {
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.25rem; 
     color: var(--text-muted);
   }
 
@@ -126,4 +143,108 @@
   height: 1.5rem !important;
   background-color: var(--border-subtle) !important;
   margin: 0 0.5rem !important;
+}
+
+/* ================= MODAL STYLES ================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(28, 25, 23, 0.4); /* Dark Stone with opacity */
+  backdrop-filter: blur(2px);
+  z-index: 100; /* Must be higher than toolbar (z-index: 10) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.2s ease-out;
+  overflow: hidden;
+  
+  /* Alert Variant Specifics */
+  &.modal-alert {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+}
+
+.alert-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    margin: 1rem 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+}
+
+.icon-circle {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &.danger {
+    background-color: #fef2f2; /* Red 50 */
+    color: #dc2626;           /* Red 600 */
+    border: 1px solid #fecaca;
+  }
+  
+  .material-icons { font-size: 28px; }
+}
+
+.modal-footer {
+  padding: 1rem;
+  background-color: var(--bg-app);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 1rem;
+  
+  &.centered { justify-content: center; }
+}
+
+/* Button Classes (If not globally available in this component) */
+.btn {
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-secondary {
+  background-color: white;
+  border-color: var(--border-subtle);
+  color: var(--text-main);
+  &:hover { background-color: var(--bg-hover); }
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+  &:hover { background-color: #b91c1c; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

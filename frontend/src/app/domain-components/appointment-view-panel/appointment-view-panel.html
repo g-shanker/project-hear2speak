@@ -9,19 +9,11 @@
             <div class="divider" style="width: 1px; height: 24px; background: #eee; margin: 0 8px;"></div>
 
             @if (editMode()) {
-                <div
-                    class="toolbar-button"
-                    (click)="editMode.set(false)"
-                    [class.disabled]="isSaving()"
-                >
+                <div class="toolbar-button" (click)="editMode.set(false)" [class.disabled]="isSaving()">
                     <i class="material-icons">edit_off</i>
                     <div class="toolbar-button-text">Exit Editor</div>
                 </div>
-                <div
-                    class="toolbar-button"
-                    (click)="saveChanges()"
-                    [class.disabled]="isSaving()"
-                >
+                <div class="toolbar-button" (click)="saveChanges()" [class.disabled]="isSaving()">
                     <i class="material-icons">save</i>
                     <div class="toolbar-button-text">
                         {{ isSaving() ? 'Saving...' : 'Save Changes' }}
@@ -30,23 +22,27 @@
             }
 
             @else {
-                <div
-                    class="toolbar-button"
-                    (click)="editMode.set(true)"
-                >
+                <div class="toolbar-button" (click)="editMode.set(true)">
                     <i class="material-icons">edit</i>
                     <div class="toolbar-button-text">Edit Appointment</div>
                 </div>
+                
+                <div class="toolbar-button" (click)="initiateDelete()">
+                    <i class="material-icons">delete</i>
+                    <div class="toolbar-button-text">Delete Appointment</div>
+                </div>
             }
         </div>
+        
         <div class="view-panel-content">
             @if (editMode()) {
                 <app-appointment-form
                     mode="CLINICIAN"
-                    [initialData]="appointment()"
+                    [originalData]="appointment()"
+                    [defaultDurationInMinutes]="defaultDurationInMinutes"
+                    [defaultAppointmentStatus]="defaultAppointmentStatus"
                 ></app-appointment-form>
             }
-
             @else {
                 <app-appointment-details-view
                     [appointment]="appointment()"
@@ -59,5 +55,29 @@
 @else {
     <div class="placeholder">
         <p>Select an appointment to view details.</p>
+    </div>
+}
+
+@if (isDeleteModalOpen()) {
+    <div class="modal-backdrop" (click)="cancelDelete()">
+        <div class="modal-card modal-alert" (click)="$event.stopPropagation()">
+            
+            <div class="alert-content">
+                <div class="icon-circle danger">
+                    <span class="material-icons">warning</span>
+                </div>
+                
+                <h2>Delete Appointment?</h2>
+                <p>
+                    Are you sure you want to delete this appointment? 
+                    This action cannot be undone.
+                </p>
+            </div>
+
+            <div class="modal-footer centered">
+                <button class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+                <button class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+            </div>
+        </div>
     </div>
 }
