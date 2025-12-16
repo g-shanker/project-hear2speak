@@ -3,7 +3,7 @@ export enum AppointmentStatus {
     REQUESTED = 'REQUESTED',
     SCHEDULED = 'SCHEDULED',
     COMPLETED = 'COMPLETED',
-    CANCELLED = 'CANCELLED',
+    CANCELED = 'CANCELED',
     NO_SHOW = 'NO_SHOW',
     RESCHEDULED = 'RESCHEDULED',
     

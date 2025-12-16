@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -22,6 +23,7 @@ import com.hear2speak.repositories.AppointmentRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.security.identity.SecurityIdentity;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -55,15 +57,21 @@ public class AppointmentService {
 
     private final SecurityIdentity securityIdentity;
 
+    private final EmailService emailService;
+
+    private static final Logger LOG = Logger.getLogger(AppointmentService.class.getName());
+
     @Inject
     public AppointmentService(
         AppointmentRepository appointmentRepository,
         AppointmentMapper appointmentMapper,
-        SecurityIdentity securityIdentity
+        SecurityIdentity securityIdentity,
+        EmailService emailService
     ) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentMapper = appointmentMapper;
         this.securityIdentity = securityIdentity;
+        this.emailService = emailService;
     }
 
     public List<AppointmentResponse> searchAppointments(AppointmentSearchRequest appointmentSearchRequest) {
@@ -132,6 +140,23 @@ public class AppointmentService {
         AppointmentEntity appointmentEntity = appointmentMapper.toEntity(appointmentRequest);
         appointmentEntity = applyDefaults(appointmentEntity);
         appointmentRepository.persist(appointmentEntity);
+
+        Uni<Void> mailUni;
+        if(appointmentEntity.appointmentStatus == AppointmentStatus.REQUESTED) {
+            mailUni = emailService.sendRequestReceivedMail(appointmentEntity);
+        }
+        else if(appointmentEntity.appointmentStatus == AppointmentStatus.SCHEDULED) {
+            mailUni = emailService.sendAppointmentConfirmedMail(appointmentEntity);
+        }
+        else {
+            mailUni = Uni.createFrom().voidItem(); // Do nothing
+        }
+
+        mailUni.subscribe().with(
+            success -> LOG.info("Email sending initiated successfully."),
+            failure -> LOG.info("Failed to initiate email sending: " + failure.getMessage())
+        );
+
         AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
         return appointmentResponse;
     }
@@ -161,11 +186,21 @@ public class AppointmentService {
         AppointmentEntity appointmentEntity = appointmentRepository.findByIdOptional(id)
             .orElseThrow(() -> new WebApplicationException("Appointment with id " + id + " not found.", Response.Status.NOT_FOUND.getStatusCode()));
 
+        boolean isBeingConfirmed = 
+            appointmentEntity.appointmentStatus != AppointmentStatus.SCHEDULED
+            && appointmentRequest.appointmentStatus == AppointmentStatus.SCHEDULED;
+
         appointmentMapper.updateEntity(appointmentEntity, appointmentRequest);
         appointmentEntity.updatedAt = LocalDateTime.now();
 
-        AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
+        if(isBeingConfirmed) {
+            emailService.sendAppointmentConfirmedMail(appointmentEntity).subscribe().with(
+                success -> LOG.info("Email sending initiated successfully."),
+                failure -> LOG.info("Failed to initiate email sending: " + failure.getMessage())
+            );
+        }
 
+        AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
         return appointmentResponse;
     }
     
