@@ -213,7 +213,7 @@ public class EmailService {
                 <p style="margin:0 0 15px 0; font-size:20px; color:%s; font-weight:bold;">%s</p>
                 
                 <p style="margin:0; font-size:14px; color:#334155; display:flex; align-items:center;">
-                    <strong>Location:</strong>&nbsp; Hear2Speak Clinic, Bengaluru : https://maps.app.goo.gl/vnLhqE852k6moHmR7
+                    <strong>Location:</strong>&nbsp; https://maps.app.goo.gl/vnLhqE852k6moHmR7
                 </p>
             </div>
 

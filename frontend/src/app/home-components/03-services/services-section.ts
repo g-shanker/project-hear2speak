@@ -13,7 +13,7 @@ export class ServicesSection {
     services = [
     {
       title: 'Hearing Aids',
-      description: 'Wide selection of modern hearing aids from leading manufacturers. We offer expert fitting, programming, and ongoing support.',
+      description: 'Wide selection of modern hearing aids from leading manufacturers, Starkey, Widex, GN Resound, Oticon, and Signia. We offer expert fitting, programming, and ongoing support.',
       icon: 'hearing', 
       items: [
         'Comprehensive hearing aid consultation',
