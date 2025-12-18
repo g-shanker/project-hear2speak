@@ -1,6 +1,9 @@
 package com.hear2speak.services;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import com.hear2speak.entities.appointment.AppointmentEntity;
 import io.quarkus.mailer.Mail;
@@ -18,6 +21,9 @@ public class EmailService {
     @ConfigProperty(name = "app.constants.mailer.contact.phone_2")
     String PHONE_2;
 
+    @ConfigProperty(name = "app.constants.mailer.clinician.email")
+    String CLINICIAN_EMAIL;
+
     private final ReactiveMailer reactiveMailer;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy");
@@ -28,6 +34,7 @@ public class EmailService {
     private static final String COLOR_PRIMARY_DARK = "#022c22"; // Deep Forest
     private static final String COLOR_BG = "#EEF2F6";           // Slate 50
     private static final String COLOR_TEXT = "#334155";         // Slate 700
+    private static final String COLOR_WARNING = "#b45309";      // Amber 700 (for alerts)
 
     @Inject
     public EmailService(ReactiveMailer reactiveMailer) {
@@ -57,6 +64,18 @@ public class EmailService {
 
         return reactiveMailer.send(
             Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
+        );
+    }
+
+    public Uni<Void> sendClinicianUnacknowledgedAlert(List<AppointmentEntity> pendingAppointments) {
+        int count = pendingAppointments.size();
+        String subject = "Action Required: " + count + " Pending Appointment Requests";
+        
+        String bodyContent = getUnacknowledgedAlertBody(pendingAppointments, count);
+        String htmlBody = wrapHtmlTemplate("Action Required", bodyContent);
+
+        return reactiveMailer.send(
+            Mail.withHtml(CLINICIAN_EMAIL, subject, htmlBody)
         );
     }
 
@@ -236,6 +255,65 @@ public class EmailService {
                 COLOR_PRIMARY_DARK, date,
                 COLOR_PRIMARY, time,
                 PHONE_1, PHONE_2
+            );
+    }
+
+    private String getUnacknowledgedAlertBody(List<AppointmentEntity> appointments, int count) {
+        // Generate a row for the first 5 appointments to avoid overcrowding the email
+        String rows = appointments.stream()
+            .limit(5)
+            .map(apt -> """
+                <tr>
+                    <td style="padding:12px 0; border-bottom:1px solid #f1f5f9; font-size:14px;">%s</td>
+                    <td style="padding:12px 0; border-bottom:1px solid #f1f5f9; font-weight:bold; color:#334155; font-size:14px;">%s</td>
+                    <td style="padding:12px 0; border-bottom:1px solid #f1f5f9; text-align:right; color:#64748B; font-size:13px;">%s</td>
+                </tr>
+                """.formatted(
+                    apt.startDateTime.format(DateTimeFormatter.ofPattern("MMM d, h:mm a")),
+                    apt.patientFullName,
+                    apt.patientPhoneNumber
+                ))
+            .collect(Collectors.joining());
+
+        String moreCountText = (count > 5) 
+            ? "<p style='font-size:13px; color:#64748B; text-align:center; margin-top:10px;'>...and " + (count - 5) + " more.</p>" 
+            : "";
+
+        return """
+            <h2 style="margin-top:0; color:%s; font-size:24px;">Attention Needed</h2>
+            
+            <p style="font-size:16px; line-height:1.6;">
+                There are currently <strong>%d unacknowledged appointment requests</strong> waiting for your review.
+            </p>
+
+            <div style="background-color:#FFF7ED; border:1px solid #FFEDD5; border-radius:12px; padding:20px; margin:25px 0;">
+                <p style="margin:0 0 15px 0; font-size:12px; text-transform:uppercase; color:%s; font-weight:bold; letter-spacing:0.05em;">Recent Requests</p>
+                
+                <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th align="left" style="padding-bottom:10px; color:#94A3B8; font-size:12px; text-transform:uppercase;">Time</th>
+                            <th align="left" style="padding-bottom:10px; color:#94A3B8; font-size:12px; text-transform:uppercase;">Patient</th>
+                            <th align="right" style="padding-bottom:10px; color:#94A3B8; font-size:12px; text-transform:uppercase;">Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        %s
+                    </tbody>
+                </table>
+                %s
+            </div>
+
+            <div style="text-align:center; margin: 35px 0;">
+                <a href="https://hear2speakbalance.clinic/admin" class="btn-cta" style="background-color:%s; color:#ffffff;">Review Dashboard</a>
+            </div>
+            """.formatted(
+                COLOR_WARNING, // Uses Amber for urgency
+                count,
+                COLOR_WARNING,
+                rows,
+                moreCountText,
+                COLOR_PRIMARY
             );
     }
 }

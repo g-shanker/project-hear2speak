@@ -59,10 +59,14 @@ public class AppointmentEntity {
     @Column(name = "updated_at")
     public LocalDateTime updatedAt;
 
+    @Column(name = "last_alert_sent_at")
+    public LocalDateTime lastAlertSentAt;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = createdAt;
+        lastAlertSentAt = null;
     }
 
     @PreUpdate
