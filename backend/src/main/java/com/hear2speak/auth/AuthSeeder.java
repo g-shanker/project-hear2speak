@@ -40,6 +40,8 @@ public class AuthSeeder {
         registerRequest.password = initialPassword;
         registerRequest.role = UserRole.ADMIN;
 
+        if(userService.findByUsername(registerRequest.username) != null) return;
+
         userService.registerUser(registerRequest);
         LOG.info("--- Initial Admin User Created. ---");
         LOG.info("Username: admin, Password: " + initialPassword);
