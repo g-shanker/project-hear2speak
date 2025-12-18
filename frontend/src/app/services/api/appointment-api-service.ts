@@ -6,13 +6,15 @@ import { AppointmentResponse } from "../../interfaces/appointment/appointment-re
 import { UpdateAppointmentRequest } from "../../interfaces/appointment/update-appointment-request";
 import { AppointmentSearchRequest } from "../../interfaces/appointment/appointment-search-request";
 
+import { environment } from "../../../environments/environment";
+
 @Injectable({
     providedIn: 'root'
 })
 
 export class AppointmentApiService {
     private http = inject(HttpClient);
-    private readonly apiUrl  = '/api/appointments'
+    private readonly apiUrl =  environment.apiUrl + '/api/appointments'
 
     createAppointment(appointment: CreateAppointmentRequest): Observable<AppointmentResponse> {
         return this.http.post<AppointmentResponse>(`${this.apiUrl}`, appointment);

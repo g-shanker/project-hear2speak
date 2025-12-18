@@ -10,13 +10,15 @@ import { ChangePasswordRequest } from "../../interfaces/user/change-password-req
 import { RegisterRequest } from "../../interfaces/user/register-request";
 import { ForceResetPasswordRequest } from "../../interfaces/user/force-reset-password-request";
 
+import { environment } from "../../../environments/environment";
+
 @Injectable({
     providedIn: 'root'
 })
 
 export class UserApiService {
     private http = inject(HttpClient);
-    private readonly apiUrl  = '/api/users'
+    private readonly apiUrl = environment.apiUrl + '/api/users'
 
     getCurrentUser(): Observable<UserResponse> {
         return this.http.get<UserResponse>(`${this.apiUrl}/me`);
