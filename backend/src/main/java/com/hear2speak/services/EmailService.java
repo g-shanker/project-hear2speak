@@ -134,7 +134,6 @@ public class EmailService {
                                         </p>
                                         <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #333333; color:#64748B; font-size:11px;">
                                             &copy; 2025 Hear2Speak. All rights reserved.<br>
-                                            This is an automated message. Please do not reply.
                                         </div>
                                     </td>
                                 </tr>
@@ -228,7 +227,7 @@ public class EmailService {
 
             <p style="font-size:14px; color:#64748B; border-top:1px solid #f0f0f0; padding-top:20px;">
                 <strong>Need to reschedule?</strong><br>
-                Please do not reply to this email. Instead, contact us at <strong>%s</strong> or <strong>%s</strong>.
+                Contact us at <strong>%s</strong> or <strong>%s</strong>.
             </p>
             """.formatted(
                 COLOR_PRIMARY,
