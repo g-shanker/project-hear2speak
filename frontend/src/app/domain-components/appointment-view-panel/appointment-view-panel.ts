@@ -120,9 +120,6 @@ export class AppointmentViewPanel {
             
             case 'SCHEDULED':
                 return `Hi ${appointment.patientFullName}, your appointment at Hear2Speak has been *CONFIRMED* for ${dateStr} at ${timeStr}.\n\n${detailsBlock}\n\nLocation: ${this.CLINIC_MAPS_LINK}\n\nPlease ensure to be there on time. You can *reply directly to this number* if you have any questions or need to reschedule.`;
-            
-            case 'CANCELED':
-                return `Hello ${appointment.patientFullName}, confirming that your appointment scheduled for ${dateStr} has been cancelled.`;0
 
             default:
                 return '';

@@ -35,8 +35,7 @@ export class ContactUs {
             icon: 'email',
             type: 'EMAIL',
             lines: [
-                'contact@hear2speak.com',
-                'appointments@hear2speak.com'
+                'appointments@hear2speakbalance.clinic'
             ]
         },
         {
@@ -44,7 +43,7 @@ export class ContactUs {
             icon: 'schedule',
             type: 'TEXT',
             lines: [
-                'Mon - Sat: 9:00 AM - 7:00 PM',
+                'Mon - Sat: 9:00 AM - 6:30 PM',
                 'Sunday: Closed'
             ]
         }

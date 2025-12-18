@@ -14,19 +14,15 @@ import { Carousel } from '../../generic-components/carousel/carousel';
 })
 export class AboutUs {
 
-    one = 'assets/images/about-us-images/one.jpg'
-    two = 'assets/images/about-us-images/two.jpg'
-    three = 'assets/images/about-us-images/three.jpg'
-    four = 'assets/images/about-us-images/four.jpg'
-    five = 'assets/images/about-us-images/five.jpg'
-    six = 'assets/images/about-us-images/six.jpg'
+    one = 'assets/images/about-us-images/one.png';
+    two = 'assets/images/about-us-images/two.jpg';
+    three = 'assets/images/about-us-images/three.png';
+    four = 'assets/images/about-us-images/four.png';
 
     aboutSlides = [
         this.one,
         this.two,
         this.three,
-        this.four,
-        this.five,
-        this.six
+        this.four
     ];
 }

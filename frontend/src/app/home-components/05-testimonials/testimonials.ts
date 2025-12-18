@@ -14,34 +14,24 @@ export class Testimonials {
 
     reviews = [
     {
-      name: 'Mr. Potato Head',
-      treatment: 'Balance (Rolling) Rehab',
-      text: 'I kept rolling off the kitchen counter uncontrollably. It was terrifying. The vestibular therapy helped me find my center of gravity. Now I am a stable, grounded mash.'
+      name: 'Ankit Verma',
+      treatment: 'Speech Therapy',
+      text: 'Taking my kid here for couple of year and I must admin there is significant improvement in my kid\'s growth. I Sincerely thanks Pragati mam for all the sessions & guidance in making my kid achieve his age milestones. I strongly recommend this place for Speech therapy.'
     },
     {
-      name: 'Brocc O. Lee',
-      treatment: 'Steam Anxiety Therapy',
-      text: 'I could never hear the water boiling until it was too late. I almost got steamed twice! Thanks to my new hearing aids, I can hear a peeler from three rooms away. Life saver.'
+      name: 'Pavan Kumar',
+      treatment: 'Speech Therapy',
+      text: 'Our prediatrician has enquired and suggested us this theraphy center, as my child wasn\'t talking even after two and half years age though going to pre-school. We felt that it\'s a good decision and my child has been improved a lot in last 4 months. We\'re thankful for the therapists Ambika and Pragati.'
     },
     {
-      name: 'Baby Carrot',
-      treatment: 'Crunch Articulation',
-      text: 'Nobody took me seriously. I was just a snack. After speech therapy, my crunch is articulate and commanding. The Hummus finally respects me.'
+      name: 'Sukanya Lakshmi',
+      treatment: 'Speech Therapy',
+      text: 'The approach was always professional, yet compassionate, making the entire journey feel comfortable and positive. I highly recommend Hear2Speak Clinic to anyone looking for effective, evidence-based speech therapy. A big thank you to Pragathi Ma\'am and the team for their wonderful support'
     },
     {
-      name: 'Tom A. Toe',
-      treatment: 'Identity Crisis Counseling',
-      text: 'Fruit? Vegetable? I was so confused I couldn’t speak. The team helped me find my voice. Now I scream "I belong in a salad!" with total confidence.'
-    },
-    {
-      name: 'Cornelius Cob',
-      treatment: 'Tinnitus (Popping) Management',
-      text: 'I had this constant popping sound in my ears, especially when it got hot. Turns out it was just my kernels. The clinic helped me manage the stress before I exploded.'
-    },
-    {
-      name: 'Aubergine',
-      treatment: 'Soft Voice Therapy',
-      text: 'People always thought I was mushy and quiet. The vocal strengthening exercises gave me firmness and presence. Now I am the star of the Moussaka.'
+      name: 'Saheer Anaesthesia',
+      treatment: 'Speech Therapy',
+      text: 'Nice reception..Good technicians and friendly understanding staffs..Neat and tidy...with modern equipments...'
     }
   ];
 
