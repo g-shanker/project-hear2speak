@@ -1,8 +1,8 @@
 # 1. Build Stage
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 
-COPY backend/src /usr/src/app/src
-COPY backend/pom.xml /usr/src/app
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
 
 WORKDIR /usr/src/app
 RUN mvn clean package -DskipTests
