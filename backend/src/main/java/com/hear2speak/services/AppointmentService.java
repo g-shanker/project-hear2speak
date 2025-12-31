@@ -23,7 +23,6 @@ import com.hear2speak.repositories.AppointmentRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.security.identity.SecurityIdentity;
-import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -39,7 +38,7 @@ public class AppointmentService {
     @ConfigProperty(name = "app.constants.appointments.default-sort-field", defaultValue = "createdAt")
     String DEFAULT_SORT_FIELD;
 
-    @ConfigProperty(name = "app.constants.appointments.default-sort-field", defaultValue = "false")
+    @ConfigProperty(name = "app.constants.appointments.default-sort-ascending", defaultValue = "false")
     boolean DEFAULT_SORT_ASCENDING;
 
     @ConfigProperty(name = "app.constants.appointments.default-duration-in-seconds", defaultValue = "1800")
@@ -141,25 +140,22 @@ public class AppointmentService {
         appointmentEntity = applyDefaults(appointmentEntity);
         appointmentRepository.persist(appointmentEntity);
 
-        Uni<Void> mailUni;
         try {
             if(appointmentEntity.appointmentStatus == AppointmentStatus.REQUESTED) {
-                mailUni = emailService.sendRequestReceivedMail(appointmentEntity);
+                emailService.sendRequestReceivedMail(appointmentEntity);
+                LOG.info("Request received email sent (blocking).");
             }
             else if(appointmentEntity.appointmentStatus == AppointmentStatus.SCHEDULED) {
-                mailUni = emailService.sendAppointmentConfirmedMail(appointmentEntity);
+                emailService.sendAppointmentConfirmedMail(appointmentEntity);
+                LOG.info("Appointment confirmed email sent (blocking).");
             }
             else {
-                mailUni = Uni.createFrom().voidItem(); // Do nothing
+                // No email required
             }
-
-            mailUni.subscribe().with(
-                success -> LOG.info("Email sending initiated successfully."),
-                failure -> LOG.severe("Failed to initiate email sending asynchronously: " + failure.getMessage())
-            );
         }
         catch (Exception ex) {
-            LOG.severe("Synchronous failure initiating email send: " + ex.getMessage());
+            // Log and continue — do not fail the appointment transaction due to email problems
+            LOG.severe("Failed to send email: " + ex.getMessage());
         }
 
         AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
@@ -200,13 +196,11 @@ public class AppointmentService {
 
         if(isBeingConfirmed) {
             try {
-                emailService.sendAppointmentConfirmedMail(appointmentEntity).subscribe().with(
-                    success -> LOG.info("Email sending initiated successfully."),
-                    failure -> LOG.severe("Failed to initiate email sending asynchronously: " + failure.getMessage())
-                );
+                emailService.sendAppointmentConfirmedMail(appointmentEntity);
+                LOG.info("Appointment confirmation email sent (blocking).");
             }
             catch (Exception ex) {
-                LOG.severe("Synchronous failure initiating confirmation email: " + ex.getMessage());
+                LOG.severe("Failed to send confirmation email: " + ex.getMessage());
             }
         }
 

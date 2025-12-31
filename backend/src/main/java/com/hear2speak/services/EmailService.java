@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import com.hear2speak.entities.appointment.AppointmentEntity;
 import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.reactive.ReactiveMailer;
-import io.smallrye.mutiny.Uni;
+import io.quarkus.mailer.Mailer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.logging.Logger;
@@ -27,7 +26,7 @@ public class EmailService {
     @ConfigProperty(name = "app.constants.mailer.clinician.email")
     String CLINICIAN_EMAIL;
 
-    private final ReactiveMailer reactiveMailer;
+    private final Mailer mailer;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy");
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("h:mm a");
@@ -40,11 +39,11 @@ public class EmailService {
     private static final String COLOR_WARNING = "#b45309";      // Amber 700 (for alerts)
 
     @Inject
-    public EmailService(ReactiveMailer reactiveMailer) {
-        this.reactiveMailer = reactiveMailer;
+    public EmailService(Mailer mailer) {
+        this.mailer = mailer;
     }
 
-    public Uni<Void> sendRequestReceivedMail(AppointmentEntity appointmentEntity) {
+    public void sendRequestReceivedMail(AppointmentEntity appointmentEntity) {
         String subject = "Request Received - Hear2Speak";
         String dateString = appointmentEntity.startDateTime.format(DATE_FORMAT);
         String timeString = appointmentEntity.startDateTime.format(TIME_FORMAT);
@@ -52,15 +51,16 @@ public class EmailService {
         String bodyContent = getRequestReceivedBody(appointmentEntity, dateString, timeString);
         String htmlBody = wrapHtmlTemplate("Request Received", bodyContent);
 
-        return safeSend(
-            reactiveMailer.send(
-                Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
-            ),
-            "request received mail to " + appointmentEntity.patientEmail
-        );
+        try {
+            mailer.send(Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody));
+        }
+        catch (Exception e) {
+            LOG.severe("Failed to send request received mail to " + appointmentEntity.patientEmail + ": " + e.toString());
+            throw new RuntimeException(e);
+        }
     }
 
-    public Uni<Void> sendAppointmentConfirmedMail(AppointmentEntity appointmentEntity) {
+    public void sendAppointmentConfirmedMail(AppointmentEntity appointmentEntity) {
         String subject = "Appointment Confirmed - Hear2Speak";
         String dateString = appointmentEntity.startDateTime.format(DATE_FORMAT);
         String timeString = appointmentEntity.startDateTime.format(TIME_FORMAT);
@@ -68,38 +68,28 @@ public class EmailService {
         String bodyContent = getAppointmentConfirmedBody(appointmentEntity, dateString, timeString);
         String htmlBody = wrapHtmlTemplate("Appointment Confirmed", bodyContent);
 
-        return safeSend(
-            reactiveMailer.send(
-                Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
-            ),
-            "appointment confirmed mail to " + appointmentEntity.patientEmail
-        );
+        try {
+            mailer.send(Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody));
+        }
+        catch (Exception e) {
+            LOG.severe("Failed to send appointment confirmed mail to " + appointmentEntity.patientEmail + ": " + e.toString());
+            throw new RuntimeException(e);
+        }
     }
 
-    public Uni<Void> sendClinicianUnacknowledgedAlert(List<AppointmentEntity> pendingAppointments) {
+    public void sendClinicianUnacknowledgedAlert(List<AppointmentEntity> pendingAppointments) {
         int count = pendingAppointments.size();
         String subject = "Action Required: " + count + " Pending Appointment Requests";
         
         String bodyContent = getUnacknowledgedAlertBody(pendingAppointments, count);
         String htmlBody = wrapHtmlTemplate("Action Required", bodyContent);
 
-        return safeSend(
-            reactiveMailer.send(
-                Mail.withHtml(CLINICIAN_EMAIL, subject, htmlBody)
-            ),
-            "clinician unacknowledged alert to " + CLINICIAN_EMAIL
-        );
-    }
-
-    private Uni<Void> safeSend(Uni<Void> mailUni, String context) {
         try {
-            return mailUni
-                .onFailure().invoke(f -> LOG.severe("Failed to send " + context + ": " + f.toString()))
-                .onFailure().recoverWithItem(() -> null);
+            mailer.send(Mail.withHtml(CLINICIAN_EMAIL, subject, htmlBody));
         }
-        catch (Exception ex) {
-            LOG.severe("Synchronous failure initiating " + context + ": " + ex.toString());
-            return Uni.createFrom().voidItem();
+        catch (Exception e) {
+            LOG.severe("Failed to send clinician unacknowledged alert to " + CLINICIAN_EMAIL + ": " + e.toString());
+            throw new RuntimeException(e);
         }
     }
 

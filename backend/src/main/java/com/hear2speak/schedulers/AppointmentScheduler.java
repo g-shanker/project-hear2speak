@@ -56,12 +56,10 @@ public class AppointmentScheduler {
         LOG.infof("--- Scheduler: Found %d pending. Sending alert ---", count);
 
         try {
-            emailService.sendClinicianUnacknowledgedAlert(pendingList).subscribe().with(
-                success -> LOG.info("--- Scheduler: Alert email initiated successfully. ---"),
-                failure -> LOG.error("--- Scheduler: Failed to initiate alert email. ---", failure)
-            );
+            emailService.sendClinicianUnacknowledgedAlert(pendingList);
+            LOG.info("--- Scheduler: Alert email sent successfully. ---");
         } catch (Exception e) {
-            LOG.error("--- Scheduler: Failed to initiate alert email. Continuing without rolling back. ---", e);
+            LOG.error("--- Scheduler: Failed to send alert email. Continuing without rolling back. ---", e);
         }
 
         // Update lastAlertSentAt so we do not resend repeatedly even if the send fails
