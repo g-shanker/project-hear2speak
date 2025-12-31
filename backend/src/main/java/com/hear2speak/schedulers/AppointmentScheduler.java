@@ -56,16 +56,18 @@ public class AppointmentScheduler {
         LOG.infof("--- Scheduler: Found %d pending. Sending alert ---", count);
 
         try {
-            emailService.sendClinicianUnacknowledgedAlert(pendingList).await().indefinitely();
-            LocalDateTime now = LocalDateTime.now();
-            for (AppointmentEntity apt : pendingList) {
-                apt.lastAlertSentAt = now;
-            }
+            emailService.sendClinicianUnacknowledgedAlert(pendingList).subscribe().with(
+                success -> LOG.info("--- Scheduler: Alert email initiated successfully. ---"),
+                failure -> LOG.error("--- Scheduler: Failed to initiate alert email. ---", failure)
+            );
+        } catch (Exception e) {
+            LOG.error("--- Scheduler: Failed to initiate alert email. Continuing without rolling back. ---", e);
         }
 
-        catch (Exception e) {
-            LOG.error("--- Scheduler: Failed to send alert email. Transaction will roll back. ---", e);
-            throw new RuntimeException(e);
+        // Update lastAlertSentAt so we do not resend repeatedly even if the send fails
+        LocalDateTime now = LocalDateTime.now();
+        for (AppointmentEntity apt : pendingList) {
+            apt.lastAlertSentAt = now;
         }
     }
     

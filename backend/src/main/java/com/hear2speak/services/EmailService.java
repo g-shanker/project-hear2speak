@@ -11,12 +11,15 @@ import io.quarkus.mailer.reactive.ReactiveMailer;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class EmailService {
 
+    private static final Logger LOG = Logger.getLogger(EmailService.class.getName());
+
     @ConfigProperty(name = "app.constants.mailer.contact.phone_1")
-    String PHONE_1;
+    String PHONE_1; 
 
     @ConfigProperty(name = "app.constants.mailer.contact.phone_2")
     String PHONE_2;
@@ -49,8 +52,11 @@ public class EmailService {
         String bodyContent = getRequestReceivedBody(appointmentEntity, dateString, timeString);
         String htmlBody = wrapHtmlTemplate("Request Received", bodyContent);
 
-        return reactiveMailer.send(
-            Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
+        return safeSend(
+            reactiveMailer.send(
+                Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
+            ),
+            "request received mail to " + appointmentEntity.patientEmail
         );
     }
 
@@ -62,8 +68,11 @@ public class EmailService {
         String bodyContent = getAppointmentConfirmedBody(appointmentEntity, dateString, timeString);
         String htmlBody = wrapHtmlTemplate("Appointment Confirmed", bodyContent);
 
-        return reactiveMailer.send(
-            Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
+        return safeSend(
+            reactiveMailer.send(
+                Mail.withHtml(appointmentEntity.patientEmail, subject, htmlBody)
+            ),
+            "appointment confirmed mail to " + appointmentEntity.patientEmail
         );
     }
 
@@ -74,9 +83,24 @@ public class EmailService {
         String bodyContent = getUnacknowledgedAlertBody(pendingAppointments, count);
         String htmlBody = wrapHtmlTemplate("Action Required", bodyContent);
 
-        return reactiveMailer.send(
-            Mail.withHtml(CLINICIAN_EMAIL, subject, htmlBody)
+        return safeSend(
+            reactiveMailer.send(
+                Mail.withHtml(CLINICIAN_EMAIL, subject, htmlBody)
+            ),
+            "clinician unacknowledged alert to " + CLINICIAN_EMAIL
         );
+    }
+
+    private Uni<Void> safeSend(Uni<Void> mailUni, String context) {
+        try {
+            return mailUni
+                .onFailure().invoke(f -> LOG.severe("Failed to send " + context + ": " + f.toString()))
+                .onFailure().recoverWithItem(() -> null);
+        }
+        catch (Exception ex) {
+            LOG.severe("Synchronous failure initiating " + context + ": " + ex.toString());
+            return Uni.createFrom().voidItem();
+        }
     }
 
     /**

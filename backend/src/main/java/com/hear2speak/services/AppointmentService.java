@@ -142,20 +142,25 @@ public class AppointmentService {
         appointmentRepository.persist(appointmentEntity);
 
         Uni<Void> mailUni;
-        if(appointmentEntity.appointmentStatus == AppointmentStatus.REQUESTED) {
-            mailUni = emailService.sendRequestReceivedMail(appointmentEntity);
-        }
-        else if(appointmentEntity.appointmentStatus == AppointmentStatus.SCHEDULED) {
-            mailUni = emailService.sendAppointmentConfirmedMail(appointmentEntity);
-        }
-        else {
-            mailUni = Uni.createFrom().voidItem(); // Do nothing
-        }
+        try {
+            if(appointmentEntity.appointmentStatus == AppointmentStatus.REQUESTED) {
+                mailUni = emailService.sendRequestReceivedMail(appointmentEntity);
+            }
+            else if(appointmentEntity.appointmentStatus == AppointmentStatus.SCHEDULED) {
+                mailUni = emailService.sendAppointmentConfirmedMail(appointmentEntity);
+            }
+            else {
+                mailUni = Uni.createFrom().voidItem(); // Do nothing
+            }
 
-        mailUni.subscribe().with(
-            success -> LOG.info("Email sending initiated successfully."),
-            failure -> LOG.info("Failed to initiate email sending: " + failure.getMessage())
-        );
+            mailUni.subscribe().with(
+                success -> LOG.info("Email sending initiated successfully."),
+                failure -> LOG.severe("Failed to initiate email sending asynchronously: " + failure.getMessage())
+            );
+        }
+        catch (Exception ex) {
+            LOG.severe("Synchronous failure initiating email send: " + ex.getMessage());
+        }
 
         AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
         return appointmentResponse;
@@ -194,10 +199,15 @@ public class AppointmentService {
         appointmentEntity.updatedAt = LocalDateTime.now();
 
         if(isBeingConfirmed) {
-            emailService.sendAppointmentConfirmedMail(appointmentEntity).subscribe().with(
-                success -> LOG.info("Email sending initiated successfully."),
-                failure -> LOG.info("Failed to initiate email sending: " + failure.getMessage())
-            );
+            try {
+                emailService.sendAppointmentConfirmedMail(appointmentEntity).subscribe().with(
+                    success -> LOG.info("Email sending initiated successfully."),
+                    failure -> LOG.severe("Failed to initiate email sending asynchronously: " + failure.getMessage())
+                );
+            }
+            catch (Exception ex) {
+                LOG.severe("Synchronous failure initiating confirmation email: " + ex.getMessage());
+            }
         }
 
         AppointmentResponse appointmentResponse = appointmentMapper.toResponse(appointmentEntity);
