@@ -37,6 +37,7 @@ public class AppointmentScheduler {
 
     @Scheduled(cron = "0 0 * * * ?")
     @Transactional
+    @TransactionConfiguration(timeout = 180)
     public void checkUnacknowledgedAppointments() {
         LOG.info("--- Scheduler: Checking for unacknowledged appointments ---");
         
