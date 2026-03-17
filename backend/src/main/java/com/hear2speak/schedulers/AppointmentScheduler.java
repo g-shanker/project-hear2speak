@@ -8,6 +8,7 @@ import com.hear2speak.entities.appointment.AppointmentEntity;
 import com.hear2speak.repositories.AppointmentRepository;
 import com.hear2speak.services.EmailService;
 
+import io.quarkus.narayana.jta.runtime.TransactionConfiguration;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
